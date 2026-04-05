@@ -1,0 +1,338 @@
+[
+  {
+    "Id": "chain_stone_1",
+    "Title": "Stonecutter I — First Strike",
+    "Description": "Start your career as a Network stonecutter. First load out.",
+    "Tier": "Recruit",
+    "Category": "Gather",
+    "DifficultyStars": 1,
+    "Repeatable": false,
+    "ChainId": "chain_stonecutter",
+    "ChainTitle": "Stonecutter",
+    "ChainOrder": 1,
+    "Objectives": [
+      { "Type": "mine", "Target": "stones", "Count": 1000, "Description": "Mine 1,000 stone" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",   "Amount": 90  },
+      { "Type": "item",       "Shortname": "oretea",  "Amount": 1   },
+      { "Type": "tier_xp",    "Amount": 70  },
+      { "Type": "reputation", "Amount": 28  }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "oretea",  "Amount": 1   },
+      { "Type": "reputation", "Amount": 10  }
+    ]
+  },
+  {
+    "Id": "chain_stone_2",
+    "Title": "Stonecutter II — Building Stock",
+    "Description": "The bases won't build themselves. Keep the stone flowing.",
+    "Tier": "Recruit",
+    "Category": "Gather",
+    "DifficultyStars": 2,
+    "Repeatable": false,
+    "ChainId": "chain_stonecutter",
+    "ChainTitle": "Stonecutter",
+    "ChainOrder": 2,
+    "RequiredQuestIds": [ "chain_stone_1" ],
+    "Objectives": [
+      { "Type": "mine", "Target": "stones", "Count": 5000, "Description": "Mine 5,000 stone" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",           "Amount": 180 },
+      { "Type": "item",       "Shortname": "oretea.advanced", "Amount": 1   },
+      { "Type": "tier_xp",    "Amount": 140 },
+      { "Type": "reputation", "Amount": 55  }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "oretea.advanced", "Amount": 1   },
+      { "Type": "reputation", "Amount": 18  }
+    ]
+  },
+  {
+    "Id": "chain_stone_3",
+    "Title": "Stonecutter III — Quarry Operations",
+    "Description": "Run a full quarry shift. The fortifications need stone walls.",
+    "Tier": "Operative",
+    "Category": "Gather",
+    "DifficultyStars": 2,
+    "Repeatable": false,
+    "ChainId": "chain_stonecutter",
+    "ChainTitle": "Stonecutter",
+    "ChainOrder": 3,
+    "RequiredQuestIds": [ "chain_stone_2" ],
+    "Objectives": [
+      { "Type": "mine", "Target": "stones", "Count": 20000, "Description": "Mine 20,000 stone" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",           "Amount": 320 },
+      { "Type": "item",       "Shortname": "oretea.advanced", "Amount": 2   },
+      { "Type": "tier_xp",    "Amount": 240 },
+      { "Type": "reputation", "Amount": 95  }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "oretea.advanced", "Amount": 1   },
+      { "Type": "reputation", "Amount": 30  }
+    ]
+  },
+  {
+    "Id": "chain_stone_4",
+    "Title": "Stonecutter IV — Mountain Work",
+    "Description": "Mountain-scale output. The Network is building something enormous.",
+    "Tier": "Specialist",
+    "Category": "Gather",
+    "DifficultyStars": 3,
+    "Repeatable": false,
+    "ChainId": "chain_stonecutter",
+    "ChainTitle": "Stonecutter",
+    "ChainOrder": 4,
+    "RequiredQuestIds": [ "chain_stone_3" ],
+    "Objectives": [
+      { "Type": "mine", "Target": "stones", "Count": 75000, "Description": "Mine 75,000 stone" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",           "Amount": 550 },
+      { "Type": "item",       "Shortname": "oretea.advanced", "Amount": 3   },
+      { "Type": "tier_xp",    "Amount": 420 },
+      { "Type": "reputation", "Amount": 190 }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "oretea.advanced", "Amount": 2   },
+      { "Type": "item",       "Shortname": "scrap",           "Amount": 100 },
+      { "Type": "reputation", "Amount": 55  }
+    ]
+  },
+  {
+    "Id": "chain_stone_5",
+    "Title": "Stonecutter V — Fortress Foundation",
+    "Description": "A quarter of a million stone. You're building an empire, one node at a time.",
+    "Tier": "Elite",
+    "Category": "Gather",
+    "DifficultyStars": 4,
+    "Repeatable": false,
+    "ChainId": "chain_stonecutter",
+    "ChainTitle": "Stonecutter",
+    "ChainOrder": 5,
+    "RequiredQuestIds": [ "chain_stone_4" ],
+    "Objectives": [
+      { "Type": "mine", "Target": "stones", "Count": 250000, "Description": "Mine 250,000 stone" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",           "Amount": 900 },
+      { "Type": "item",       "Shortname": "oretea.advanced", "Amount": 4   },
+      { "Type": "tier_xp",    "Amount": 680 },
+      { "Type": "reputation", "Amount": 320 }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "oretea.pure",     "Amount": 1   },
+      { "Type": "item",       "Shortname": "scrap",           "Amount": 200 },
+      { "Type": "reputation", "Amount": 95  }
+    ]
+  },
+  {
+    "Id": "chain_stone_6",
+    "Title": "Stonecutter VI — The Monument",
+    "Description": "Half a million stone. Your name is carved into the bedrock of this island.",
+    "Tier": "Legend",
+    "Category": "Gather",
+    "DifficultyStars": 5,
+    "Repeatable": false,
+    "ChainId": "chain_stonecutter",
+    "ChainTitle": "Stonecutter",
+    "ChainOrder": 6,
+    "RequiredQuestIds": [ "chain_stone_5" ],
+    "Objectives": [
+      { "Type": "mine", "Target": "stones", "Count": 500000, "Description": "Mine 500,000 stone" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",         "Amount": 1400 },
+      { "Type": "item",       "Shortname": "oretea.pure",   "Amount": 2    },
+      { "Type": "tier_xp",    "Amount": 950 },
+      { "Type": "reputation", "Amount": 480 }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "oretea.pure",          "Amount": 2    },
+      { "Type": "item",       "Shortname": "maxhealthtea.advanced", "Amount": 1   },
+      { "Type": "item",       "Shortname": "scrap",                "Amount": 300  },
+      { "Type": "reputation", "Amount": 150 }
+    ],
+    "ChainBonusRewards": [
+      { "Type": "item",    "Shortname": "oretea.pure",             "Amount": 3 },
+      { "Type": "item",    "Shortname": "maxhealthtea.advanced",   "Amount": 3 },
+      { "Type": "command", "Command": "inventory.giveto %STEAMID% easter.goldengg 3" },
+      { "Type": "tier_xp",    "Amount": 500  },
+      { "Type": "reputation", "Amount": 300  }
+    ]
+  },
+  {
+    "Id": "chain_metal_1",
+    "Title": "Metalsmith I — First Ore",
+    "Description": "Start your career as a Network metalsmith. First ore load out.",
+    "Tier": "Recruit",
+    "Category": "Gather",
+    "DifficultyStars": 1,
+    "Repeatable": false,
+    "ChainId": "chain_metalsmith",
+    "ChainTitle": "Metalsmith",
+    "ChainOrder": 1,
+    "Objectives": [
+      { "Type": "mine", "Target": "metal.ore", "Count": 500, "Description": "Mine 500 metal ore" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",           "Amount": 85  },
+      { "Type": "item",       "Shortname": "oretea",          "Amount": 1   },
+      { "Type": "tier_xp",    "Amount": 70  },
+      { "Type": "reputation", "Amount": 28  }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "oretea",          "Amount": 1   },
+      { "Type": "reputation", "Amount": 10  }
+    ]
+  },
+  {
+    "Id": "chain_metal_2",
+    "Title": "Metalsmith II — Smelter Feed",
+    "Description": "Keep the smelters running. The armory demands metal.",
+    "Tier": "Recruit",
+    "Category": "Gather",
+    "DifficultyStars": 2,
+    "Repeatable": false,
+    "ChainId": "chain_metalsmith",
+    "ChainTitle": "Metalsmith",
+    "ChainOrder": 2,
+    "RequiredQuestIds": [ "chain_metal_1" ],
+    "Objectives": [
+      { "Type": "mine", "Target": "metal.ore", "Count": 2500, "Description": "Mine 2,500 metal ore" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",           "Amount": 175 },
+      { "Type": "item",       "Shortname": "oretea.advanced", "Amount": 1   },
+      { "Type": "tier_xp",    "Amount": 140 },
+      { "Type": "reputation", "Amount": 55  }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "oretea.advanced", "Amount": 1   },
+      { "Type": "reputation", "Amount": 18  }
+    ]
+  },
+  {
+    "Id": "chain_metal_3",
+    "Title": "Metalsmith III — Armory Contracts",
+    "Description": "Full armory production run. Every ton counts in this war.",
+    "Tier": "Operative",
+    "Category": "Gather",
+    "DifficultyStars": 2,
+    "Repeatable": false,
+    "ChainId": "chain_metalsmith",
+    "ChainTitle": "Metalsmith",
+    "ChainOrder": 3,
+    "RequiredQuestIds": [ "chain_metal_2" ],
+    "Objectives": [
+      { "Type": "mine", "Target": "metal.ore", "Count": 10000, "Description": "Mine 10,000 metal ore" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",           "Amount": 300 },
+      { "Type": "item",       "Shortname": "oretea.advanced", "Amount": 2   },
+      { "Type": "tier_xp",    "Amount": 230 },
+      { "Type": "reputation", "Amount": 90  }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "oretea.advanced", "Amount": 1   },
+      { "Type": "reputation", "Amount": 30  }
+    ]
+  },
+  {
+    "Id": "chain_metal_4",
+    "Title": "Metalsmith IV — Weapons Programme",
+    "Description": "The weapons programme needs your output. Don't let production stall.",
+    "Tier": "Specialist",
+    "Category": "Gather",
+    "DifficultyStars": 3,
+    "Repeatable": false,
+    "ChainId": "chain_metalsmith",
+    "ChainTitle": "Metalsmith",
+    "ChainOrder": 4,
+    "RequiredQuestIds": [ "chain_metal_3" ],
+    "Objectives": [
+      { "Type": "mine", "Target": "metal.ore", "Count": 35000, "Description": "Mine 35,000 metal ore" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",           "Amount": 520 },
+      { "Type": "item",       "Shortname": "oretea.advanced", "Amount": 3   },
+      { "Type": "item",       "Shortname": "roadsigns",       "Amount": 5   },
+      { "Type": "tier_xp",    "Amount": 400 },
+      { "Type": "reputation", "Amount": 180 }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "oretea.advanced", "Amount": 2   },
+      { "Type": "item",       "Shortname": "scrap",           "Amount": 100 },
+      { "Type": "reputation", "Amount": 55  }
+    ]
+  },
+  {
+    "Id": "chain_metal_5",
+    "Title": "Metalsmith V — Ironworks",
+    "Description": "A hundred thousand tonnes of ore. The Network's ironworks live because of you.",
+    "Tier": "Elite",
+    "Category": "Gather",
+    "DifficultyStars": 4,
+    "Repeatable": false,
+    "ChainId": "chain_metalsmith",
+    "ChainTitle": "Metalsmith",
+    "ChainOrder": 5,
+    "RequiredQuestIds": [ "chain_metal_4" ],
+    "Objectives": [
+      { "Type": "mine", "Target": "metal.ore", "Count": 100000, "Description": "Mine 100,000 metal ore" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",       "Amount": 850 },
+      { "Type": "item",       "Shortname": "oretea.pure", "Amount": 1   },
+      { "Type": "item",       "Shortname": "smgbody",     "Amount": 3   },
+      { "Type": "tier_xp",    "Amount": 650 },
+      { "Type": "reputation", "Amount": 300 }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "oretea.pure", "Amount": 1   },
+      { "Type": "item",       "Shortname": "scrap",       "Amount": 200 },
+      { "Type": "reputation", "Amount": 90  }
+    ]
+  },
+  {
+    "Id": "chain_metal_6",
+    "Title": "Metalsmith VI — The Foundry",
+    "Description": "A quarter of a million. The greatest metalsmith the Contractor Network has ever employed.",
+    "Tier": "Legend",
+    "Category": "Gather",
+    "DifficultyStars": 5,
+    "Repeatable": false,
+    "ChainId": "chain_metalsmith",
+    "ChainTitle": "Metalsmith",
+    "ChainOrder": 6,
+    "RequiredQuestIds": [ "chain_metal_5" ],
+    "Objectives": [
+      { "Type": "mine", "Target": "metal.ore", "Count": 250000, "Description": "Mine 250,000 metal ore" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",       "Amount": 1300 },
+      { "Type": "item",       "Shortname": "oretea.pure", "Amount": 2    },
+      { "Type": "item",       "Shortname": "riflebody",   "Amount": 3    },
+      { "Type": "tier_xp",    "Amount": 900 },
+      { "Type": "reputation", "Amount": 450 }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "oretea.pure", "Amount": 2    },
+      { "Type": "item",       "Shortname": "riflebody",   "Amount": 1    },
+      { "Type": "item",       "Shortname": "scrap",       "Amount": 300  },
+      { "Type": "reputation", "Amount": 150 }
+    ],
+    "ChainBonusRewards": [
+      { "Type": "item",    "Shortname": "riflebody",           "Amount": 5 },
+      { "Type": "item",    "Shortname": "smgbody",             "Amount": 5 },
+      { "Type": "item",    "Shortname": "oretea.pure",         "Amount": 3 },
+      { "Type": "command", "Command": "inventory.giveto %STEAMID% easter.goldengg 3" },
+      { "Type": "tier_xp",    "Amount": 500  },
+      { "Type": "reputation", "Amount": 300  }
+    ]
+  }
+]

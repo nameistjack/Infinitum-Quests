@@ -1,0 +1,206 @@
+[
+  {
+    "Id": "adv_monument_loot",
+    "Title": "Monument Scavenging",
+    "Description": "Loot military crates from monument areas — the good stuff is behind the locked doors.",
+    "Tier": "Operative",
+    "Category": "Adventure",
+    "DifficultyStars": 2,
+    "Repeatable": true,
+    "CooldownSeconds": 14400,
+    "VipCooldownSeconds": 7200,
+    "Objectives": [
+      { "Type": "loot", "Target": "crate_normal", "Count": 5, "Description": "Loot 5 military crates" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",           "Amount": 220 },
+      { "Type": "item",       "Shortname": "techparts",       "Amount": 2   },
+      { "Type": "tier_xp",    "Amount": 180 },
+      { "Type": "reputation", "Amount": 75  }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "techparts",       "Amount": 1   },
+      { "Type": "reputation", "Amount": 25  }
+    ]
+  },
+  {
+    "Id": "adv_blue_rooms",
+    "Title": "Blue Card Sweep",
+    "Description": "Clear and loot blue keycard rooms across the island. Bring a card.",
+    "Tier": "Operative",
+    "Category": "Adventure",
+    "DifficultyStars": 3,
+    "Repeatable": true,
+    "CooldownSeconds": 21600,
+    "VipCooldownSeconds": 10800,
+    "Objectives": [
+      { "Type": "loot", "Target": "crate_normal", "Count": 8, "Description": "Loot 8 military crates in monument rooms" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",           "Amount": 300 },
+      { "Type": "item",       "Shortname": "techparts",       "Amount": 3   },
+      { "Type": "item",       "Shortname": "roadsigns",       "Amount": 3   },
+      { "Type": "tier_xp",    "Amount": 250 },
+      { "Type": "reputation", "Amount": 110 }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "techparts",       "Amount": 1   },
+      { "Type": "reputation", "Amount": 35  }
+    ]
+  },
+  {
+    "Id": "adv_crate_hunter",
+    "Title": "Crate Hunter",
+    "Description": "Hack locked crates before they're claimed by someone else. Time is critical.",
+    "Tier": "Operative",
+    "Category": "Adventure",
+    "DifficultyStars": 3,
+    "Repeatable": true,
+    "CooldownSeconds": 28800,
+    "VipCooldownSeconds": 14400,
+    "Objectives": [
+      { "Type": "hack_crate", "Target": "", "Count": 3, "Description": "Hack 3 locked crates" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",     "Amount": 350 },
+      { "Type": "item",       "Shortname": "techparts", "Amount": 4   },
+      { "Type": "tier_xp",    "Amount": 280 },
+      { "Type": "reputation", "Amount": 120 }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "techparts", "Amount": 1   },
+      { "Type": "reputation", "Amount": 40  }
+    ]
+  },
+  {
+    "Id": "adv_raid_easy",
+    "Title": "Raid — Easy Clearance",
+    "Description": "Complete 5 easy-difficulty raidable bases. Warm up those explosives.",
+    "Tier": "Operative",
+    "Category": "Adventure",
+    "DifficultyStars": 3,
+    "Repeatable": true,
+    "CooldownSeconds": 43200,
+    "VipCooldownSeconds": 21600,
+    "Objectives": [
+      { "Type": "raidable_base", "Target": "easy", "Count": 5, "Description": "Complete 5 easy raidable bases" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",                "Amount": 400 },
+      { "Type": "item",       "Shortname": "scrapearntea.advanced", "Amount": 1  },
+      { "Type": "item",       "Shortname": "techparts",            "Amount": 4   },
+      { "Type": "tier_xp",    "Amount": 350 },
+      { "Type": "reputation", "Amount": 155 }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "scrapearntea.advanced", "Amount": 1  },
+      { "Type": "reputation", "Amount": 50  }
+    ]
+  },
+  {
+    "Id": "adv_raid_medium",
+    "Title": "Raid — Medium Clearance",
+    "Description": "Complete 5 medium-difficulty raidable bases. Expect resistance.",
+    "Tier": "Specialist",
+    "Category": "Adventure",
+    "DifficultyStars": 4,
+    "Repeatable": true,
+    "CooldownSeconds": 43200,
+    "VipCooldownSeconds": 21600,
+    "Objectives": [
+      { "Type": "raidable_base", "Target": "medium", "Count": 5, "Description": "Complete 5 medium raidable bases" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",                   "Amount": 600 },
+      { "Type": "item",       "Shortname": "maxhealthtea.advanced",   "Amount": 1   },
+      { "Type": "item",       "Shortname": "techparts",               "Amount": 6   },
+      { "Type": "tier_xp",    "Amount": 500 },
+      { "Type": "reputation", "Amount": 230 }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "maxhealthtea.advanced",   "Amount": 1  },
+      { "Type": "reputation", "Amount": 70  }
+    ]
+  },
+  {
+    "Id": "adv_event_win",
+    "Title": "Event Contractor",
+    "Description": "Win 3 active server events. Show up, dominate, collect. 24-hour cooldown.",
+    "Tier": "Operative",
+    "Category": "Adventure",
+    "DifficultyStars": 3,
+    "Repeatable": true,
+    "CooldownSeconds": 86400,
+    "VipCooldownSeconds": 43200,
+    "Objectives": [
+      { "Type": "event_win", "Target": "", "Count": 3, "Description": "Win 3 server events" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",                "Amount": 450 },
+      { "Type": "item",       "Shortname": "scrapearntea.advanced", "Amount": 2  },
+      { "Type": "item",       "Shortname": "techparts",            "Amount": 4   },
+      { "Type": "tier_xp",    "Amount": 380 },
+      { "Type": "reputation", "Amount": 170 }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "scrapearntea.advanced", "Amount": 1  },
+      { "Type": "reputation", "Amount": 55  }
+    ]
+  },
+  {
+    "Id": "adv_raid_hard",
+    "Title": "Raid — Hard Clearance",
+    "Description": "Complete 3 hard-difficulty raidable bases. Full loadout required. 24-hour cooldown.",
+    "Tier": "Elite",
+    "Category": "Adventure",
+    "DifficultyStars": 5,
+    "Repeatable": true,
+    "CooldownSeconds": 86400,
+    "VipCooldownSeconds": 43200,
+    "Objectives": [
+      { "Type": "raidable_base", "Target": "hard", "Count": 3, "Description": "Complete 3 hard raidable bases" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",                   "Amount": 800 },
+      { "Type": "item",       "Shortname": "maxhealthtea.advanced",   "Amount": 2   },
+      { "Type": "item",       "Shortname": "techparts",               "Amount": 8   },
+      { "Type": "item",       "Shortname": "riflebody",               "Amount": 2   },
+      { "Type": "tier_xp",    "Amount": 700 },
+      { "Type": "reputation", "Amount": 320 }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "maxhealthtea.advanced",   "Amount": 1  },
+      { "Type": "item",       "Shortname": "techparts",               "Amount": 1  },
+      { "Type": "reputation", "Amount": 100 }
+    ]
+  },
+  {
+    "Id": "adv_boss_hunt",
+    "Title": "Boss Elimination",
+    "Description": "A high-value target has been spotted. Eliminate the boss NPC — reward is substantial. 72-hour cooldown.",
+    "Tier": "Elite",
+    "Category": "Adventure",
+    "DifficultyStars": 5,
+    "Repeatable": true,
+    "CooldownSeconds": 259200,
+    "VipCooldownSeconds": 129600,
+    "Objectives": [
+      { "Type": "boss_kill", "Target": "", "Count": 1, "Description": "Eliminate 1 boss NPC" }
+    ],
+    "Rewards": [
+      { "Type": "item",       "Shortname": "scrap",                   "Amount": 1000 },
+      { "Type": "item",       "Shortname": "maxhealthtea.advanced",   "Amount": 3    },
+      { "Type": "item",       "Shortname": "techparts",               "Amount": 10   },
+      { "Type": "item",       "Shortname": "riflebody",               "Amount": 3    },
+      { "Type": "command",    "Command": "inventory.giveto %STEAMID% easter.goldengg 1" },
+      { "Type": "tier_xp",    "Amount": 800 },
+      { "Type": "reputation", "Amount": 400 }
+    ],
+    "VipRewards": [
+      { "Type": "item",       "Shortname": "maxhealthtea.advanced",   "Amount": 1  },
+      { "Type": "item",       "Shortname": "techparts",               "Amount": 2  },
+      { "Type": "command",    "Command": "inventory.giveto %STEAMID% easter.goldengg 1" },
+      { "Type": "reputation", "Amount": 150 }
+    ]
+  }
+]

@@ -1,0 +1,50 @@
+{
+  "76561199506069025": {
+    "N": "Lemmy Maverick",
+    "XP": 500,
+    "RP": 271,
+    "HX": 0,
+    "HY": 0,
+    "HV": true,
+    "UM": "window",
+    "SK": 0,
+    "SD": "",
+    "DW": "2026-04-05T17:50:51.4435421Z",
+    "DC": [],
+    "CC": [],
+    "AQ": [],
+    "RQ": [],
+    "CQ": [
+      {
+        "Id": "mine_stone_recruit",
+        "At": "2026-03-19T19:03:44.9108839Z",
+        "T": 2
+      },
+      {
+        "Id": "gather_wood_recruit",
+        "At": "2026-03-18T21:06:14.4970271Z",
+        "T": 1
+      },
+      {
+        "Id": "deliver_wood_recruit",
+        "At": "2026-03-18T21:08:51.8078708Z",
+        "T": 1
+      },
+      {
+        "Id": "craft_bow_recruit",
+        "At": "2026-03-19T19:03:42.9920577Z",
+        "T": 1
+      },
+      {
+        "Id": "kill_scientists_recruit",
+        "At": "2026-03-21T06:40:13.9822514Z",
+        "T": 1
+      }
+    ],
+    "CD": {
+      "craft_bow_recruit": "2026-03-19T20:03:42.9920577Z",
+      "mine_stone_recruit": "2026-03-19T19:33:44.9108839Z",
+      "kill_scientists_recruit": "2026-03-21T07:40:13.9832512Z"
+    }
+  }
+}

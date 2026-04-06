@@ -1,5 +1,5 @@
 {
-  "Config Version": "1.7.9",
+  "Config Version": "1.8.1",
   "Commands to open quest board": [
     "quest",
     "quests",
@@ -227,6 +227,42 @@
       "hazmatsuit",
       "mask.bandana",
       "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
+      "mask.bandana",
+      "hazmatsuit",
       "mask.bandana"
     ],
     "Gesture to play periodically (wave, thumbsup, shrug, clap, point, victory — empty to disable)": "wave",
@@ -249,7 +285,35 @@
       },
       {
         "Monument filter (partial name match, lowercase)": "bandit",
-        "Anchor entity prefab keyword (recycler, workbench, fish_trap — empty = monument center)": "recycler",
+        "Anchor entity prefab keyword (recycler, workbench, fish_trap — empty = monument center)": "cardtable",
+        "Side offset in metres from anchor entity": 2.0,
+        "Y offset (height above ground)": 0.5,
+        "Clothing item shortnames (overrides global Clothing — empty list uses global)": []
+      },
+      {
+        "Monument filter (partial name match, lowercase)": "fishing",
+        "Anchor entity prefab keyword (recycler, workbench, fish_trap — empty = monument center)": "vending",
+        "Side offset in metres from anchor entity": 1.5,
+        "Y offset (height above ground)": 0.5,
+        "Clothing item shortnames (overrides global Clothing — empty list uses global)": []
+      },
+      {
+        "Monument filter (partial name match, lowercase)": "barn",
+        "Anchor entity prefab keyword (recycler, workbench, fish_trap — empty = monument center)": "stablemaster",
+        "Side offset in metres from anchor entity": 1.5,
+        "Y offset (height above ground)": 0.5,
+        "Clothing item shortnames (overrides global Clothing — empty list uses global)": []
+      },
+      {
+        "Monument filter (partial name match, lowercase)": "ranch",
+        "Anchor entity prefab keyword (recycler, workbench, fish_trap — empty = monument center)": "stablemaster",
+        "Side offset in metres from anchor entity": 1.5,
+        "Y offset (height above ground)": 0.5,
+        "Clothing item shortnames (overrides global Clothing — empty list uses global)": []
+      },
+      {
+        "Monument filter (partial name match, lowercase)": "fishing",
+        "Anchor entity prefab keyword (recycler, workbench, fish_trap — empty = monument center)": "boatvendor",
         "Side offset in metres from anchor entity": 1.5,
         "Y offset (height above ground)": 0.5,
         "Clothing item shortnames (overrides global Clothing — empty list uses global)": []
@@ -267,8 +331,16 @@
         "Side offset in metres from anchor entity": 0.0,
         "Y offset (height above ground)": 0.5,
         "Clothing item shortnames (overrides global Clothing — empty list uses global)": []
+      },
+      {
+        "Monument filter (partial name match, lowercase)": "bandit",
+        "Anchor entity prefab keyword (recycler, workbench, fish_trap — empty = monument center)": "recycler",
+        "Side offset in metres from anchor entity": 1.5,
+        "Y offset (height above ground)": 0.5,
+        "Clothing item shortnames (overrides global Clothing — empty list uses global)": []
       }
-    ]
+    ],
+    "Auto-clear saved positions on wipe (wipe-safe NPCs without manual 'iq.contractor clear')": false
   },
   "Kill objective icon URLs (target → image URL, requires ImageLibrary)": {
     "tiger": "https://wiki.rustclash.com/img/screenshots/tiger.png",

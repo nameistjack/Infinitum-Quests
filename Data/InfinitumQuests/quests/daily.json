@@ -1,256 +1,709 @@
 [
-  {
-    "Id": "daily_wild_culling",
-    "Title": "Wild Culling",
-    "Description": "Daily cull — thin the local wildlife. Resets each day.",
-    "Tier": "Recruit",
-    "Category": "Combat",
-    "DifficultyStars": 1,
-    "Daily": true,
-    "Repeatable": false,
-    "CooldownSeconds": 0,
-    "Objectives": [
-      { "Type": "kill", "Target": "animal", "Count": 10, "Description": "Kill any 10 animals" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "cloth",       "Amount": 75  },
-      { "Type": "item",       "Shortname": "fat.animal",  "Amount": 50  },
-      { "Type": "tier_xp",    "Amount": 75  },
-      { "Type": "reputation", "Amount": 30  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "healingtea",  "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 15  },
-      { "Type": "reputation", "Amount": 15  }
-    ]
-  },
-  {
-    "Id": "daily_timber_run",
-    "Title": "Timber Run",
-    "Description": "Daily lumber quota — the Network always needs building materials. Resets each day.",
-    "Tier": "Recruit",
-    "Category": "Gather",
-    "DifficultyStars": 1,
-    "Daily": true,
-    "Repeatable": false,
-    "CooldownSeconds": 0,
-    "Objectives": [
-      { "Type": "chop", "Target": "wood", "Count": 2000, "Description": "Chop 2,000 wood" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",     "Amount": 75  },
-      { "Type": "item",       "Shortname": "woodtea",   "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 75  },
-      { "Type": "reputation", "Amount": 25  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "woodtea",   "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 15  },
-      { "Type": "reputation", "Amount": 15  }
-    ]
-  },
-  {
-    "Id": "daily_stone_quota",
-    "Title": "Stone Quota",
-    "Description": "Daily mining quota — keep the quarry satisfied. Resets each day.",
-    "Tier": "Recruit",
-    "Category": "Gather",
-    "DifficultyStars": 1,
-    "Daily": true,
-    "Repeatable": false,
-    "CooldownSeconds": 0,
-    "Objectives": [
-      { "Type": "mine", "Target": "stones", "Count": 1500, "Description": "Mine 1,500 stone" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",   "Amount": 60  },
-      { "Type": "item",       "Shortname": "oretea",  "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 75  },
-      { "Type": "reputation", "Amount": 25  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "oretea",  "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 15  },
-      { "Type": "reputation", "Amount": 15  }
-    ]
-  },
-  {
-    "Id": "daily_field_medic",
-    "Title": "Field Medic",
-    "Description": "Daily medical supply run — keep the team patched up. Resets each day.",
-    "Tier": "Recruit",
-    "Category": "Craft",
-    "DifficultyStars": 1,
-    "Daily": true,
-    "Repeatable": false,
-    "CooldownSeconds": 0,
-    "Objectives": [
-      { "Type": "craft", "Target": "bandage",         "Count": 5, "Description": "Craft 5 bandages"          },
-      { "Type": "craft", "Target": "syringe.medical", "Count": 2, "Description": "Craft 2 medical syringes"  }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 80  },
-      { "Type": "item",       "Shortname": "healingtea",  "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 80  },
-      { "Type": "reputation", "Amount": 30  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "healingtea",  "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 15  },
-      { "Type": "reputation", "Amount": 15  }
-    ]
-  },
-  {
-    "Id": "daily_patrol_sweep",
-    "Title": "Patrol Sweep",
-    "Description": "Daily duty — eliminate scientists from monument perimeters. Resets each day.",
-    "Tier": "Operative",
-    "Category": "Combat",
-    "DifficultyStars": 2,
-    "Daily": true,
-    "Repeatable": false,
-    "CooldownSeconds": 0,
-    "Objectives": [
-      { "Type": "kill", "Target": "scientist", "Count": 8, "Description": "Eliminate 8 scientists" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",          "Amount": 150 },
-      { "Type": "item",       "Shortname": "maxhealthtea",   "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 150 },
-      { "Type": "reputation", "Amount": 60  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "maxhealthtea",   "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 25  },
-      { "Type": "reputation", "Amount": 25  }
-    ]
-  },
-  {
-    "Id": "daily_ore_extraction",
-    "Title": "Ore Extraction",
-    "Description": "Daily ore quota — the smelters are hungry. Resets each day.",
-    "Tier": "Operative",
-    "Category": "Gather",
-    "DifficultyStars": 2,
-    "Daily": true,
-    "Repeatable": false,
-    "CooldownSeconds": 0,
-    "Objectives": [
-      { "Type": "mine", "Target": "metal.ore", "Count": 1000, "Description": "Mine 1,000 metal ore" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",           "Amount": 125 },
-      { "Type": "item",       "Shortname": "oretea.advanced", "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 150 },
-      { "Type": "reputation", "Amount": 55  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "oretea.advanced", "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 25  },
-      { "Type": "reputation", "Amount": 25  }
-    ]
-  },
-  {
-    "Id": "daily_recycler_run",
-    "Title": "Recycler Run",
-    "Description": "Daily recycling quota — break down surplus components for the cause. Resets each day.",
-    "Tier": "Operative",
-    "Category": "Gather",
-    "DifficultyStars": 2,
-    "Daily": true,
-    "Repeatable": false,
-    "CooldownSeconds": 0,
-    "Objectives": [
-      { "Type": "recycle", "Target": "", "Count": 10, "Description": "Recycle 10 items" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",           "Amount": 130 },
-      { "Type": "item",       "Shortname": "scrapearntea",    "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 120 },
-      { "Type": "reputation", "Amount": 50  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "scrapearntea",    "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 25  },
-      { "Type": "reputation", "Amount": 25  }
-    ]
-  },
-  {
-    "Id": "daily_heavy_response",
-    "Title": "Heavy Response",
-    "Description": "Daily priority target — neutralise heavy scientist units on sight. Resets each day.",
-    "Tier": "Specialist",
-    "Category": "Combat",
-    "DifficultyStars": 3,
-    "Daily": true,
-    "Repeatable": false,
-    "CooldownSeconds": 0,
-    "Objectives": [
-      { "Type": "kill", "Target": "heavyscientist", "Count": 5, "Description": "Eliminate 5 heavy scientists" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",                "Amount": 300 },
-      { "Type": "item",       "Shortname": "maxhealthtea.advanced", "Amount": 1  },
-      { "Type": "tier_xp",    "Amount": 300 },
-      { "Type": "reputation", "Amount": 120 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "maxhealthtea.advanced", "Amount": 1  },
-      { "Type": "item",       "Shortname": "techparts",             "Amount": 1  },
-      { "Type": "tier_xp",    "Amount": 40  },
-      { "Type": "reputation", "Amount": 40  }
-    ]
-  },
-  {
-    "Id": "daily_crate_intercept",
-    "Title": "Crate Intercept",
-    "Description": "Daily intercept — hack locked crates before the competition does. Resets each day.",
-    "Tier": "Specialist",
-    "Category": "Adventure",
-    "DifficultyStars": 3,
-    "Daily": true,
-    "Repeatable": false,
-    "CooldownSeconds": 0,
-    "Objectives": [
-      { "Type": "hack_crate", "Target": "", "Count": 2, "Description": "Hack 2 locked crates" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",     "Amount": 350 },
-      { "Type": "item",       "Shortname": "techparts", "Amount": 3   },
-      { "Type": "tier_xp",    "Amount": 280 },
-      { "Type": "reputation", "Amount": 130 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "techparts", "Amount": 2   },
-      { "Type": "tier_xp",    "Amount": 40  },
-      { "Type": "reputation", "Amount": 40  }
-    ]
-  },
-  {
-    "Id": "daily_armoured_response",
-    "Title": "Armoured Response",
-    "Description": "Daily priority contract — destroy the Bradley APC before it causes more damage. Resets each day.",
-    "Tier": "Elite",
-    "Category": "Combat",
-    "DifficultyStars": 4,
-    "Daily": true,
-    "Repeatable": false,
-    "CooldownSeconds": 0,
-    "Objectives": [
-      { "Type": "kill", "Target": "bradley", "Count": 1, "Description": "Destroy Bradley APC" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",                "Amount": 600 },
-      { "Type": "item",       "Shortname": "oretea.advanced",      "Amount": 2   },
-      { "Type": "item",       "Shortname": "techparts",            "Amount": 5   },
-      { "Type": "tier_xp",    "Amount": 500 },
-      { "Type": "reputation", "Amount": 220 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "maxhealthtea.advanced", "Amount": 1  },
-      { "Type": "item",       "Shortname": "techparts",             "Amount": 2  },
-      { "Type": "tier_xp",    "Amount": 75  },
-      { "Type": "reputation", "Amount": 75  }
-    ]
-  }
+    {
+        "Id":  "daily_wild_culling",
+        "Title":  "Wild Culling",
+        "Description":  "Daily cull — thin the local wildlife. Resets each day.",
+        "Tier":  "Recruit",
+        "Category":  "Combat",
+        "DifficultyStars":  1,
+        "Daily":  true,
+        "Repeatable":  false,
+        "CooldownSeconds":  0,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "animal",
+                               "Count":  10,
+                               "Description":  "Kill any 10 animals"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "cloth",
+                            "Amount":  75,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "fat.animal",
+                            "Amount":  50,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  75,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  30,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "healingtea",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "tier_xp",
+                               "Amount":  15,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  15,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "daily_timber_run",
+        "Title":  "Timber Run",
+        "Description":  "Daily lumber quota — the Network always needs building materials. Resets each day.",
+        "Tier":  "Recruit",
+        "Category":  "Gather",
+        "DifficultyStars":  1,
+        "Daily":  true,
+        "Repeatable":  false,
+        "CooldownSeconds":  0,
+        "Objectives":  [
+                           {
+                               "Type":  "chop",
+                               "Target":  "wood",
+                               "Count":  2000,
+                               "Description":  "Chop 2,000 wood"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  75,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "woodtea",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  75,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  25,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "woodtea",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "tier_xp",
+                               "Amount":  15,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  15,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "daily_stone_quota",
+        "Title":  "Stone Quota",
+        "Description":  "Daily mining quota — keep the quarry satisfied. Resets each day.",
+        "Tier":  "Recruit",
+        "Category":  "Gather",
+        "DifficultyStars":  1,
+        "Daily":  true,
+        "Repeatable":  false,
+        "CooldownSeconds":  0,
+        "Objectives":  [
+                           {
+                               "Type":  "mine",
+                               "Target":  "stones",
+                               "Count":  1500,
+                               "Description":  "Mine 1,500 stone"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  60,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "oretea",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  75,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  25,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "oretea",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "tier_xp",
+                               "Amount":  15,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  15,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "daily_field_medic",
+        "Title":  "Field Medic",
+        "Description":  "Daily medical supply run — keep the team patched up. Resets each day.",
+        "Tier":  "Recruit",
+        "Category":  "Craft",
+        "DifficultyStars":  1,
+        "Daily":  true,
+        "Repeatable":  false,
+        "CooldownSeconds":  0,
+        "Objectives":  [
+                           {
+                               "Type":  "craft",
+                               "Target":  "bandage",
+                               "Count":  5,
+                               "Description":  "Craft 5 bandages"
+                           },
+                           {
+                               "Type":  "craft",
+                               "Target":  "syringe.medical",
+                               "Count":  2,
+                               "Description":  "Craft 2 medical syringes"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  80,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "healingtea",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  80,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  30,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "healingtea",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "tier_xp",
+                               "Amount":  15,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  15,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "daily_patrol_sweep",
+        "Title":  "Patrol Sweep",
+        "Description":  "Daily duty — eliminate scientists from monument perimeters. Resets each day.",
+        "Tier":  "Operative",
+        "Category":  "Combat",
+        "DifficultyStars":  2,
+        "Daily":  true,
+        "Repeatable":  false,
+        "CooldownSeconds":  0,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "scientist",
+                               "Count":  8,
+                               "Description":  "Eliminate 8 scientists"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "maxhealthtea",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  60,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "maxhealthtea",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "tier_xp",
+                               "Amount":  25,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  25,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "daily_ore_extraction",
+        "Title":  "Ore Extraction",
+        "Description":  "Daily ore quota — the smelters are hungry. Resets each day.",
+        "Tier":  "Operative",
+        "Category":  "Gather",
+        "DifficultyStars":  2,
+        "Daily":  true,
+        "Repeatable":  false,
+        "CooldownSeconds":  0,
+        "Objectives":  [
+                           {
+                               "Type":  "mine",
+                               "Target":  "metal.ore",
+                               "Count":  1000,
+                               "Description":  "Mine 1,000 metal ore"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  125,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "oretea.advanced",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  55,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "oretea.advanced",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "tier_xp",
+                               "Amount":  25,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  25,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "daily_recycler_run",
+        "Title":  "Recycler Run",
+        "Description":  "Daily recycling quota — break down surplus components for the cause. Resets each day.",
+        "Tier":  "Operative",
+        "Category":  "Gather",
+        "DifficultyStars":  2,
+        "Daily":  true,
+        "Repeatable":  false,
+        "CooldownSeconds":  0,
+        "Objectives":  [
+                           {
+                               "Type":  "recycle",
+                               "Target":  "",
+                               "Count":  10,
+                               "Description":  "Recycle 10 items"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  130,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrapearntea",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  120,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  50,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrapearntea",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "tier_xp",
+                               "Amount":  25,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  25,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "daily_heavy_response",
+        "Title":  "Heavy Response",
+        "Description":  "Daily priority target — neutralise heavy scientist units on sight. Resets each day.",
+        "Tier":  "Specialist",
+        "Category":  "Combat",
+        "DifficultyStars":  3,
+        "Daily":  true,
+        "Repeatable":  false,
+        "CooldownSeconds":  0,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "heavyscientist",
+                               "Count":  5,
+                               "Description":  "Eliminate 5 heavy scientists"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "maxhealthtea.advanced",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  120,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "maxhealthtea.advanced",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "tier_xp",
+                               "Amount":  40,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  40,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "daily_crate_intercept",
+        "Title":  "Crate Intercept",
+        "Description":  "Daily intercept — hack locked crates before the competition does. Resets each day.",
+        "Tier":  "Specialist",
+        "Category":  "Adventure",
+        "DifficultyStars":  3,
+        "Daily":  true,
+        "Repeatable":  false,
+        "CooldownSeconds":  0,
+        "Objectives":  [
+                           {
+                               "Type":  "hack_crate",
+                               "Target":  "",
+                               "Count":  2,
+                               "Description":  "Hack 2 locked crates"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  350,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  3,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  280,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  130,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  2,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "tier_xp",
+                               "Amount":  40,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  40,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "daily_armoured_response",
+        "Title":  "Armoured Response",
+        "Description":  "Daily priority contract — destroy the Bradley APC before it causes more damage. Resets each day.",
+        "Tier":  "Elite",
+        "Category":  "Combat",
+        "DifficultyStars":  4,
+        "Daily":  true,
+        "Repeatable":  false,
+        "CooldownSeconds":  0,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "bradley",
+                               "Count":  1,
+                               "Description":  "Destroy Bradley APC"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  600,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "oretea.advanced",
+                            "Amount":  2,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  5,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  500,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  220,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "maxhealthtea.advanced",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  2,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "tier_xp",
+                               "Amount":  75,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  75,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    }
 ]

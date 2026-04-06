@@ -1,199 +1,546 @@
 [
-  {
-    "Id": "cbt_npc_patrol_recruit",
-    "Title": "Patrol Clearance",
-    "Description": "Eliminate roaming scientists near monuments. Standard engagement — no special gear required.",
-    "Tier": "Recruit",
-    "Category": "Combat",
-    "DifficultyStars": 2,
-    "Repeatable": true,
-    "CooldownSeconds": 7200,
-    "VipCooldownSeconds": 3600,
-    "Objectives": [
-      { "Type": "kill", "Target": "scientist", "Count": 8, "Description": "Kill 8 scientists" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 150 },
-      { "Type": "tier_xp",   "Amount": 100 },
-      { "Type": "reputation","Amount": 40  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 50  },
-      { "Type": "reputation","Amount": 15  }
-    ]
-  },
-  {
-    "Id": "cbt_npc_night_recruit",
-    "Title": "Nightwatch",
-    "Description": "Hunt scientists after dark. They're more aggressive — and so are the rewards.",
-    "Tier": "Recruit",
-    "Category": "Combat",
-    "DifficultyStars": 2,
-    "Repeatable": true,
-    "CooldownSeconds": 14400,
-    "VipCooldownSeconds": 7200,
-    "Objectives": [
-      { "Type": "kill", "Target": "scientist", "Count": 6, "Description": "Kill 6 scientists at night", "TimeCondition": "night" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 200 },
-      { "Type": "tier_xp",   "Amount": 140 },
-      { "Type": "reputation","Amount": 55  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 60  },
-      { "Type": "reputation","Amount": 18  }
-    ]
-  },
-  {
-    "Id": "cbt_heavy_operative",
-    "Title": "Heavy Response",
-    "Description": "Take down oil rig and launch site heavy scientists. Full combat gear recommended.",
-    "Tier": "Operative",
-    "Category": "Combat",
-    "DifficultyStars": 3,
-    "Repeatable": true,
-    "CooldownSeconds": 14400,
-    "VipCooldownSeconds": 7200,
-    "Objectives": [
-      { "Type": "kill", "Target": "heavy", "Count": 8, "Description": "Kill 8 heavy scientists" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",     "Amount": 280 },
-      { "Type": "item",       "Shortname": "techparts", "Amount": 2   },
-      { "Type": "tier_xp",   "Amount": 200 },
-      { "Type": "reputation","Amount": 85  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "techparts", "Amount": 1   },
-      { "Type": "reputation","Amount": 28  }
-    ]
-  },
-  {
-    "Id": "cbt_tunnel_operative",
-    "Title": "Tunnel Clearance",
-    "Description": "The train tunnels are crawling with hostile dwellers. Clear them out.",
-    "Tier": "Operative",
-    "Category": "Combat",
-    "DifficultyStars": 3,
-    "Repeatable": true,
-    "CooldownSeconds": 14400,
-    "VipCooldownSeconds": 7200,
-    "Objectives": [
-      { "Type": "kill", "Target": "tunneldweller", "Count": 10, "Description": "Kill 10 tunnel dwellers" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",     "Amount": 260 },
-      { "Type": "item",       "Shortname": "techparts", "Amount": 2   },
-      { "Type": "tier_xp",   "Amount": 190 },
-      { "Type": "reputation","Amount": 80  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "techparts", "Amount": 1   },
-      { "Type": "reputation","Amount": 26  }
-    ]
-  },
-  {
-    "Id": "cbt_junkyard_specialist",
-    "Title": "Junkyard Detail",
-    "Description": "The junkyard is infested. Clear all scientist patrols before looting.",
-    "Tier": "Specialist",
-    "Category": "Combat",
-    "DifficultyStars": 3,
-    "Repeatable": true,
-    "CooldownSeconds": 18000,
-    "VipCooldownSeconds": 9000,
-    "Objectives": [
-      { "Type": "kill", "Target": "junkyard", "Count": 12, "Description": "Kill 12 junkyard scientists" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",     "Amount": 400 },
-      { "Type": "item",       "Shortname": "techparts", "Amount": 3   },
-      { "Type": "tier_xp",   "Amount": 280 },
-      { "Type": "reputation","Amount": 120 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "techparts", "Amount": 1   },
-      { "Type": "reputation","Amount": 40  }
-    ]
-  },
-  {
-    "Id": "cbt_underwater_specialist",
-    "Title": "Underwater Extraction",
-    "Description": "Underwater labs are guarded. Clear the dwellers before you claim the loot.",
-    "Tier": "Specialist",
-    "Category": "Combat",
-    "DifficultyStars": 4,
-    "Repeatable": true,
-    "CooldownSeconds": 21600,
-    "VipCooldownSeconds": 10800,
-    "Objectives": [
-      { "Type": "kill", "Target": "underwaterdweller", "Count": 8, "Description": "Kill 8 underwater dwellers" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",                 "Amount": 450 },
-      { "Type": "item",       "Shortname": "techparts",             "Amount": 4   },
-      { "Type": "item",       "Shortname": "scrapearntea.advanced", "Amount": 1   },
-      { "Type": "tier_xp",   "Amount": 320 },
-      { "Type": "reputation","Amount": 140 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "techparts",             "Amount": 2   },
-      { "Type": "reputation","Amount": 45  }
-    ]
-  },
-  {
-    "Id": "cbt_ch47_specialist",
-    "Title": "Chopper Down",
-    "Description": "Bring down the Chinook before it completes its drop run. You have one shot — make it count.",
-    "Tier": "Specialist",
-    "Category": "Combat",
-    "DifficultyStars": 4,
-    "Repeatable": true,
-    "CooldownSeconds": 43200,
-    "VipCooldownSeconds": 21600,
-    "Objectives": [
-      { "Type": "kill", "Target": "ch47", "Count": 1, "Description": "Shoot down 1 Chinook helicopter" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",                 "Amount": 500 },
-      { "Type": "item",       "Shortname": "techparts",             "Amount": 5   },
-      { "Type": "item",       "Shortname": "scrapearntea.advanced", "Amount": 1   },
-      { "Type": "tier_xp",   "Amount": 380 },
-      { "Type": "reputation","Amount": 165 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "techparts",             "Amount": 2   },
-      { "Type": "reputation","Amount": 55  }
-    ]
-  },
-  {
-    "Id": "cbt_hostile_sweep_elite",
-    "Title": "Full Hostile Sweep",
-    "Description": "Systematic elimination of all NPC threat categories island-wide. Bring a team.",
-    "Tier": "Elite",
-    "Category": "Combat",
-    "DifficultyStars": 5,
-    "Repeatable": true,
-    "CooldownSeconds": 86400,
-    "VipCooldownSeconds": 43200,
-    "Objectives": [
-      { "Type": "kill", "Target": "heavy",            "Count": 10, "Description": "Kill 10 heavy scientists" },
-      { "Type": "kill", "Target": "tunneldweller",    "Count": 10, "Description": "Kill 10 tunnel dwellers"  },
-      { "Type": "kill", "Target": "underwaterdweller","Count": 8,  "Description": "Kill 8 underwater dwellers" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",                 "Amount": 1000 },
-      { "Type": "item",       "Shortname": "maxhealthtea.advanced", "Amount": 2    },
-      { "Type": "item",       "Shortname": "techparts",             "Amount": 10   },
-      { "Type": "item",       "Shortname": "riflebody",             "Amount": 2    },
-      { "Type": "tier_xp",   "Amount": 750 },
-      { "Type": "reputation","Amount": 320 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "maxhealthtea.advanced", "Amount": 1    },
-      { "Type": "item",       "Shortname": "techparts",             "Amount": 3    },
-      { "Type": "reputation","Amount": 100 }
-    ]
-  }
+    {
+        "Id":  "cbt_npc_patrol_recruit",
+        "Title":  "Patrol Clearance",
+        "Description":  "Eliminate roaming scientists near monuments. Standard engagement — no special gear required.",
+        "Tier":  "Recruit",
+        "Category":  "Combat",
+        "DifficultyStars":  2,
+        "Repeatable":  true,
+        "CooldownSeconds":  7200,
+        "VipCooldownSeconds":  3600,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "scientist",
+                               "Count":  8,
+                               "Description":  "Kill 8 scientists"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  100,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  40,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrap",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  15,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "cbt_npc_night_recruit",
+        "Title":  "Nightwatch",
+        "Description":  "Hunt scientists after dark. They\u0027re more aggressive — and so are the rewards.",
+        "Tier":  "Recruit",
+        "Category":  "Combat",
+        "DifficultyStars":  2,
+        "Repeatable":  true,
+        "CooldownSeconds":  14400,
+        "VipCooldownSeconds":  7200,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "scientist",
+                               "Count":  6,
+                               "Description":  "Kill 6 scientists at night",
+                               "TimeCondition":  "night"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  200,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  140,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  55,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrap",
+                               "Amount":  60,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  18,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "cbt_heavy_operative",
+        "Title":  "Heavy Response",
+        "Description":  "Take down oil rig and launch site heavy scientists. Full combat gear recommended.",
+        "Tier":  "Operative",
+        "Category":  "Combat",
+        "DifficultyStars":  3,
+        "Repeatable":  true,
+        "CooldownSeconds":  14400,
+        "VipCooldownSeconds":  7200,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "heavy",
+                               "Count":  8,
+                               "Description":  "Kill 8 heavy scientists"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "smg.2",
+                            "Amount":  1,
+                            "SkinId":  1329096680,
+                            "CustomName":  "Custom SMG"
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  280,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  2,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  200,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  85,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  28,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "cbt_tunnel_operative",
+        "Title":  "Tunnel Clearance",
+        "Description":  "The train tunnels are crawling with hostile dwellers. Clear them out.",
+        "Tier":  "Operative",
+        "Category":  "Combat",
+        "DifficultyStars":  3,
+        "Repeatable":  true,
+        "CooldownSeconds":  14400,
+        "VipCooldownSeconds":  7200,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "tunneldweller",
+                               "Count":  10,
+                               "Description":  "Kill 10 tunnel dwellers"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  260,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  2,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  190,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  80,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  26,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "cbt_junkyard_specialist",
+        "Title":  "Junkyard Detail",
+        "Description":  "The junkyard is infested. Clear all scientist patrols before looting.",
+        "Tier":  "Specialist",
+        "Category":  "Combat",
+        "DifficultyStars":  3,
+        "Repeatable":  true,
+        "CooldownSeconds":  18000,
+        "VipCooldownSeconds":  9000,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "junkyard",
+                               "Count":  12,
+                               "Description":  "Kill 12 junkyard scientists"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  400,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  3,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  280,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  120,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  40,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "cbt_underwater_specialist",
+        "Title":  "Underwater Extraction",
+        "Description":  "Underwater labs are guarded. Clear the dwellers before you claim the loot.",
+        "Tier":  "Specialist",
+        "Category":  "Combat",
+        "DifficultyStars":  4,
+        "Repeatable":  true,
+        "CooldownSeconds":  21600,
+        "VipCooldownSeconds":  10800,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "underwaterdweller",
+                               "Count":  8,
+                               "Description":  "Kill 8 underwater dwellers"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  450,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  4,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrapearntea.advanced",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  320,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  140,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  2,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  45,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "cbt_ch47_specialist",
+        "Title":  "Chopper Down",
+        "Description":  "Bring down the Chinook before it completes its drop run. You have one shot — make it count.",
+        "Tier":  "Specialist",
+        "Category":  "Combat",
+        "DifficultyStars":  4,
+        "Repeatable":  true,
+        "CooldownSeconds":  43200,
+        "VipCooldownSeconds":  21600,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "ch47",
+                               "Count":  1,
+                               "Description":  "Shoot down 1 Chinook helicopter"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  500,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  5,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrapearntea.advanced",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  380,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  165,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  2,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  55,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "cbt_hostile_sweep_elite",
+        "Title":  "Full Hostile Sweep",
+        "Description":  "Systematic elimination of all NPC threat categories island-wide. Bring a team.",
+        "Tier":  "Elite",
+        "Category":  "Combat",
+        "DifficultyStars":  5,
+        "Repeatable":  true,
+        "CooldownSeconds":  86400,
+        "VipCooldownSeconds":  43200,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "heavy",
+                               "Count":  10,
+                               "Description":  "Kill 10 heavy scientists"
+                           },
+                           {
+                               "Type":  "kill",
+                               "Target":  "tunneldweller",
+                               "Count":  10,
+                               "Description":  "Kill 10 tunnel dwellers"
+                           },
+                           {
+                               "Type":  "kill",
+                               "Target":  "underwaterdweller",
+                               "Count":  8,
+                               "Description":  "Kill 8 underwater dwellers"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "rifle.ak",
+                            "Amount":  1,
+                            "SkinId":  849047662,
+                            "CustomName":  "Operative Assault Rifle"
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  1000,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "maxhealthtea.advanced",
+                            "Amount":  2,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  10,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "riflebody",
+                            "Amount":  2,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  750,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  320,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "maxhealthtea.advanced",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  3,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    }
 ]

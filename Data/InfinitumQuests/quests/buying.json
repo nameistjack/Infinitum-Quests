@@ -1,176 +1,478 @@
 [
-  {
-    "Id": "buy_food_run",
-    "Title": "Ration Run",
-    "Description": "Keep the camp fed. Purchase canned food from a vendor. 6-hour cooldown.",
-    "Tier": "Recruit",
-    "Category": "Trade",
-    "DifficultyStars": 1,
-    "Repeatable": true,
-    "CooldownSeconds": 21600,
-    "VipCooldownSeconds": 10800,
-    "Objectives": [
-      { "Type": "purchase", "Target": "can.beans", "Count": 5, "Description": "Purchase 5 canned beans from a vending machine" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",   "Amount": 80  },
-      { "Type": "tier_xp",    "Amount": 60  },
-      { "Type": "reputation", "Amount": 25  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "scrap",   "Amount": 25  },
-      { "Type": "reputation", "Amount": 10  }
-    ]
-  },
-  {
-    "Id": "buy_medkits_vendor",
-    "Title": "Medical Procurement",
-    "Description": "Source medical syringes from the market — the clinic doesn't wait. 8-hour cooldown.",
-    "Tier": "Operative",
-    "Category": "Trade",
-    "DifficultyStars": 2,
-    "Repeatable": true,
-    "CooldownSeconds": 28800,
-    "VipCooldownSeconds": 14400,
-    "Objectives": [
-      { "Type": "purchase", "Target": "syringe.medical", "Count": 3, "Description": "Purchase 3 medical syringes from a vending machine" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",          "Amount": 150 },
-      { "Type": "item",       "Shortname": "healingtea",     "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 130 },
-      { "Type": "reputation", "Amount": 55  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "healingtea",     "Amount": 1   },
-      { "Type": "reputation", "Amount": 20  }
-    ]
-  },
-  {
-    "Id": "buy_pistol_ammo_vendor",
-    "Title": "Ammo Procurement — Pistol",
-    "Description": "Source pistol ammo from a vendor to keep sidearms loaded. 6-hour cooldown.",
-    "Tier": "Operative",
-    "Category": "Trade",
-    "DifficultyStars": 2,
-    "Repeatable": true,
-    "CooldownSeconds": 21600,
-    "VipCooldownSeconds": 10800,
-    "Objectives": [
-      { "Type": "purchase", "Target": "ammo.pistol", "Count": 100, "Description": "Purchase 100 pistol ammo from a vending machine" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",           "Amount": 160 },
-      { "Type": "item",       "Shortname": "scrapearntea",    "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 135 },
-      { "Type": "reputation", "Amount": 55  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "scrap",           "Amount": 25  },
-      { "Type": "reputation", "Amount": 20  }
-    ]
-  },
-  {
-    "Id": "buy_autoturrets",
-    "Title": "Turret Procurement",
-    "Description": "Procure an autoturret from the market — base defence is non-negotiable. 24-hour cooldown.",
-    "Tier": "Specialist",
-    "Category": "Trade",
-    "DifficultyStars": 3,
-    "Repeatable": true,
-    "CooldownSeconds": 86400,
-    "VipCooldownSeconds": 43200,
-    "Objectives": [
-      { "Type": "purchase", "Target": "autoturret", "Count": 1, "Description": "Purchase 1 autoturret from a vending machine" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",                "Amount": 400 },
-      { "Type": "item",       "Shortname": "maxhealthtea.advanced", "Amount": 1  },
-      { "Type": "item",       "Shortname": "techparts",            "Amount": 3   },
-      { "Type": "tier_xp",    "Amount": 320 },
-      { "Type": "reputation", "Amount": 140 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "techparts",            "Amount": 1   },
-      { "Type": "reputation", "Amount": 50  }
-    ]
-  },
-  {
-    "Id": "buy_rocket_launcher",
-    "Title": "Heavy Weapon Procurement",
-    "Description": "Source a rocket launcher from the arms market. Heavy ordnance for heavy contracts. 48-hour cooldown.",
-    "Tier": "Elite",
-    "Category": "Trade",
-    "DifficultyStars": 4,
-    "Repeatable": true,
-    "CooldownSeconds": 172800,
-    "VipCooldownSeconds": 86400,
-    "Objectives": [
-      { "Type": "purchase", "Target": "rocket.launcher", "Count": 1, "Description": "Purchase 1 rocket launcher from a vending machine" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",                   "Amount": 700 },
-      { "Type": "item",       "Shortname": "maxhealthtea.advanced",   "Amount": 2   },
-      { "Type": "item",       "Shortname": "techparts",               "Amount": 5   },
-      { "Type": "tier_xp",    "Amount": 550 },
-      { "Type": "reputation", "Amount": 250 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "techparts",               "Amount": 1   },
-      { "Type": "item",       "Shortname": "scrap",                   "Amount": 100 },
-      { "Type": "reputation", "Amount": 80  }
-    ]
-  },
-  {
-    "Id": "buy_c4",
-    "Title": "C4 Procurement",
-    "Description": "Acquire timed explosive charges from the black market. Leave no trail. 48-hour cooldown.",
-    "Tier": "Elite",
-    "Category": "Trade",
-    "DifficultyStars": 4,
-    "Repeatable": true,
-    "CooldownSeconds": 172800,
-    "VipCooldownSeconds": 86400,
-    "Objectives": [
-      { "Type": "purchase", "Target": "explosive.timed", "Count": 2, "Description": "Purchase 2 C4 charges from a vending machine" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",                   "Amount": 700 },
-      { "Type": "item",       "Shortname": "scrapearntea.advanced",   "Amount": 2   },
-      { "Type": "item",       "Shortname": "techparts",               "Amount": 5   },
-      { "Type": "tier_xp",    "Amount": 560 },
-      { "Type": "reputation", "Amount": 255 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "techparts",               "Amount": 1   },
-      { "Type": "item",       "Shortname": "scrap",                   "Amount": 100 },
-      { "Type": "reputation", "Amount": 80  }
-    ]
-  },
-  {
-    "Id": "buy_mlrs_rockets",
-    "Title": "MLRS Rocket Acquisition",
-    "Description": "Procure MLRS rockets for the bombardment unit. Legend-level clearance required. 48-hour cooldown.",
-    "Tier": "Legend",
-    "Category": "Trade",
-    "DifficultyStars": 5,
-    "Repeatable": true,
-    "CooldownSeconds": 172800,
-    "VipCooldownSeconds": 86400,
-    "Objectives": [
-      { "Type": "purchase", "Target": "ammo.rocket.mlrs", "Count": 3, "Description": "Purchase 3 MLRS rockets from a vending machine" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",                   "Amount": 1000 },
-      { "Type": "item",       "Shortname": "scrapearntea.advanced",   "Amount": 3    },
-      { "Type": "item",       "Shortname": "techparts",               "Amount": 8    },
-      { "Type": "tier_xp",    "Amount": 750 },
-      { "Type": "reputation", "Amount": 380 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "techparts",               "Amount": 2   },
-      { "Type": "item",       "Shortname": "scrap",                   "Amount": 200 },
-      { "Type": "reputation", "Amount": 120 }
-    ]
-  }
+    {
+        "Id":  "buy_food_run",
+        "Title":  "Ration Run",
+        "Description":  "Keep the camp fed. Purchase canned food from a vendor. 6-hour cooldown.",
+        "Tier":  "Recruit",
+        "Category":  "Trade",
+        "DifficultyStars":  1,
+        "Repeatable":  true,
+        "CooldownSeconds":  21600,
+        "VipCooldownSeconds":  10800,
+        "Objectives":  [
+                           {
+                               "Type":  "purchase",
+                               "Target":  "can.beans",
+                               "Count":  5,
+                               "Description":  "Purchase 5 canned beans from a vending machine"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  80,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  60,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  25,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrap",
+                               "Amount":  25,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  10,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "buy_medkits_vendor",
+        "Title":  "Medical Procurement",
+        "Description":  "Source medical syringes from the market — the clinic doesn\u0027t wait. 8-hour cooldown.",
+        "Tier":  "Operative",
+        "Category":  "Trade",
+        "DifficultyStars":  2,
+        "Repeatable":  true,
+        "CooldownSeconds":  28800,
+        "VipCooldownSeconds":  14400,
+        "Objectives":  [
+                           {
+                               "Type":  "purchase",
+                               "Target":  "syringe.medical",
+                               "Count":  3,
+                               "Description":  "Purchase 3 medical syringes from a vending machine"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "healingtea",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  130,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  55,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "healingtea",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  20,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "buy_pistol_ammo_vendor",
+        "Title":  "Ammo Procurement — Pistol",
+        "Description":  "Source pistol ammo from a vendor to keep sidearms loaded. 6-hour cooldown.",
+        "Tier":  "Operative",
+        "Category":  "Trade",
+        "DifficultyStars":  2,
+        "Repeatable":  true,
+        "CooldownSeconds":  21600,
+        "VipCooldownSeconds":  10800,
+        "Objectives":  [
+                           {
+                               "Type":  "purchase",
+                               "Target":  "ammo.pistol",
+                               "Count":  100,
+                               "Description":  "Purchase 100 pistol ammo from a vending machine"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  160,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrapearntea",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  135,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  55,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrap",
+                               "Amount":  25,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  20,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "buy_autoturrets",
+        "Title":  "Turret Procurement",
+        "Description":  "Procure an autoturret from the market — base defence is non-negotiable. 24-hour cooldown.",
+        "Tier":  "Specialist",
+        "Category":  "Trade",
+        "DifficultyStars":  3,
+        "Repeatable":  true,
+        "CooldownSeconds":  86400,
+        "VipCooldownSeconds":  43200,
+        "Objectives":  [
+                           {
+                               "Type":  "purchase",
+                               "Target":  "autoturret",
+                               "Count":  1,
+                               "Description":  "Purchase 1 autoturret from a vending machine"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  400,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "maxhealthtea.advanced",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  3,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  320,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  140,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "buy_rocket_launcher",
+        "Title":  "Heavy Weapon Procurement",
+        "Description":  "Source a rocket launcher from the arms market. Heavy ordnance for heavy contracts. 48-hour cooldown.",
+        "Tier":  "Elite",
+        "Category":  "Trade",
+        "DifficultyStars":  4,
+        "Repeatable":  true,
+        "CooldownSeconds":  172800,
+        "VipCooldownSeconds":  86400,
+        "Objectives":  [
+                           {
+                               "Type":  "purchase",
+                               "Target":  "rocket.launcher",
+                               "Count":  1,
+                               "Description":  "Purchase 1 rocket launcher from a vending machine"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  700,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "maxhealthtea.advanced",
+                            "Amount":  2,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  5,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  250,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrap",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  80,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "buy_c4",
+        "Title":  "C4 Procurement",
+        "Description":  "Acquire timed explosive charges from the black market. Leave no trail. 48-hour cooldown.",
+        "Tier":  "Elite",
+        "Category":  "Trade",
+        "DifficultyStars":  4,
+        "Repeatable":  true,
+        "CooldownSeconds":  172800,
+        "VipCooldownSeconds":  86400,
+        "Objectives":  [
+                           {
+                               "Type":  "purchase",
+                               "Target":  "explosive.timed",
+                               "Count":  2,
+                               "Description":  "Purchase 2 C4 charges from a vending machine"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  700,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrapearntea.advanced",
+                            "Amount":  2,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  5,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  560,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  255,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrap",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  80,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "buy_mlrs_rockets",
+        "Title":  "MLRS Rocket Acquisition",
+        "Description":  "Procure MLRS rockets for the bombardment unit. Legend-level clearance required. 48-hour cooldown.",
+        "Tier":  "Legend",
+        "Category":  "Trade",
+        "DifficultyStars":  5,
+        "Repeatable":  true,
+        "CooldownSeconds":  172800,
+        "VipCooldownSeconds":  86400,
+        "Objectives":  [
+                           {
+                               "Type":  "purchase",
+                               "Target":  "ammo.rocket.mlrs",
+                               "Count":  3,
+                               "Description":  "Purchase 3 MLRS rockets from a vending machine"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  1000,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrapearntea.advanced",
+                            "Amount":  3,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  8,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  750,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  380,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  2,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrap",
+                               "Amount":  200,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  120,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    }
 ]

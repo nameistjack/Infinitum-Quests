@@ -1,344 +1,911 @@
 [
-  {
-    "Id": "rep_wolf_hunt",
-    "Title": "Wolf Hunt",
-    "Description": "Thin the wolf population around active zones. 1-hour cooldown.",
-    "Tier": "Recruit",
-    "Category": "Combat",
-    "DifficultyStars": 1,
-    "Repeatable": true,
-    "CooldownSeconds": 3600,
-    "VipCooldownSeconds": 1800,
-    "Objectives": [
-      { "Type": "kill", "Target": "wolf", "Count": 5, "Description": "Kill 5 wolves" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "cloth",       "Amount": 80  },
-      { "Type": "item",       "Shortname": "fat.animal",  "Amount": 40  },
-      { "Type": "tier_xp",    "Amount": 60  },
-      { "Type": "reputation", "Amount": 25  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "healingtea",  "Amount": 1   },
-      { "Type": "reputation", "Amount": 10  }
-    ]
-  },
-  {
-    "Id": "rep_bear_hunt",
-    "Title": "Bear Hunt",
-    "Description": "Clear bears from the surrounding wilderness. 2-hour cooldown.",
-    "Tier": "Recruit",
-    "Category": "Combat",
-    "DifficultyStars": 2,
-    "Repeatable": true,
-    "CooldownSeconds": 7200,
-    "VipCooldownSeconds": 3600,
-    "Objectives": [
-      { "Type": "kill", "Target": "bear", "Count": 3, "Description": "Kill 3 bears" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "cloth",       "Amount": 100 },
-      { "Type": "item",       "Shortname": "fat.animal",  "Amount": 60  },
-      { "Type": "tier_xp",    "Amount": 80  },
-      { "Type": "reputation", "Amount": 35  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "healingtea",  "Amount": 1   },
-      { "Type": "reputation", "Amount": 15  }
-    ]
-  },
-  {
-    "Id": "rep_wood_run",
-    "Title": "Lumber Run",
-    "Description": "Chop a bulk supply of wood for Network construction projects. 2-hour cooldown.",
-    "Tier": "Recruit",
-    "Category": "Gather",
-    "DifficultyStars": 1,
-    "Repeatable": true,
-    "CooldownSeconds": 7200,
-    "VipCooldownSeconds": 3600,
-    "Objectives": [
-      { "Type": "chop", "Target": "wood", "Count": 5000, "Description": "Chop 5,000 wood" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",     "Amount": 120 },
-      { "Type": "item",       "Shortname": "woodtea",   "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 90  },
-      { "Type": "reputation", "Amount": 35  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "woodtea",   "Amount": 1   },
-      { "Type": "reputation", "Amount": 15  }
-    ]
-  },
-  {
-    "Id": "rep_stone_run",
-    "Title": "Stone Haul",
-    "Description": "Mine a bulk supply of stone for Network fortifications. 2-hour cooldown.",
-    "Tier": "Recruit",
-    "Category": "Gather",
-    "DifficultyStars": 1,
-    "Repeatable": true,
-    "CooldownSeconds": 7200,
-    "VipCooldownSeconds": 3600,
-    "Objectives": [
-      { "Type": "mine", "Target": "stones", "Count": 3000, "Description": "Mine 3,000 stone" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",   "Amount": 100 },
-      { "Type": "item",       "Shortname": "oretea",  "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 80  },
-      { "Type": "reputation", "Amount": 30  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "oretea",  "Amount": 1   },
-      { "Type": "reputation", "Amount": 15  }
-    ]
-  },
-  {
-    "Id": "rep_craft_tools",
-    "Title": "Tool Production",
-    "Description": "Produce a set of stone tools for new recruits. 4-hour cooldown.",
-    "Tier": "Recruit",
-    "Category": "Craft",
-    "DifficultyStars": 1,
-    "Repeatable": true,
-    "CooldownSeconds": 14400,
-    "VipCooldownSeconds": 7200,
-    "Objectives": [
-      { "Type": "craft", "Target": "stone.pickaxe", "Count": 1, "Description": "Craft 1 stone pickaxe" },
-      { "Type": "craft", "Target": "hatchet",       "Count": 1, "Description": "Craft 1 hatchet"       }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",              "Amount": 150 },
-      { "Type": "item",       "Shortname": "metal.fragments",    "Amount": 200 },
-      { "Type": "tier_xp",    "Amount": 100 },
-      { "Type": "reputation", "Amount": 40  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "scrap",              "Amount": 50  },
-      { "Type": "reputation", "Amount": 15  }
-    ]
-  },
-  {
-    "Id": "rep_scav_run",
-    "Title": "Salvage Run",
-    "Description": "Process surplus components through the recycler. 3-hour cooldown.",
-    "Tier": "Operative",
-    "Category": "Gather",
-    "DifficultyStars": 2,
-    "Repeatable": true,
-    "CooldownSeconds": 10800,
-    "VipCooldownSeconds": 5400,
-    "Objectives": [
-      { "Type": "recycle", "Target": "", "Count": 20, "Description": "Recycle 20 items" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",            "Amount": 200 },
-      { "Type": "item",       "Shortname": "scrapearntea",     "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 150 },
-      { "Type": "reputation", "Amount": 60  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "scrapearntea",     "Amount": 1   },
-      { "Type": "reputation", "Amount": 20  }
-    ]
-  },
-  {
-    "Id": "rep_metal_run",
-    "Title": "Metal Extraction",
-    "Description": "Mine a bulk supply of metal ore for the armory. 4-hour cooldown.",
-    "Tier": "Operative",
-    "Category": "Gather",
-    "DifficultyStars": 2,
-    "Repeatable": true,
-    "CooldownSeconds": 14400,
-    "VipCooldownSeconds": 7200,
-    "Objectives": [
-      { "Type": "mine", "Target": "metal.ore", "Count": 2000, "Description": "Mine 2,000 metal ore" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",              "Amount": 175 },
-      { "Type": "item",       "Shortname": "oretea.advanced",    "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 160 },
-      { "Type": "reputation", "Amount": 65  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "oretea.advanced",    "Amount": 1   },
-      { "Type": "reputation", "Amount": 20  }
-    ]
-  },
-  {
-    "Id": "rep_sulfur_run",
-    "Title": "Sulfur Mining",
-    "Description": "Mine sulfur ore for the munitions workshop. 4-hour cooldown.",
-    "Tier": "Operative",
-    "Category": "Gather",
-    "DifficultyStars": 2,
-    "Repeatable": true,
-    "CooldownSeconds": 14400,
-    "VipCooldownSeconds": 7200,
-    "Objectives": [
-      { "Type": "mine", "Target": "sulfur.ore", "Count": 1000, "Description": "Mine 1,000 sulfur ore" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",           "Amount": 175 },
-      { "Type": "item",       "Shortname": "oretea.advanced", "Amount": 1   },
-      { "Type": "tier_xp",    "Amount": 160 },
-      { "Type": "reputation", "Amount": 65  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "oretea.advanced", "Amount": 1   },
-      { "Type": "reputation", "Amount": 20  }
-    ]
-  },
-  {
-    "Id": "rep_researcher",
-    "Title": "R&D Contract",
-    "Description": "Unlock blueprints to expand Network capabilities. 6-hour cooldown.",
-    "Tier": "Operative",
-    "Category": "Craft",
-    "DifficultyStars": 2,
-    "Repeatable": true,
-    "CooldownSeconds": 21600,
-    "VipCooldownSeconds": 10800,
-    "Objectives": [
-      { "Type": "research", "Target": "", "Count": 5, "Description": "Research 5 blueprints" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",     "Amount": 200 },
-      { "Type": "item",       "Shortname": "techparts", "Amount": 3   },
-      { "Type": "tier_xp",    "Amount": 175 },
-      { "Type": "reputation", "Amount": 70  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "techparts", "Amount": 1   },
-      { "Type": "reputation", "Amount": 25  }
-    ]
-  },
-  {
-    "Id": "rep_scientist_sweep",
-    "Title": "Scientist Sweep",
-    "Description": "Clear a large concentration of scientist patrols. 8-hour cooldown.",
-    "Tier": "Specialist",
-    "Category": "Combat",
-    "DifficultyStars": 3,
-    "Repeatable": true,
-    "CooldownSeconds": 28800,
-    "VipCooldownSeconds": 14400,
-    "Objectives": [
-      { "Type": "kill", "Target": "scientist", "Count": 20, "Description": "Eliminate 20 scientists" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",              "Amount": 350 },
-      { "Type": "item",       "Shortname": "maxhealthtea",       "Amount": 2   },
-      { "Type": "tier_xp",    "Amount": 280 },
-      { "Type": "reputation", "Amount": 120 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "maxhealthtea.advanced", "Amount": 1  },
-      { "Type": "reputation", "Amount": 35  }
-    ]
-  },
-  {
-    "Id": "rep_hq_mining",
-    "Title": "High-Grade Mining",
-    "Description": "Extract high-quality metal ore from the best nodes. 8-hour cooldown.",
-    "Tier": "Specialist",
-    "Category": "Gather",
-    "DifficultyStars": 3,
-    "Repeatable": true,
-    "CooldownSeconds": 28800,
-    "VipCooldownSeconds": 14400,
-    "Objectives": [
-      { "Type": "mine", "Target": "hq.metal.ore", "Count": 500, "Description": "Mine 500 high-quality metal ore" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",              "Amount": 400 },
-      { "Type": "item",       "Shortname": "oretea.advanced",    "Amount": 2   },
-      { "Type": "tier_xp",    "Amount": 300 },
-      { "Type": "reputation", "Amount": 140 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "oretea.advanced",    "Amount": 1   },
-      { "Type": "item",       "Shortname": "scrap",              "Amount": 50  },
-      { "Type": "reputation", "Amount": 35  }
-    ]
-  },
-  {
-    "Id": "rep_heli_patrol",
-    "Title": "Anti-Air Patrol",
-    "Description": "Bring down the patrol helicopter before it threatens our operation. 12-hour cooldown.",
-    "Tier": "Specialist",
-    "Category": "Combat",
-    "DifficultyStars": 4,
-    "Repeatable": true,
-    "CooldownSeconds": 43200,
-    "VipCooldownSeconds": 21600,
-    "Objectives": [
-      { "Type": "kill", "Target": "heli", "Count": 1, "Description": "Destroy patrol helicopter" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",                   "Amount": 500 },
-      { "Type": "item",       "Shortname": "maxhealthtea.advanced",   "Amount": 1   },
-      { "Type": "item",       "Shortname": "techparts",               "Amount": 4   },
-      { "Type": "tier_xp",    "Amount": 400 },
-      { "Type": "reputation", "Amount": 180 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "maxhealthtea.advanced",   "Amount": 1  },
-      { "Type": "reputation", "Amount": 50  }
-    ]
-  },
-  {
-    "Id": "rep_bradley",
-    "Title": "APC Takedown",
-    "Description": "Destroy the Bradley APC on its patrol route. 12-hour cooldown.",
-    "Tier": "Specialist",
-    "Category": "Combat",
-    "DifficultyStars": 4,
-    "Repeatable": true,
-    "CooldownSeconds": 43200,
-    "VipCooldownSeconds": 21600,
-    "Objectives": [
-      { "Type": "kill", "Target": "bradley", "Count": 1, "Description": "Destroy Bradley APC" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",                "Amount": 500 },
-      { "Type": "item",       "Shortname": "scrapearntea.advanced", "Amount": 1  },
-      { "Type": "item",       "Shortname": "techparts",            "Amount": 4   },
-      { "Type": "tier_xp",    "Amount": 400 },
-      { "Type": "reputation", "Amount": 180 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "scrapearntea.advanced", "Amount": 1  },
-      { "Type": "reputation", "Amount": 50  }
-    ]
-  },
-  {
-    "Id": "rep_attack_heli",
-    "Title": "Strike Aircraft Intercept",
-    "Description": "Intercept and destroy the attack helicopter. Elite-clearance required. 24-hour cooldown.",
-    "Tier": "Elite",
-    "Category": "Combat",
-    "DifficultyStars": 5,
-    "Repeatable": true,
-    "CooldownSeconds": 86400,
-    "VipCooldownSeconds": 43200,
-    "Objectives": [
-      { "Type": "kill", "Target": "attack_heli", "Count": 1, "Description": "Destroy attack helicopter" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",                   "Amount": 800 },
-      { "Type": "item",       "Shortname": "maxhealthtea.advanced",   "Amount": 2   },
-      { "Type": "item",       "Shortname": "techparts",               "Amount": 6   },
-      { "Type": "tier_xp",    "Amount": 600 },
-      { "Type": "reputation", "Amount": 280 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "maxhealthtea.advanced",   "Amount": 1  },
-      { "Type": "item",       "Shortname": "techparts",               "Amount": 2  },
-      { "Type": "reputation", "Amount": 80  }
-    ]
-  }
+    {
+        "Id":  "rep_wolf_hunt",
+        "Title":  "Wolf Hunt",
+        "Description":  "Thin the wolf population around active zones. 1-hour cooldown.",
+        "Tier":  "Recruit",
+        "Category":  "Combat",
+        "DifficultyStars":  1,
+        "Repeatable":  true,
+        "CooldownSeconds":  3600,
+        "VipCooldownSeconds":  1800,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "wolf",
+                               "Count":  5,
+                               "Description":  "Kill 5 wolves"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "cloth",
+                            "Amount":  80,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "fat.animal",
+                            "Amount":  40,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  60,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  25,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "healingtea",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  10,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "rep_bear_hunt",
+        "Title":  "Bear Hunt",
+        "Description":  "Clear bears from the surrounding wilderness. 2-hour cooldown.",
+        "Tier":  "Recruit",
+        "Category":  "Combat",
+        "DifficultyStars":  2,
+        "Repeatable":  true,
+        "CooldownSeconds":  7200,
+        "VipCooldownSeconds":  3600,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "bear",
+                               "Count":  3,
+                               "Description":  "Kill 3 bears"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "cloth",
+                            "Amount":  100,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "fat.animal",
+                            "Amount":  60,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  80,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  35,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "healingtea",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  15,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "rep_wood_run",
+        "Title":  "Lumber Run",
+        "Description":  "Chop a bulk supply of wood for Network construction projects. 2-hour cooldown.",
+        "Tier":  "Recruit",
+        "Category":  "Gather",
+        "DifficultyStars":  1,
+        "Repeatable":  true,
+        "CooldownSeconds":  7200,
+        "VipCooldownSeconds":  3600,
+        "Objectives":  [
+                           {
+                               "Type":  "chop",
+                               "Target":  "wood",
+                               "Count":  5000,
+                               "Description":  "Chop 5,000 wood"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  120,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "woodtea",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  90,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  35,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "woodtea",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  15,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "rep_stone_run",
+        "Title":  "Stone Haul",
+        "Description":  "Mine a bulk supply of stone for Network fortifications. 2-hour cooldown.",
+        "Tier":  "Recruit",
+        "Category":  "Gather",
+        "DifficultyStars":  1,
+        "Repeatable":  true,
+        "CooldownSeconds":  7200,
+        "VipCooldownSeconds":  3600,
+        "Objectives":  [
+                           {
+                               "Type":  "mine",
+                               "Target":  "stones",
+                               "Count":  3000,
+                               "Description":  "Mine 3,000 stone"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  100,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "oretea",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  80,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  30,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "oretea",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  15,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "rep_craft_tools",
+        "Title":  "Tool Production",
+        "Description":  "Produce a set of stone tools for new recruits. 4-hour cooldown.",
+        "Tier":  "Recruit",
+        "Category":  "Craft",
+        "DifficultyStars":  1,
+        "Repeatable":  true,
+        "CooldownSeconds":  14400,
+        "VipCooldownSeconds":  7200,
+        "Objectives":  [
+                           {
+                               "Type":  "craft",
+                               "Target":  "stone.pickaxe",
+                               "Count":  1,
+                               "Description":  "Craft 1 stone pickaxe"
+                           },
+                           {
+                               "Type":  "craft",
+                               "Target":  "hatchet",
+                               "Count":  1,
+                               "Description":  "Craft 1 hatchet"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "metal.fragments",
+                            "Amount":  200,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  100,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  40,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrap",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  15,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "rep_scav_run",
+        "Title":  "Salvage Run",
+        "Description":  "Process surplus components through the recycler. 3-hour cooldown.",
+        "Tier":  "Operative",
+        "Category":  "Gather",
+        "DifficultyStars":  2,
+        "Repeatable":  true,
+        "CooldownSeconds":  10800,
+        "VipCooldownSeconds":  5400,
+        "Objectives":  [
+                           {
+                               "Type":  "recycle",
+                               "Target":  "",
+                               "Count":  20,
+                               "Description":  "Recycle 20 items"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  200,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrapearntea",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  60,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrapearntea",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  20,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "rep_metal_run",
+        "Title":  "Metal Extraction",
+        "Description":  "Mine a bulk supply of metal ore for the armory. 4-hour cooldown.",
+        "Tier":  "Operative",
+        "Category":  "Gather",
+        "DifficultyStars":  2,
+        "Repeatable":  true,
+        "CooldownSeconds":  14400,
+        "VipCooldownSeconds":  7200,
+        "Objectives":  [
+                           {
+                               "Type":  "mine",
+                               "Target":  "metal.ore",
+                               "Count":  2000,
+                               "Description":  "Mine 2,000 metal ore"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  175,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "oretea.advanced",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  160,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  65,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "oretea.advanced",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  20,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "rep_sulfur_run",
+        "Title":  "Sulfur Mining",
+        "Description":  "Mine sulfur ore for the munitions workshop. 4-hour cooldown.",
+        "Tier":  "Operative",
+        "Category":  "Gather",
+        "DifficultyStars":  2,
+        "Repeatable":  true,
+        "CooldownSeconds":  14400,
+        "VipCooldownSeconds":  7200,
+        "Objectives":  [
+                           {
+                               "Type":  "mine",
+                               "Target":  "sulfur.ore",
+                               "Count":  1000,
+                               "Description":  "Mine 1,000 sulfur ore"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  175,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "oretea.advanced",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  160,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  65,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "oretea.advanced",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  20,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "rep_researcher",
+        "Title":  "R\u0026D Contract",
+        "Description":  "Unlock blueprints to expand Network capabilities. 6-hour cooldown.",
+        "Tier":  "Operative",
+        "Category":  "Craft",
+        "DifficultyStars":  2,
+        "Repeatable":  true,
+        "CooldownSeconds":  21600,
+        "VipCooldownSeconds":  10800,
+        "Objectives":  [
+                           {
+                               "Type":  "research",
+                               "Target":  "",
+                               "Count":  5,
+                               "Description":  "Research 5 blueprints"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  200,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  3,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  175,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  70,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  25,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "rep_scientist_sweep",
+        "Title":  "Scientist Sweep",
+        "Description":  "Clear a large concentration of scientist patrols. 8-hour cooldown.",
+        "Tier":  "Specialist",
+        "Category":  "Combat",
+        "DifficultyStars":  3,
+        "Repeatable":  true,
+        "CooldownSeconds":  28800,
+        "VipCooldownSeconds":  14400,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "scientist",
+                               "Count":  20,
+                               "Description":  "Eliminate 20 scientists"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  350,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "maxhealthtea",
+                            "Amount":  2,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  280,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  120,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "maxhealthtea.advanced",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  35,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "rep_hq_mining",
+        "Title":  "High-Grade Mining",
+        "Description":  "Extract high-quality metal ore from the best nodes. 8-hour cooldown.",
+        "Tier":  "Specialist",
+        "Category":  "Gather",
+        "DifficultyStars":  3,
+        "Repeatable":  true,
+        "CooldownSeconds":  28800,
+        "VipCooldownSeconds":  14400,
+        "Objectives":  [
+                           {
+                               "Type":  "mine",
+                               "Target":  "hq.metal.ore",
+                               "Count":  500,
+                               "Description":  "Mine 500 high-quality metal ore"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  400,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "oretea.advanced",
+                            "Amount":  2,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  140,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "oretea.advanced",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrap",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  35,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "rep_heli_patrol",
+        "Title":  "Anti-Air Patrol",
+        "Description":  "Bring down the patrol helicopter before it threatens our operation. 12-hour cooldown.",
+        "Tier":  "Specialist",
+        "Category":  "Combat",
+        "DifficultyStars":  4,
+        "Repeatable":  true,
+        "CooldownSeconds":  43200,
+        "VipCooldownSeconds":  21600,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "heli",
+                               "Count":  1,
+                               "Description":  "Destroy patrol helicopter"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  500,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "maxhealthtea.advanced",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  4,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  400,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  180,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "maxhealthtea.advanced",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "rep_bradley",
+        "Title":  "APC Takedown",
+        "Description":  "Destroy the Bradley APC on its patrol route. 12-hour cooldown.",
+        "Tier":  "Specialist",
+        "Category":  "Combat",
+        "DifficultyStars":  4,
+        "Repeatable":  true,
+        "CooldownSeconds":  43200,
+        "VipCooldownSeconds":  21600,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "bradley",
+                               "Count":  1,
+                               "Description":  "Destroy Bradley APC"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  500,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrapearntea.advanced",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  4,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  400,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  180,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrapearntea.advanced",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "rep_attack_heli",
+        "Title":  "Strike Aircraft Intercept",
+        "Description":  "Intercept and destroy the attack helicopter. Elite-clearance required. 24-hour cooldown.",
+        "Tier":  "Elite",
+        "Category":  "Combat",
+        "DifficultyStars":  5,
+        "Repeatable":  true,
+        "CooldownSeconds":  86400,
+        "VipCooldownSeconds":  43200,
+        "Objectives":  [
+                           {
+                               "Type":  "kill",
+                               "Target":  "attack_heli",
+                               "Count":  1,
+                               "Description":  "Destroy attack helicopter"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  800,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "maxhealthtea.advanced",
+                            "Amount":  2,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  6,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  600,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  280,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "maxhealthtea.advanced",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  2,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  80,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    }
 ]

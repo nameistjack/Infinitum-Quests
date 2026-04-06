@@ -1,189 +1,489 @@
 [
-  {
-    "Id": "ws_01_bow",
-    "Title": "The Weaponsmith — I: First Arms",
-    "Description": "Every armourer starts somewhere. Craft basic bows to prove your hands know the work.",
-    "Tier": "Recruit",
-    "Category": "Craft",
-    "DifficultyStars": 1,
-    "Repeatable": false,
-    "ChainId": "chain_weaponsmith",
-    "ChainOrder": 1,
-    "ChainTitle": "The Weaponsmith",
-    "Objectives": [
-      { "Type": "craft", "Target": "bow.hunting", "Count": 3, "Description": "Craft 3 hunting bows" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 100 },
-      { "Type": "tier_xp",   "Amount": 80  },
-      { "Type": "reputation","Amount": 30  }
-    ],
-    "VipRewards": [
-      { "Type": "reputation","Amount": 10  }
-    ]
-  },
-  {
-    "Id": "ws_02_shotgun_pipe",
-    "Title": "The Weaponsmith — II: Pipe Work",
-    "Description": "A real armourer works with metal. Craft waterpipe shotguns — crude but effective.",
-    "Tier": "Recruit",
-    "Category": "Craft",
-    "DifficultyStars": 1,
-    "Repeatable": false,
-    "ChainId": "chain_weaponsmith",
-    "ChainOrder": 2,
-    "ChainTitle": "The Weaponsmith",
-    "RequiredQuestIds": ["ws_01_bow"],
-    "Objectives": [
-      { "Type": "craft", "Target": "shotgun.waterpipe", "Count": 3, "Description": "Craft 3 waterpipe shotguns" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 150 },
-      { "Type": "tier_xp",   "Amount": 110 },
-      { "Type": "reputation","Amount": 40  }
-    ],
-    "VipRewards": [
-      { "Type": "reputation","Amount": 14  }
-    ]
-  },
-  {
-    "Id": "ws_03_double_barrel",
-    "Title": "The Weaponsmith — III: Double Action",
-    "Description": "Step up from pipe. A double-barrel is reliable, lethal, and a statement of intent.",
-    "Tier": "Recruit",
-    "Category": "Craft",
-    "DifficultyStars": 2,
-    "Repeatable": false,
-    "ChainId": "chain_weaponsmith",
-    "ChainOrder": 3,
-    "ChainTitle": "The Weaponsmith",
-    "RequiredQuestIds": ["ws_02_shotgun_pipe"],
-    "Objectives": [
-      { "Type": "craft", "Target": "shotgun.double", "Count": 2, "Description": "Craft 2 double barrel shotguns" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 200 },
-      { "Type": "tier_xp",   "Amount": 140 },
-      { "Type": "reputation","Amount": 55  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 50  },
-      { "Type": "reputation","Amount": 18  }
-    ]
-  },
-  {
-    "Id": "ws_04_pistol",
-    "Title": "The Weaponsmith — IV: Sidearm",
-    "Description": "Transition to semi-automatic work. Precision matters now.",
-    "Tier": "Operative",
-    "Category": "Craft",
-    "DifficultyStars": 2,
-    "Repeatable": false,
-    "ChainId": "chain_weaponsmith",
-    "ChainOrder": 4,
-    "ChainTitle": "The Weaponsmith",
-    "RequiredQuestIds": ["ws_03_double_barrel"],
-    "Objectives": [
-      { "Type": "craft", "Target": "pistol.semiauto", "Count": 2, "Description": "Craft 2 semi-auto pistols" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",     "Amount": 280 },
-      { "Type": "item",       "Shortname": "techparts", "Amount": 2   },
-      { "Type": "tier_xp",   "Amount": 190 },
-      { "Type": "reputation","Amount": 75  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "scrap",     "Amount": 80  },
-      { "Type": "reputation","Amount": 25  }
-    ]
-  },
-  {
-    "Id": "ws_05_smg",
-    "Title": "The Weaponsmith — V: Full Auto",
-    "Description": "The Thompson demands respect. Craft one and prove you've earned the right to carry it.",
-    "Tier": "Operative",
-    "Category": "Craft",
-    "DifficultyStars": 3,
-    "Repeatable": false,
-    "ChainId": "chain_weaponsmith",
-    "ChainOrder": 5,
-    "ChainTitle": "The Weaponsmith",
-    "RequiredQuestIds": ["ws_04_pistol"],
-    "Objectives": [
-      { "Type": "craft", "Target": "smg.thompson", "Count": 2, "Description": "Craft 2 Thompson SMGs" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",     "Amount": 380 },
-      { "Type": "item",       "Shortname": "techparts", "Amount": 3   },
-      { "Type": "tier_xp",   "Amount": 260 },
-      { "Type": "reputation","Amount": 110 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "techparts", "Amount": 1   },
-      { "Type": "reputation","Amount": 36  }
-    ]
-  },
-  {
-    "Id": "ws_06_semiauto_rifle",
-    "Title": "The Weaponsmith — VI: Designated Marksman",
-    "Description": "Semi-auto rifles separate gunsmiths from armouries. Two for the network.",
-    "Tier": "Specialist",
-    "Category": "Craft",
-    "DifficultyStars": 4,
-    "Repeatable": false,
-    "ChainId": "chain_weaponsmith",
-    "ChainOrder": 6,
-    "ChainTitle": "The Weaponsmith",
-    "RequiredQuestIds": ["ws_05_smg"],
-    "Objectives": [
-      { "Type": "craft", "Target": "rifle.semiauto", "Count": 2, "Description": "Craft 2 semi-auto rifles" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",                   "Amount": 550 },
-      { "Type": "item",       "Shortname": "techparts",               "Amount": 5   },
-      { "Type": "item",       "Shortname": "scrapearntea.advanced",   "Amount": 1   },
-      { "Type": "tier_xp",   "Amount": 400 },
-      { "Type": "reputation","Amount": 170 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "techparts",               "Amount": 2   },
-      { "Type": "reputation","Amount": 55  }
-    ]
-  },
-  {
-    "Id": "ws_07_ak",
-    "Title": "The Weaponsmith — VII: Master Armourer",
-    "Description": "The AK-47. The last word in craftsmanship on this island. Forge one and claim the title.",
-    "Tier": "Specialist",
-    "Category": "Craft",
-    "DifficultyStars": 5,
-    "Repeatable": false,
-    "ChainId": "chain_weaponsmith",
-    "ChainOrder": 7,
-    "ChainTitle": "The Weaponsmith",
-    "RequiredQuestIds": ["ws_06_semiauto_rifle"],
-    "ChainBonusRewards": [
-      { "Type": "item",       "Shortname": "scrap",                   "Amount": 1000 },
-      { "Type": "item",       "Shortname": "techparts",               "Amount": 15   },
-      { "Type": "item",       "Shortname": "maxhealthtea.advanced",   "Amount": 2    },
-      { "Type": "item",       "Shortname": "riflebody",               "Amount": 3    },
-      { "Type": "tier_xp",   "Amount": 600 },
-      { "Type": "reputation","Amount": 300 }
-    ],
-    "Objectives": [
-      { "Type": "craft", "Target": "rifle.ak", "Count": 1, "Description": "Craft 1 AK-47 assault rifle" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",                   "Amount": 700 },
-      { "Type": "item",       "Shortname": "techparts",               "Amount": 8   },
-      { "Type": "item",       "Shortname": "maxhealthtea.advanced",   "Amount": 1   },
-      { "Type": "tier_xp",   "Amount": 500 },
-      { "Type": "reputation","Amount": 220 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "techparts",               "Amount": 3   },
-      { "Type": "item",       "Shortname": "scrapearntea.advanced",   "Amount": 1   },
-      { "Type": "reputation","Amount": 70  }
-    ]
-  }
+    {
+        "Id":  "ws_01_bow",
+        "Title":  "The Weaponsmith — I: First Arms",
+        "Description":  "Every armourer starts somewhere. Craft basic bows to prove your hands know the work.",
+        "Tier":  "Recruit",
+        "Category":  "Craft",
+        "DifficultyStars":  1,
+        "Repeatable":  false,
+        "ChainId":  "chain_weaponsmith",
+        "ChainOrder":  1,
+        "ChainTitle":  "The Weaponsmith",
+        "Objectives":  [
+                           {
+                               "Type":  "craft",
+                               "Target":  "bow.hunting",
+                               "Count":  3,
+                               "Description":  "Craft 3 hunting bows"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  100,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  80,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  30,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "reputation",
+                               "Amount":  10,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "ws_02_shotgun_pipe",
+        "Title":  "The Weaponsmith — II: Pipe Work",
+        "Description":  "A real armourer works with metal. Craft waterpipe shotguns — crude but effective.",
+        "Tier":  "Recruit",
+        "Category":  "Craft",
+        "DifficultyStars":  1,
+        "Repeatable":  false,
+        "ChainId":  "chain_weaponsmith",
+        "ChainOrder":  2,
+        "ChainTitle":  "The Weaponsmith",
+        "RequiredQuestIds":  [
+                                 "ws_01_bow"
+                             ],
+        "Objectives":  [
+                           {
+                               "Type":  "craft",
+                               "Target":  "shotgun.waterpipe",
+                               "Count":  3,
+                               "Description":  "Craft 3 waterpipe shotguns"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  110,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  40,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "reputation",
+                               "Amount":  14,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "ws_03_double_barrel",
+        "Title":  "The Weaponsmith — III: Double Action",
+        "Description":  "Step up from pipe. A double-barrel is reliable, lethal, and a statement of intent.",
+        "Tier":  "Recruit",
+        "Category":  "Craft",
+        "DifficultyStars":  2,
+        "Repeatable":  false,
+        "ChainId":  "chain_weaponsmith",
+        "ChainOrder":  3,
+        "ChainTitle":  "The Weaponsmith",
+        "RequiredQuestIds":  [
+                                 "ws_02_shotgun_pipe"
+                             ],
+        "Objectives":  [
+                           {
+                               "Type":  "craft",
+                               "Target":  "shotgun.double",
+                               "Count":  2,
+                               "Description":  "Craft 2 double barrel shotguns"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  200,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  140,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  55,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrap",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  18,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "ws_04_pistol",
+        "Title":  "The Weaponsmith — IV: Sidearm",
+        "Description":  "Transition to semi-automatic work. Precision matters now.",
+        "Tier":  "Operative",
+        "Category":  "Craft",
+        "DifficultyStars":  2,
+        "Repeatable":  false,
+        "ChainId":  "chain_weaponsmith",
+        "ChainOrder":  4,
+        "ChainTitle":  "The Weaponsmith",
+        "RequiredQuestIds":  [
+                                 "ws_03_double_barrel"
+                             ],
+        "Objectives":  [
+                           {
+                               "Type":  "craft",
+                               "Target":  "pistol.semiauto",
+                               "Count":  2,
+                               "Description":  "Craft 2 semi-auto pistols"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  280,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  2,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  190,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  75,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrap",
+                               "Amount":  80,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  25,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "ws_05_smg",
+        "Title":  "The Weaponsmith — V: Full Auto",
+        "Description":  "The Thompson demands respect. Craft one and prove you\u0027ve earned the right to carry it.",
+        "Tier":  "Operative",
+        "Category":  "Craft",
+        "DifficultyStars":  3,
+        "Repeatable":  false,
+        "ChainId":  "chain_weaponsmith",
+        "ChainOrder":  5,
+        "ChainTitle":  "The Weaponsmith",
+        "RequiredQuestIds":  [
+                                 "ws_04_pistol"
+                             ],
+        "Objectives":  [
+                           {
+                               "Type":  "craft",
+                               "Target":  "smg.thompson",
+                               "Count":  2,
+                               "Description":  "Craft 2 Thompson SMGs"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  380,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  3,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  260,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  110,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  36,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "ws_06_semiauto_rifle",
+        "Title":  "The Weaponsmith — VI: Designated Marksman",
+        "Description":  "Semi-auto rifles separate gunsmiths from armouries. Two for the network.",
+        "Tier":  "Specialist",
+        "Category":  "Craft",
+        "DifficultyStars":  4,
+        "Repeatable":  false,
+        "ChainId":  "chain_weaponsmith",
+        "ChainOrder":  6,
+        "ChainTitle":  "The Weaponsmith",
+        "RequiredQuestIds":  [
+                                 "ws_05_smg"
+                             ],
+        "Objectives":  [
+                           {
+                               "Type":  "craft",
+                               "Target":  "rifle.semiauto",
+                               "Count":  2,
+                               "Description":  "Craft 2 semi-auto rifles"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  5,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrapearntea.advanced",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  400,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  170,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  2,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  55,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "ws_07_ak",
+        "Title":  "The Weaponsmith — VII: Master Armourer",
+        "Description":  "The AK-47. The last word in craftsmanship on this island. Forge one and claim the title.",
+        "Tier":  "Specialist",
+        "Category":  "Craft",
+        "DifficultyStars":  5,
+        "Repeatable":  false,
+        "ChainId":  "chain_weaponsmith",
+        "ChainOrder":  7,
+        "ChainTitle":  "The Weaponsmith",
+        "RequiredQuestIds":  [
+                                 "ws_06_semiauto_rifle"
+                             ],
+        "ChainBonusRewards":  [
+                                  {
+                                      "Type":  "item",
+                                      "Shortname":  "scrap",
+                                      "Amount":  1000,
+                                      "SkinId":  0,
+                                      "CustomName":  ""
+                                  },
+                                  {
+                                      "Type":  "item",
+                                      "Shortname":  "techparts",
+                                      "Amount":  15,
+                                      "SkinId":  0,
+                                      "CustomName":  ""
+                                  },
+                                  {
+                                      "Type":  "item",
+                                      "Shortname":  "maxhealthtea.advanced",
+                                      "Amount":  2,
+                                      "SkinId":  0,
+                                      "CustomName":  ""
+                                  },
+                                  {
+                                      "Type":  "item",
+                                      "Shortname":  "riflebody",
+                                      "Amount":  3,
+                                      "SkinId":  0,
+                                      "CustomName":  ""
+                                  },
+                                  {
+                                      "Type":  "tier_xp",
+                                      "Amount":  600,
+                                      "SkinId":  0,
+                                      "CustomName":  ""
+                                  },
+                                  {
+                                      "Type":  "reputation",
+                                      "Amount":  300,
+                                      "SkinId":  0,
+                                      "CustomName":  ""
+                                  }
+                              ],
+        "Objectives":  [
+                           {
+                               "Type":  "craft",
+                               "Target":  "rifle.ak",
+                               "Count":  1,
+                               "Description":  "Craft 1 AK-47 assault rifle"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  700,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "techparts",
+                            "Amount":  8,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "maxhealthtea.advanced",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  500,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  220,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "techparts",
+                               "Amount":  3,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrapearntea.advanced",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  70,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    }
 ]

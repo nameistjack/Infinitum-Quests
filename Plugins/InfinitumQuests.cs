@@ -45,7 +45,7 @@ using UnityEngine;
 
 namespace Oxide.Plugins
 {
-    [Info("Infinitum Quests", "LemmyMaverick", "1.7.9")]
+    [Info("Infinitum Quests", "LemmyMaverick", "1.8.1")]
     [Description("Contractor-style quest system — tiered board, dynamic objectives, and progression.")]
     class InfinitumQuests : RustPlugin
     {
@@ -329,10 +329,14 @@ namespace Oxide.Plugins
             {
                 new ContractorSpawnPoint { MonumentFilter = "outpost",  AnchorEntity = "recycler",     SideOffset = 1.5f },
                 new ContractorSpawnPoint { MonumentFilter = "compound", AnchorEntity = "recycler",     SideOffset = 1.5f },
-                new ContractorSpawnPoint { MonumentFilter = "bandit",   AnchorEntity = "recycler",     SideOffset = 1.5f },
-                new ContractorSpawnPoint { MonumentFilter = "fishing",  AnchorEntity = "fish_trap",    SideOffset = 1.5f },
-                new ContractorSpawnPoint { MonumentFilter = "barn",     AnchorEntity = "",             SideOffset = 0f   },
+                new ContractorSpawnPoint { MonumentFilter = "bandit",   AnchorEntity = "cardtable",    SideOffset = 2.0f },
+                new ContractorSpawnPoint { MonumentFilter = "fishing",  AnchorEntity = "vending",     SideOffset = 1.5f },
+                new ContractorSpawnPoint { MonumentFilter = "barn",     AnchorEntity = "stablemaster", SideOffset = 1.5f },
+                new ContractorSpawnPoint { MonumentFilter = "ranch",    AnchorEntity = "stablemaster", SideOffset = 1.5f },
             };
+
+            [JsonProperty("Auto-clear saved positions on wipe (wipe-safe NPCs without manual 'iq.contractor clear')")]
+            public bool AutoClearPositionsOnWipe { get; set; } = false;
         }
 
         private class ContractorSpawnPoint
@@ -871,6 +875,17 @@ namespace Oxide.Plugins
             foreach (var sn in itemShortnames)
                 ImageLibrary.Call("AddImage", $"https://www.rustedit.io/images/imagelibrary/{sn}.png", sn, (ulong)0);
 
+            // Queue skin IDs
+            foreach (var q in _quests)
+                foreach (var r in q.Rewards)
+                    if ((r.Type.ToLower() == "item" || r.Type.ToLower() == "blueprint") && r.SkinId != 0 && !string.IsNullOrEmpty(r.Shortname))
+                        ImageLibrary.Call("AddImage", "", r.Shortname, r.SkinId);
+            foreach (var q in _quests)
+                if (q.VipRewards != null)
+                    foreach (var vr in q.VipRewards)
+                        if ((vr.Type.ToLower() == "item" || vr.Type.ToLower() == "blueprint") && vr.SkinId != 0 && !string.IsNullOrEmpty(vr.Shortname))
+                            ImageLibrary.Call("AddImage", "", vr.Shortname, vr.SkinId);
+
             // ── 2. Kill objective icons ───────────────────────────────────────────
             // Collect every unique kill target used across all quests.
             var killTargets = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -960,7 +975,7 @@ namespace Oxide.Plugins
             {
                 if (e == null || e.IsDestroyed) continue;
                 string dn = e.displayName ?? "";
-                if (dn == cfg.DisplayName || dn.EndsWith(" " + cfg.DisplayName))
+                if (dn == cfg.DisplayName || dn.EndsWith(" " + cfg.DisplayName) || dn.Contains("Contractor"))
                 {
                     e.Kill();
                     Puts($"[InfinitumQuests] Cleaned up orphan contractor NPC '{dn}' at {e.transform.position}");
@@ -969,35 +984,30 @@ namespace Oxide.Plugins
 
             var spawned = new HashSet<string>();
 
-            // Pass 1: spawn at all admin-saved positions (no monument lookup needed)
-            foreach (var kv in _contractorPos)
-            {
-                string filter  = kv.Key.ToLower();
-                string npcName = !string.IsNullOrEmpty(kv.Value.Name) ? kv.Value.Name : cfg.DisplayName;
-                Puts($"[InfinitumQuests] Spawning Contractor '{filter}' at saved pos {kv.Value.Position} rot={kv.Value.RotationY:F0}°");
-                SpawnOneContractor(cfg, kv.Value.Position, npcName, kv.Value.Rotation);
-                spawned.Add(filter);
-            }
-
-            // Pass 2: anchor-entity fallback — only runs if NO fixed positions are saved at all.
-            // Once an admin runs iq.contractor setpos for any location, all spawns come from saved data.
-            if (_contractorPos.Count > 0)
-            {
-                Puts($"[InfinitumQuests] Fixed positions defined ({_contractorPos.Count}) — skipping default anchor fallback.");
-            }
-            else foreach (var sp in cfg.SpawnPoints)
+            // ── Per-location logic: each spawn point independently checks for a
+            //    saved admin position first; if none exists it falls back to the
+            //    monument anchor system.  This is wipe-safe by default because a
+            //    fresh install (or cleared positions) will always use monument anchors.
+            foreach (var sp in cfg.SpawnPoints)
             {
                 if (string.IsNullOrEmpty(sp.MonumentFilter)) continue;
                 string filter = sp.MonumentFilter.ToLower();
-                if (spawned.Contains(filter)) continue; // already handled above
+                if (spawned.Contains(filter)) continue;
 
-                MonumentInfo monument = null;
-                foreach (var m in TerrainMeta.Path.Monuments)
+                // ── Prefer admin-saved position for this filter ────────────────
+                ContractorSavedPos savedPos;
+                if (_contractorPos.TryGetValue(filter, out savedPos))
                 {
-                    string mLow  = (m.displayPhrase?.english ?? "").ToLower();
-                    string goLow = (m.name ?? "").ToLower();
-                    if (mLow.Contains(filter) || goLow.Contains(filter)) { monument = m; break; }
+                    string npcName = !string.IsNullOrEmpty(savedPos.Name) ? savedPos.Name : cfg.DisplayName;
+                    Puts($"[InfinitumQuests] '{filter}': using saved position {savedPos.Position} rot={savedPos.RotationY:F0}°");
+                    SpawnOneContractor(cfg, savedPos.Position, npcName, savedPos.Rotation,
+                        sp.Clothing != null && sp.Clothing.Count > 0 ? sp.Clothing : null);
+                    spawned.Add(filter);
+                    continue;
                 }
+
+                // ── No saved position → monument anchor fallback ───────────────
+                MonumentInfo monument = FindMonument(filter);
                 if (monument == null)
                 {
                     Puts($"[InfinitumQuests] '{filter}': no monument match and no saved pos — skipping.");
@@ -1005,37 +1015,118 @@ namespace Oxide.Plugins
                 }
                 spawned.Add(filter);
 
-                Vector3 pos = monument.transform.position + Vector3.up * sp.YOffset;
-                if (!string.IsNullOrEmpty(sp.AnchorEntity))
-                {
-                    var nearby = new List<BaseEntity>();
-                    Vis.Entities(monument.transform.position, 60f, nearby);
-                    string anchorLow = sp.AnchorEntity.ToLower();
-                    foreach (var e in nearby)
-                    {
-                        if (e == null || e.IsDestroyed) continue;
-                        if ((e.ShortPrefabName ?? "").ToLower().Contains(anchorLow))
-                        {
-                            pos = e.transform.position + e.transform.right * sp.SideOffset + Vector3.up * sp.YOffset;
-                            Puts($"[InfinitumQuests] '{filter}': anchored to '{e.ShortPrefabName}'");
-                            break;
-                        }
-                    }
-                }
-                // Give each monument contractor a location-based name (e.g. "Outpost Contractor")
+                Vector3 pos = ResolveAnchorPosition(monument, sp);
                 string monName = char.ToUpper(filter[0]) + filter.Substring(1) + " " + cfg.DisplayName;
-                Puts($"[InfinitumQuests] Spawning Contractor '{filter}' at fallback pos {pos}");
+                Puts($"[InfinitumQuests] '{filter}': monument fallback → spawning '{monName}' at {pos}");
                 SpawnOneContractor(cfg, pos, monName, default,
                     sp.Clothing != null && sp.Clothing.Count > 0 ? sp.Clothing : null);
             }
+
+            // ── Spawn any explicitly saved positions not covered by a SpawnPoint
+            //    (e.g. custom locations added with a unique filter name) ─────────
+            foreach (var kv in _contractorPos)
+            {
+                string filter = kv.Key.ToLower();
+                if (spawned.Contains(filter)) continue;
+                string npcName = !string.IsNullOrEmpty(kv.Value.Name) ? kv.Value.Name : cfg.DisplayName;
+                Puts($"[InfinitumQuests] '{filter}': custom saved position {kv.Value.Position} rot={kv.Value.RotationY:F0}°");
+                SpawnOneContractor(cfg, kv.Value.Position, npcName, kv.Value.Rotation);
+                spawned.Add(filter);
+            }
+
             Puts($"[InfinitumQuests] Contractor spawn complete: {_contractorNpcs.Count} spawned.");
+        }
+
+        // Returns the first monument whose display name or GameObject name contains the filter string.
+        private MonumentInfo FindMonument(string filterLow)
+        {
+            foreach (var m in TerrainMeta.Path.Monuments)
+            {
+                string mLow  = (m.displayPhrase?.english ?? "").ToLower();
+                string goLow = (m.name ?? "").ToLower();
+                if (mLow.Contains(filterLow) || goLow.Contains(filterLow)) return m;
+            }
+            return null;
+        }
+
+        // Resolves the world-space spawn position for a ContractorSpawnPoint relative to a monument.
+        // Searches for the nearest matching anchor entity within 60 m; falls back to monument centre.
+        private Vector3 ResolveAnchorPosition(MonumentInfo monument, ContractorSpawnPoint sp)
+        {
+            var nearbyObjects = new List<BaseEntity>();
+            Vis.Entities(monument.transform.position, 150f, nearbyObjects);
+            
+            // Priority 1: Specific config anchor (e.g. if the admin configured "workbench3")
+            if (!string.IsNullOrEmpty(sp.AnchorEntity))
+            {
+                string anchorLow = sp.AnchorEntity.ToLower();
+                var configAnchor = nearbyObjects.FirstOrDefault(e => 
+                    e != null && !e.IsDestroyed && (
+                        (e.ShortPrefabName ?? "").ToLower().Contains(anchorLow) || 
+                        ((e as BasePlayer)?.displayName ?? "").ToLower().Contains(anchorLow)
+                    ));
+                    
+                if (configAnchor != null)
+                {
+                    // Use the full SideOffset and a minimal forward boost to place them 'beside' instead of 'in front'
+                    Vector3 ap = configAnchor.transform.position + configAnchor.transform.right * sp.SideOffset + configAnchor.transform.forward * 0.4f;
+                    Puts($"[InfinitumQuests] Anchored to config entity '{configAnchor.ShortPrefabName}' at {configAnchor.transform.position}");
+                    return ap;
+                }
+            }
+
+            // Priority 2: Safest native static monument objects 
+            // These never move, cannot be lured outside the monument, and are guaranteed to be on a flat floor.
+            var staticAnchor = nearbyObjects.FirstOrDefault(e => 
+                e != null && !e.IsDestroyed && (
+                    e is VendingMachine || e is Recycler || e is RepairBench || e is MixingTable || e is CardTable ||
+                    (e.ShortPrefabName != null && (
+                        e.ShortPrefabName.Contains("firebarrel") || 
+                        e.ShortPrefabName.Contains("locker") || 
+                        e.ShortPrefabName.Contains("fridge")
+                    ))
+                ));
+
+            if (staticAnchor != null)
+            {
+                // Stand beside the static object with a moderate forward offset
+                Vector3 ap = staticAnchor.transform.position + staticAnchor.transform.right * 1.5f + staticAnchor.transform.forward * 1.2f;
+                Puts($"[InfinitumQuests] Anchored to static object '{staticAnchor.ShortPrefabName}' at {staticAnchor.transform.position}");
+                return ap;
+            }
+
+            // Fallback 3: fallback to monument centre mapped over terrain
+            Vector3 pos = monument.transform.position + Vector3.up * sp.YOffset;
+            float terrainY = TerrainMeta.HeightMap.GetHeight(pos);
+            if (pos.y < terrainY) pos.y = terrainY;
+            return pos;
         }
 
         private void SpawnOneContractor(ContractorNpcConfig cfg, Vector3 pos, string npcName, Quaternion rot = default, List<string> clothing = null)
         {
             if (rot == default) rot = Quaternion.identity;
+
+            // Nuke any 'ghost' contractors standing exactly on this deterministic anchor coordinate 
+            // (e.g. ones that survived a previous reload due to a renamed config)
+            var overlapping = new List<ScientistNPC>();
+            Vis.Entities(pos, 0.5f, overlapping, Rust.Layers.Mask.Player_Server);
+            foreach (var oldNpc in overlapping)
+            {
+                // Native guards always hold guns. Our contractors have their belts cleared. 
+                var belt = oldNpc.inventory?.containerBelt;
+                if (oldNpc != null && !oldNpc.IsDestroyed && (belt == null || belt.itemList == null || belt.itemList.Count == 0))
+                {
+                    oldNpc.Kill();
+                    Puts($"[InfinitumQuests] Cleared overlapping ghost contractor at {pos}");
+                }
+            }
+
             var entity = GameManager.server.CreateEntity(CONTRACTOR_PREFAB, pos, rot);
             if (entity == null) { Puts("[InfinitumQuests]  → CreateEntity returned null"); return; }
+            
+            // Prevent them from persisting in the .sav file across server restarts
+            entity.enableSaving = false;
+            
             entity.Spawn();
             var npc = entity as ScientistNPC;
             if (npc == null) { entity.Kill(); Puts("[InfinitumQuests]  → Not ScientistNPC"); return; }
@@ -1187,6 +1278,15 @@ namespace Oxide.Plugins
         }
 
         private void OnServerSave() => SavePlayerData();
+
+        // Called by Oxide when the server generates a new map (i.e. a wipe).
+        private void OnNewSave()
+        {
+            if (!config.ContractorNpcs.AutoClearPositionsOnWipe) return;
+            _contractorPos.Clear();
+            SaveContractorPositions();
+            Puts("[InfinitumQuests] New wipe detected — cleared saved contractor positions (auto-clear enabled).");
+        }
 
         private void OnPlayerConnected(BasePlayer player)
         {
@@ -2847,8 +2947,12 @@ namespace Oxide.Plugins
                     var itemDef = ItemManager.FindItemDefinition(rw.Shortname);
                     if (itemDef != null)
                     {
-                        UIItemIcon(c, R, itemDef.itemid, "0 1", "0 1",
-                            rx + 6, boxRowY - boxH + 16, rx + boxW - 6, boxRowY - 16);
+                        string skinPng = rw.SkinId != 0 ? GetImage(rw.Shortname, rw.SkinId) : null;
+                        if (!string.IsNullOrEmpty(skinPng))
+                            UIImage(c, R, skinPng, "0 1", "0 1", rx + 6, boxRowY - boxH + 16, rx + boxW - 6, boxRowY - 16);
+                        else
+                            UIItemIcon(c, R, itemDef.itemid, "0 1", "0 1",
+                                rx + 6, boxRowY - boxH + 16, rx + boxW - 6, boxRowY - 16, rw.SkinId);
                         if (isBp)
                             UILabel(c, R, S_BLUE, "BP", 7, "0 1", "0 1",
                                 rx + 2, boxRowY - 14, rx + boxW - 2, boxRowY - 4, TextAnchor.MiddleRight);
@@ -2944,8 +3048,12 @@ namespace Oxide.Plugins
                             var vItemDef = ItemManager.FindItemDefinition(vr.Shortname);
                             if (vItemDef != null)
                             {
-                                UIItemIcon(c, R, vItemDef.itemid, "0 1", "0 1",
-                                    vx + 6, vboxRowY - boxH + 16, vx + boxW - 6, vboxRowY - 16);
+                                string vPng = vr.SkinId != 0 ? GetImage(vr.Shortname, vr.SkinId) : null;
+                                if (!string.IsNullOrEmpty(vPng))
+                                    UIImage(c, R, vPng, "0 1", "0 1", vx + 6, vboxRowY - boxH + 16, vx + boxW - 6, vboxRowY - 16);
+                                else
+                                    UIItemIcon(c, R, vItemDef.itemid, "0 1", "0 1",
+                                        vx + 6, vboxRowY - boxH + 16, vx + boxW - 6, vboxRowY - 16, vr.SkinId);
                                 if (vIsBp)
                                     UILabel(c, R, S_VIP_HDR, "BP", 7, "0 1", "0 1",
                                         vx + 2, vboxRowY - 14, vx + boxW - 2, vboxRowY - 4, TextAnchor.MiddleRight);
@@ -3231,7 +3339,13 @@ namespace Oxide.Plugins
                 {
                     var itemDef = ItemManager.FindItemDefinition(rw.Shortname);
                     if (itemDef != null)
-                        UIItemIcon(c, UI_REWARDLIST, itemDef.itemid, "0 1", "0 1", iconX, rowY - 22, iconX + 20, rowY - 2);
+                    {
+                        string listPng = rw.SkinId != 0 ? GetImage(rw.Shortname, rw.SkinId) : null;
+                        if (!string.IsNullOrEmpty(listPng))
+                            UIImage(c, UI_REWARDLIST, listPng, "0 1", "0 1", iconX, rowY - 22, iconX + 20, rowY - 2);
+                        else
+                            UIItemIcon(c, UI_REWARDLIST, itemDef.itemid, "0 1", "0 1", iconX, rowY - 22, iconX + 20, rowY - 2, rw.SkinId);
+                    }
                 }
 
                 // Label

@@ -1,208 +1,506 @@
 [
-  {
-    "Id": "fish_01_trout",
-    "Title": "The Angler — I: First Cast",
-    "Description": "Every fisherman starts with a rod and patience. Catch your first batch of small trout.",
-    "Tier": "Recruit",
-    "Category": "Gathering",
-    "DifficultyStars": 1,
-    "Repeatable": false,
-    "ChainId": "chain_fishing",
-    "ChainOrder": 1,
-    "ChainTitle": "The Angler",
-    "Objectives": [
-      { "Type": "fish", "Target": "fish.troutsmall", "Count": 5, "Description": "Catch 5 small trout" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 60  },
-      { "Type": "tier_xp",   "Amount": 50  },
-      { "Type": "reputation","Amount": 20  }
-    ],
-    "VipRewards": [
-      { "Type": "reputation","Amount": 7   }
-    ]
-  },
-  {
-    "Id": "fish_02_perch",
-    "Title": "The Angler — II: Yellow Perch",
-    "Description": "Yellow perch are picky. Learn their waters.",
-    "Tier": "Recruit",
-    "Category": "Gathering",
-    "DifficultyStars": 1,
-    "Repeatable": false,
-    "ChainId": "chain_fishing",
-    "ChainOrder": 2,
-    "ChainTitle": "The Angler",
-    "RequiredQuestIds": ["fish_01_trout"],
-    "Objectives": [
-      { "Type": "fish", "Target": "fish.yellowperch", "Count": 5, "Description": "Catch 5 yellow perch" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 80  },
-      { "Type": "tier_xp",   "Amount": 60  },
-      { "Type": "reputation","Amount": 25  }
-    ],
-    "VipRewards": [
-      { "Type": "reputation","Amount": 8   }
-    ]
-  },
-  {
-    "Id": "fish_03_minnows",
-    "Title": "The Angler — III: Bait Run",
-    "Description": "Minnows keep the rod busy. Catch a full batch.",
-    "Tier": "Recruit",
-    "Category": "Gathering",
-    "DifficultyStars": 1,
-    "Repeatable": false,
-    "ChainId": "chain_fishing",
-    "ChainOrder": 3,
-    "ChainTitle": "The Angler",
-    "RequiredQuestIds": ["fish_02_perch"],
-    "Objectives": [
-      { "Type": "fish", "Target": "fish.minnows", "Count": 8, "Description": "Catch 8 minnows" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 90  },
-      { "Type": "tier_xp",   "Amount": 65  },
-      { "Type": "reputation","Amount": 28  }
-    ],
-    "VipRewards": [
-      { "Type": "reputation","Amount": 10  }
-    ]
-  },
-  {
-    "Id": "fish_04_herring",
-    "Title": "The Angler — IV: Open Water",
-    "Description": "Herring run in deeper spots. Time to explore the coastline.",
-    "Tier": "Operative",
-    "Category": "Gathering",
-    "DifficultyStars": 2,
-    "Repeatable": false,
-    "ChainId": "chain_fishing",
-    "ChainOrder": 4,
-    "ChainTitle": "The Angler",
-    "RequiredQuestIds": ["fish_03_minnows"],
-    "Objectives": [
-      { "Type": "fish", "Target": "fish.herring", "Count": 6, "Description": "Catch 6 herring" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 140 },
-      { "Type": "tier_xp",   "Amount": 100 },
-      { "Type": "reputation","Amount": 42  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 40  },
-      { "Type": "reputation","Amount": 14  }
-    ]
-  },
-  {
-    "Id": "fish_05_anchovy",
-    "Title": "The Angler — V: Small but Plenty",
-    "Description": "Anchovies are fast and plentiful. Requires patience with lighter tackle.",
-    "Tier": "Operative",
-    "Category": "Gathering",
-    "DifficultyStars": 2,
-    "Repeatable": false,
-    "ChainId": "chain_fishing",
-    "ChainOrder": 5,
-    "ChainTitle": "The Angler",
-    "RequiredQuestIds": ["fish_04_herring"],
-    "Objectives": [
-      { "Type": "fish", "Target": "fish.anchovy", "Count": 8, "Description": "Catch 8 anchovies" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 160 },
-      { "Type": "tier_xp",   "Amount": 115 },
-      { "Type": "reputation","Amount": 48  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 45  },
-      { "Type": "reputation","Amount": 16  }
-    ]
-  },
-  {
-    "Id": "fish_06_salmon",
-    "Title": "The Angler — VI: The Fight",
-    "Description": "Salmon fight back. You'll feel every one of these on your arms.",
-    "Tier": "Operative",
-    "Category": "Gathering",
-    "DifficultyStars": 3,
-    "Repeatable": false,
-    "ChainId": "chain_fishing",
-    "ChainOrder": 6,
-    "ChainTitle": "The Angler",
-    "RequiredQuestIds": ["fish_05_anchovy"],
-    "Objectives": [
-      { "Type": "fish", "Target": "fish.salmon", "Count": 5, "Description": "Catch 5 salmon" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 200 },
-      { "Type": "item",       "Shortname": "can.beans",   "Amount": 5   },
-      { "Type": "tier_xp",   "Amount": 140 },
-      { "Type": "reputation","Amount": 58  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "can.beans",   "Amount": 3   },
-      { "Type": "reputation","Amount": 20  }
-    ]
-  },
-  {
-    "Id": "fish_07_roughy",
-    "Title": "The Angler — VII: Deep Haul",
-    "Description": "Orange roughy live in the cold deep. Long casts, strong line.",
-    "Tier": "Specialist",
-    "Category": "Gathering",
-    "DifficultyStars": 3,
-    "Repeatable": false,
-    "ChainId": "chain_fishing",
-    "ChainOrder": 7,
-    "ChainTitle": "The Angler",
-    "RequiredQuestIds": ["fish_06_salmon"],
-    "Objectives": [
-      { "Type": "fish", "Target": "fish.orangeroughy", "Count": 4, "Description": "Catch 4 orange roughy" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",       "Amount": 280 },
-      { "Type": "item",       "Shortname": "can.tuna",    "Amount": 5   },
-      { "Type": "tier_xp",   "Amount": 190 },
-      { "Type": "reputation","Amount": 78  }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "can.tuna",    "Amount": 3   },
-      { "Type": "reputation","Amount": 26  }
-    ]
-  },
-  {
-    "Id": "fish_08_shark",
-    "Title": "The Angler — VIII: Apex Catch",
-    "Description": "The small shark is the final test. Land three and the Contractor Network marks you as Master Angler.",
-    "Tier": "Specialist",
-    "Category": "Gathering",
-    "DifficultyStars": 4,
-    "Repeatable": false,
-    "ChainId": "chain_fishing",
-    "ChainOrder": 8,
-    "ChainTitle": "The Angler",
-    "RequiredQuestIds": ["fish_07_roughy"],
-    "ChainBonusRewards": [
-      { "Type": "item",       "Shortname": "scrap",                 "Amount": 800 },
-      { "Type": "item",       "Shortname": "can.tuna",              "Amount": 10  },
-      { "Type": "item",       "Shortname": "scrapearntea.advanced", "Amount": 2   },
-      { "Type": "tier_xp",   "Amount": 500 },
-      { "Type": "reputation","Amount": 250 }
-    ],
-    "Objectives": [
-      { "Type": "fish", "Target": "fish.smallshark", "Count": 3, "Description": "Catch 3 small sharks" }
-    ],
-    "Rewards": [
-      { "Type": "item",       "Shortname": "scrap",                 "Amount": 400 },
-      { "Type": "item",       "Shortname": "scrapearntea.advanced", "Amount": 1   },
-      { "Type": "tier_xp",   "Amount": 280 },
-      { "Type": "reputation","Amount": 120 }
-    ],
-    "VipRewards": [
-      { "Type": "item",       "Shortname": "scrapearntea.advanced", "Amount": 1   },
-      { "Type": "reputation","Amount": 40  }
-    ]
-  }
+    {
+        "Id":  "fish_01_trout",
+        "Title":  "The Angler — I: First Cast",
+        "Description":  "Every fisherman starts with a rod and patience. Catch your first batch of small trout.",
+        "Tier":  "Recruit",
+        "Category":  "Gathering",
+        "DifficultyStars":  1,
+        "Repeatable":  false,
+        "ChainId":  "chain_fishing",
+        "ChainOrder":  1,
+        "ChainTitle":  "The Angler",
+        "Objectives":  [
+                           {
+                               "Type":  "fish",
+                               "Target":  "fish.troutsmall",
+                               "Count":  5,
+                               "Description":  "Catch 5 small trout"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  60,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  50,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  20,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "reputation",
+                               "Amount":  7,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "fish_02_perch",
+        "Title":  "The Angler — II: Yellow Perch",
+        "Description":  "Yellow perch are picky. Learn their waters.",
+        "Tier":  "Recruit",
+        "Category":  "Gathering",
+        "DifficultyStars":  1,
+        "Repeatable":  false,
+        "ChainId":  "chain_fishing",
+        "ChainOrder":  2,
+        "ChainTitle":  "The Angler",
+        "RequiredQuestIds":  [
+                                 "fish_01_trout"
+                             ],
+        "Objectives":  [
+                           {
+                               "Type":  "fish",
+                               "Target":  "fish.yellowperch",
+                               "Count":  5,
+                               "Description":  "Catch 5 yellow perch"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  80,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  60,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  25,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "reputation",
+                               "Amount":  8,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "fish_03_minnows",
+        "Title":  "The Angler — III: Bait Run",
+        "Description":  "Minnows keep the rod busy. Catch a full batch.",
+        "Tier":  "Recruit",
+        "Category":  "Gathering",
+        "DifficultyStars":  1,
+        "Repeatable":  false,
+        "ChainId":  "chain_fishing",
+        "ChainOrder":  3,
+        "ChainTitle":  "The Angler",
+        "RequiredQuestIds":  [
+                                 "fish_02_perch"
+                             ],
+        "Objectives":  [
+                           {
+                               "Type":  "fish",
+                               "Target":  "fish.minnows",
+                               "Count":  8,
+                               "Description":  "Catch 8 minnows"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  90,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  65,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  28,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "reputation",
+                               "Amount":  10,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "fish_04_herring",
+        "Title":  "The Angler — IV: Open Water",
+        "Description":  "Herring run in deeper spots. Time to explore the coastline.",
+        "Tier":  "Operative",
+        "Category":  "Gathering",
+        "DifficultyStars":  2,
+        "Repeatable":  false,
+        "ChainId":  "chain_fishing",
+        "ChainOrder":  4,
+        "ChainTitle":  "The Angler",
+        "RequiredQuestIds":  [
+                                 "fish_03_minnows"
+                             ],
+        "Objectives":  [
+                           {
+                               "Type":  "fish",
+                               "Target":  "fish.herring",
+                               "Count":  6,
+                               "Description":  "Catch 6 herring"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  140,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  100,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  42,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrap",
+                               "Amount":  40,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  14,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "fish_05_anchovy",
+        "Title":  "The Angler — V: Small but Plenty",
+        "Description":  "Anchovies are fast and plentiful. Requires patience with lighter tackle.",
+        "Tier":  "Operative",
+        "Category":  "Gathering",
+        "DifficultyStars":  2,
+        "Repeatable":  false,
+        "ChainId":  "chain_fishing",
+        "ChainOrder":  5,
+        "ChainTitle":  "The Angler",
+        "RequiredQuestIds":  [
+                                 "fish_04_herring"
+                             ],
+        "Objectives":  [
+                           {
+                               "Type":  "fish",
+                               "Target":  "fish.anchovy",
+                               "Count":  8,
+                               "Description":  "Catch 8 anchovies"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  160,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  115,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  48,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrap",
+                               "Amount":  45,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  16,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "fish_06_salmon",
+        "Title":  "The Angler — VI: The Fight",
+        "Description":  "Salmon fight back. You\u0027ll feel every one of these on your arms.",
+        "Tier":  "Operative",
+        "Category":  "Gathering",
+        "DifficultyStars":  3,
+        "Repeatable":  false,
+        "ChainId":  "chain_fishing",
+        "ChainOrder":  6,
+        "ChainTitle":  "The Angler",
+        "RequiredQuestIds":  [
+                                 "fish_05_anchovy"
+                             ],
+        "Objectives":  [
+                           {
+                               "Type":  "fish",
+                               "Target":  "fish.salmon",
+                               "Count":  5,
+                               "Description":  "Catch 5 salmon"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  200,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "can.beans",
+                            "Amount":  5,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  140,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  58,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "can.beans",
+                               "Amount":  3,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  20,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "fish_07_roughy",
+        "Title":  "The Angler — VII: Deep Haul",
+        "Description":  "Orange roughy live in the cold deep. Long casts, strong line.",
+        "Tier":  "Specialist",
+        "Category":  "Gathering",
+        "DifficultyStars":  3,
+        "Repeatable":  false,
+        "ChainId":  "chain_fishing",
+        "ChainOrder":  7,
+        "ChainTitle":  "The Angler",
+        "RequiredQuestIds":  [
+                                 "fish_06_salmon"
+                             ],
+        "Objectives":  [
+                           {
+                               "Type":  "fish",
+                               "Target":  "fish.orangeroughy",
+                               "Count":  4,
+                               "Description":  "Catch 4 orange roughy"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  280,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "can.tuna",
+                            "Amount":  5,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  190,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  78,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "can.tuna",
+                               "Amount":  3,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  26,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    },
+    {
+        "Id":  "fish_08_shark",
+        "Title":  "The Angler — VIII: Apex Catch",
+        "Description":  "The small shark is the final test. Land three and the Contractor Network marks you as Master Angler.",
+        "Tier":  "Specialist",
+        "Category":  "Gathering",
+        "DifficultyStars":  4,
+        "Repeatable":  false,
+        "ChainId":  "chain_fishing",
+        "ChainOrder":  8,
+        "ChainTitle":  "The Angler",
+        "RequiredQuestIds":  [
+                                 "fish_07_roughy"
+                             ],
+        "ChainBonusRewards":  [
+                                  {
+                                      "Type":  "item",
+                                      "Shortname":  "scrap",
+                                      "Amount":  800,
+                                      "SkinId":  0,
+                                      "CustomName":  ""
+                                  },
+                                  {
+                                      "Type":  "item",
+                                      "Shortname":  "can.tuna",
+                                      "Amount":  10,
+                                      "SkinId":  0,
+                                      "CustomName":  ""
+                                  },
+                                  {
+                                      "Type":  "item",
+                                      "Shortname":  "scrapearntea.advanced",
+                                      "Amount":  2,
+                                      "SkinId":  0,
+                                      "CustomName":  ""
+                                  },
+                                  {
+                                      "Type":  "tier_xp",
+                                      "Amount":  500,
+                                      "SkinId":  0,
+                                      "CustomName":  ""
+                                  },
+                                  {
+                                      "Type":  "reputation",
+                                      "Amount":  250,
+                                      "SkinId":  0,
+                                      "CustomName":  ""
+                                  }
+                              ],
+        "Objectives":  [
+                           {
+                               "Type":  "fish",
+                               "Target":  "fish.smallshark",
+                               "Count":  3,
+                               "Description":  "Catch 3 small sharks"
+                           }
+                       ],
+        "Rewards":  [
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrap",
+                            "Amount":  400,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "item",
+                            "Shortname":  "scrapearntea.advanced",
+                            "Amount":  1,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "tier_xp",
+                            "Amount":  280,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        },
+                        {
+                            "Type":  "reputation",
+                            "Amount":  120,
+                            "SkinId":  0,
+                            "CustomName":  ""
+                        }
+                    ],
+        "VipRewards":  [
+                           {
+                               "Type":  "item",
+                               "Shortname":  "scrapearntea.advanced",
+                               "Amount":  1,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "reputation",
+                               "Amount":  40,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           }
+                       ]
+    }
 ]

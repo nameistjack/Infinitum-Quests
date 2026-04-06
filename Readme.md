@@ -1,6 +1,6 @@
 # Infinitum Quests
 
-**Version:** 1.7.9
+**Version:** 1.8.1
 **Author:** LemmyMaverick
 **License:** MIT
 **Game:** Rust (Oxide / uMod)
@@ -71,6 +71,10 @@ Only copy this if you are migrating player progress (do NOT copy on a fresh wipe
 ```
 oxide/data/InfinitumQuests/players.json      ← Player ranks, completions, cooldowns
 ```
+
+### Wipe-Safe NPC Spawning
+Starting in version 1.8.0, NPC positions are managed per-location. If no saved position exists for a monument in `contractor_positions.json`, the plugin will automatically fallback to a **Static Anchor** (Recycler, Vending Machine, or stable Monument NPC). This ensures your NPCs always spawn correctly on a fresh map without manual setup.
+
 
 After copying, reload the plugin — it will detect and purge any orphaned active quests automatically.
 
@@ -149,15 +153,16 @@ Contractor NPCs spawn automatically at monuments. Each spawn point uses an ancho
 | `Greeting sound effect path` | Sound played to the player who interacts |
 | `Monument spawn points` | Array of monument filter + anchor entity pairs |
 
-**Default monument spawn points:**
+| Monument filter | Anchor | Notes |
+|----------------|--------|-------|
+| `outpost` | `recycler` | Standard fallback |
+| `compound` | `recycler` | Standard fallback |
+| `bandit` | `cardtable` | Spawns in gambling room |
+| `fishing` | `vending` | Spawns on the shop pier |
+| `barn` | `stablemaster` | Spawns beside horse vendor |
+| `ranch` | `stablemaster` | Spawns beside horse vendor |
 
-| Monument filter | Anchor |
-|----------------|--------|
-| `outpost` | `recycler` |
-| `compound` | `recycler` |
-| `bandit` | `recycler` |
-| `fishing` | `fish_trap` |
-| `barn` | monument center |
+**Manual Override:** You can still set a precise position manually using `/iq.contractor setpos <filter>`. This position is saved to `oxide/data/InfinitumQuests/contractor_positions.json` and will persist until the next map wipe (or until cleared manually).
 
 ---
 
@@ -407,6 +412,8 @@ The plugin automatically purges orphaned active quests (quests in progress that 
 
 | Version | Notes |
 |---------|-------|
+| 1.8.1 | Fixed compile error on older Oxide builds; Reverted incompatible CuiItemIconComponent; Implemented ImageLibrary bridge for async skinned reward icons; Optimized Bandit/Ranch offsets. |
+| 1.8.0 | **Wipe-Safe Spawn Refactor:** NPCs now independently fallback to static anchors (vending, recyclers, stablemasters) if no saved pos exists. Added support for skinned item rewards in the UI. Added Auto-Cleanup for orphan NPCs. |
 | 1.7.9 | HUD move mode, board search filter, UI state preserved across reloads |
 | 1.6.5 | Chain quests, VIP rewards, streak bonuses |
 | 1.5.x | Contractor NPC system, monument spawn anchors |

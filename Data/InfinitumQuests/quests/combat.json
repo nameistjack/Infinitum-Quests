@@ -1,8 +1,8 @@
-[
+﻿[
     {
         "Id":  "cbt_npc_patrol_recruit",
         "Title":  "Patrol Clearance",
-        "Description":  "Eliminate roaming scientists near monuments. Standard engagement — no special gear required.",
+        "Description":  "Eliminate roaming scientists near monuments. Standard engagement â€” no special gear required.",
         "Tier":  "Recruit",
         "Category":  "Combat",
         "DifficultyStars":  2,
@@ -36,6 +36,13 @@
                             "Amount":  40,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -51,13 +58,20 @@
                                "Amount":  15,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "cbt_npc_night_recruit",
         "Title":  "Nightwatch",
-        "Description":  "Hunt scientists after dark. They\u0027re more aggressive — and so are the rewards.",
+        "Description":  "Hunt scientists after dark. They\u0027re more aggressive â€” and so are the rewards.",
         "Tier":  "Recruit",
         "Category":  "Combat",
         "DifficultyStars":  2,
@@ -92,6 +106,13 @@
                             "Amount":  55,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -105,6 +126,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  18,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -161,6 +189,13 @@
                             "Amount":  85,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -174,6 +209,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  28,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -223,6 +265,13 @@
                             "Amount":  80,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -236,6 +285,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  26,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -285,6 +341,13 @@
                             "Amount":  120,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -298,6 +361,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  40,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -354,6 +424,13 @@
                             "Amount":  140,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  900,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -369,13 +446,20 @@
                                "Amount":  45,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  300,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "cbt_ch47_specialist",
         "Title":  "Chopper Down",
-        "Description":  "Bring down the Chinook before it completes its drop run. You have one shot — make it count.",
+        "Description":  "Bring down the Chinook before it completes its drop run. You have one shot â€” make it count.",
         "Tier":  "Specialist",
         "Category":  "Combat",
         "DifficultyStars":  4,
@@ -423,6 +507,13 @@
                             "Amount":  165,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  900,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -436,6 +527,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  55,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  300,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -518,6 +616,13 @@
                             "Amount":  320,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  1500,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -538,6 +643,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  500,
                                "SkinId":  0,
                                "CustomName":  ""
                            }

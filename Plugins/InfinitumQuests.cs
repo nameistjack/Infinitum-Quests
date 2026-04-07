@@ -1,7 +1,7 @@
 // ============================================================
 //  Infinitum Quests
 //  Author  : LemmyMaverick
-//  Version : 1.6.5
+//  Version : 1.8.3
 //  License : MIT
 //
 //  MIT License
@@ -42,10 +42,11 @@ using Oxide.Core.Libraries.Covalence;
 using Oxide.Core.Plugins;
 using Oxide.Game.Rust.Cui;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Oxide.Plugins
 {
-    [Info("Infinitum Quests", "LemmyMaverick", "1.8.1")]
+    [Info("Infinitum Quests", "LemmyMaverick", "1.8.3")]
     [Description("Contractor-style quest system — tiered board, dynamic objectives, and progression.")]
     class InfinitumQuests : RustPlugin
     {
@@ -126,7 +127,7 @@ namespace Oxide.Plugins
 
         private int RowsPerPageWin => config.RowsPerPageWindow;
         private int RowsPerPageFs  => config.RowsPerPageFullscreen;
-        private const float ROW_H              = 44f;
+        private const float ROW_H              = 52f;
 
         private readonly Dictionary<ulong, PlayerData> _players     = new Dictionary<ulong, PlayerData>();
         private readonly List<QuestDefinition>          _quests      = new List<QuestDefinition>();
@@ -189,6 +190,7 @@ namespace Oxide.Plugins
         private static Configuration config;
         private Timer _hudTimer;
         private Timer _saveTimer;
+        private string _resolvedCurrency = "none";
 
         [PluginReference] Plugin Economics, ServerRewards, SkillTree, ImageLibrary, ZombieHunter;
 
@@ -213,14 +215,26 @@ namespace Oxide.Plugins
             [JsonProperty("UI accent color (hex, no #)")]
             public string ThemeColor { get; set; } = "E8912B";
 
+            [JsonProperty("Streak indicator icon URL (transparent PNG, 64×64 recommended — leave empty to hide)")]
+            public string StreakIconUrl { get; set; } = "https://i.imgur.com/LF2fbAu.png";
+
+            [JsonProperty("RP / currency reward icon URL (transparent PNG — leave empty for text fallback)")]
+            public string RpIconUrl { get; set; } = "https://i.imgur.com/fLmwPBC.png";
+
+            [JsonProperty("Reputation reward icon URL (transparent PNG — leave empty for text fallback)")]
+            public string RepIconUrl { get; set; } = "https://i.imgur.com/WEQCYqn.png";
+
+            [JsonProperty("XP reward icon URL (transparent PNG — leave empty for text fallback)")]
+            public string XpIconUrl { get; set; } = "https://i.imgur.com/4GtMJ6b.png";
+
+            [JsonProperty("Ranks tab decoration image URL (character/soldier PNG with transparency — right side panel art — leave empty to hide)")]
+            public string RanksDecoImageUrl { get; set; } = "https://i.imgur.com/CPEQERw.png";
+
             [JsonProperty("Discord webhook URL")]
             public string DiscordWebhook { get; set; } = "";
 
-            [JsonProperty("Use Economics plugin")]
-            public bool UseEconomics { get; set; } = false;
-
-            [JsonProperty("Use ServerRewards plugin")]
-            public bool UseServerRewards { get; set; } = false;
+            [JsonProperty("Currency plugin (auto / economics / server_rewards / none)")]
+            public string CurrencyPlugin { get; set; } = "auto";
 
             [JsonProperty("Use SkillTree XP plugin")]
             public bool UseSkillTree { get; set; } = true;
@@ -409,6 +423,10 @@ namespace Oxide.Plugins
                     { config.ContractorNpcs.SpawnPoints = distinctPts; save = true; }
                 }
 
+                // Backfill RanksDecoImageUrl if it was added while config already existed on disk
+                if (string.IsNullOrEmpty(config.RanksDecoImageUrl))
+                { config.RanksDecoImageUrl = "https://i.imgur.com/CPEQERw.png"; save = true; }
+
                 string ver = Version.ToString();
                 if (config.ConfigVersion != ver) { config.ConfigVersion = ver; save = true; }
             }
@@ -534,6 +552,7 @@ namespace Oxide.Plugins
             public string Search = ""; // board search filter
             public ulong SelectedPlayer = 0;
             public string Mode   = "window"; // "window" | "fullscreen"
+            public bool   PanelFlip = false; // alternates IQ_LA/IQ_LB so new panels render before old ones are destroyed
             // Admin panel state
             public string AdminTab       = "stats";
             public int    AdminPage      = 0;
@@ -653,7 +672,7 @@ namespace Oxide.Plugins
             }
 
             var validRewardTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-                { "item", "tier_xp", "skill_xp", "reputation", "economics", "server_rewards", "command" };
+                { "item", "tier_xp", "skill_xp", "reputation", "economics", "server_rewards", "currency", "command" };
 
             foreach (var file in files)
             {
@@ -824,10 +843,41 @@ namespace Oxide.Plugins
             AddCovalenceCommand(cmd, nameof(CmdQuestOpen));
         }
 
+        private void ResolveCurrency()
+        {
+            string cfg = config.CurrencyPlugin?.ToLower() ?? "auto";
+            if (cfg == "economics")       { _resolvedCurrency = Economics     != null ? "economics"     : "none"; }
+            else if (cfg == "server_rewards") { _resolvedCurrency = ServerRewards != null ? "server_rewards" : "none"; }
+            else if (cfg == "none")       { _resolvedCurrency = "none"; }
+            else // auto
+            {
+                bool hasEco = Economics     != null;
+                bool hasSR  = ServerRewards != null;
+                if (hasSR && hasEco) _resolvedCurrency = "server_rewards"; // both loaded — default to SR, owner can override in config
+                else if (hasSR)     _resolvedCurrency = "server_rewards";
+                else if (hasEco)    _resolvedCurrency = "economics";
+                else                _resolvedCurrency = "none";
+            }
+            Puts($"[InfinitumQuests] Currency resolved: {_resolvedCurrency} (config: {cfg})");
+        }
+
+        private void OnPluginLoaded(Plugin plugin)
+        {
+            if (plugin.Name == "Economics" || plugin.Name == "ServerRewards")
+                ResolveCurrency();
+        }
+
+        private void OnPluginUnloaded(Plugin plugin)
+        {
+            if (plugin.Name == "Economics" || plugin.Name == "ServerRewards")
+                ResolveCurrency();
+        }
+
         private void OnServerInitialized()
         {
             LoadPlayerData();
             LoadQuestDefinitions();
+            ResolveCurrency();
 
             if (config.HudEnabled)
                 _hudTimer = timer.Every(30f, () =>
@@ -842,7 +892,12 @@ namespace Oxide.Plugins
             foreach (var p in BasePlayer.activePlayerList) GetOrCreate(p);
 
             if (config.UseImageLibrary && ImageLibrary != null)
+            {
                 PrefetchQuestImages();
+                // Pre-fetch avatars for all currently connected players
+                foreach (var p in BasePlayer.activePlayerList)
+                    FetchPlayerAvatar(p.userID);
+            }
 
             // Flush dirty player data to disk every 60 s instead of on every gather/kill event.
             _saveTimer = timer.Every(60f, () =>
@@ -916,6 +971,51 @@ namespace Oxide.Plugins
                         key, (ulong)0);
                 }
             }
+
+            // ── 3. Streak indicator icon ─────────────────────────────────────────
+            if (!string.IsNullOrEmpty(config.StreakIconUrl))
+                ImageLibrary.Call("AddImage", config.StreakIconUrl, "iq_streak_icon", (ulong)0);
+
+            // ── 4. Currency / XP / Rep reward icons ──────────────────────────────
+            if (!string.IsNullOrEmpty(config.RpIconUrl))
+                ImageLibrary.Call("AddImage", config.RpIconUrl, "iq_rp_icon", (ulong)0);
+            if (!string.IsNullOrEmpty(config.RepIconUrl))
+                ImageLibrary.Call("AddImage", config.RepIconUrl, "iq_rep_icon", (ulong)0);
+            if (!string.IsNullOrEmpty(config.XpIconUrl))
+                ImageLibrary.Call("AddImage", config.XpIconUrl, "iq_xp_icon", (ulong)0);
+
+            // ── 5. Ranks decoration art (right-side character image) ─────────────
+            if (!string.IsNullOrEmpty(config.RanksDecoImageUrl))
+                ImageLibrary.Call("AddImage", config.RanksDecoImageUrl, "iq_ranks_deco", (ulong)0);
+        }
+
+        // Fetches the player's Steam avatar via Community XML and registers it with ImageLibrary.
+        // Silently skips if ImageLibrary is absent, already cached, or the request fails.
+        private void FetchPlayerAvatar(ulong steamId)
+        {
+            if (!config.UseImageLibrary || ImageLibrary == null) return;
+            string key = $"iq_avatar_{steamId}";
+            if ((bool)(ImageLibrary.Call("HasImage", key, (ulong)0) ?? false)) return;
+
+            webrequest.Enqueue(
+                $"https://steamcommunity.com/profiles/{steamId}?xml=1",
+                null,
+                (code, response) =>
+                {
+                    if (code != 200 || string.IsNullOrEmpty(response)) return;
+                    // Extract <avatarFull><![CDATA[URL]]></avatarFull>
+                    const string open  = "<avatarFull><![CDATA[";
+                    const string close = "]]></avatarFull>";
+                    int s = response.IndexOf(open, StringComparison.Ordinal);
+                    if (s < 0) return;
+                    s += open.Length;
+                    int e = response.IndexOf(close, s, StringComparison.Ordinal);
+                    if (e < 0) return;
+                    string url = response.Substring(s, e - s);
+                    if (!string.IsNullOrEmpty(url))
+                        ImageLibrary.Call("AddImage", url, key, (ulong)0);
+                },
+                this, Oxide.Core.Libraries.RequestMethod.GET);
         }
 
         // Returns the Contractor NPC the player must deliver to.
@@ -1292,6 +1392,8 @@ namespace Oxide.Plugins
         {
             var data = GetOrCreate(player);
             EnsureDailyWindowFresh(data, player);
+            if (config.UseImageLibrary && ImageLibrary != null)
+                FetchPlayerAvatar(player.userID);
         }
 
         private void OnPlayerDisconnected(BasePlayer player, string reason)
@@ -1722,7 +1824,7 @@ namespace Oxide.Plugins
             {
                 _dataDirty = true;   // flushed to disk by the 60-second save timer
                 UpdateHud(player);
-                if (_ui.ContainsKey(player.userID)) OpenUI(player);
+                if (_ui.ContainsKey(player.userID)) RefreshPanels(player);
             }
         }
 
@@ -2004,14 +2106,17 @@ namespace Oxide.Plugins
                         data.Reputation += r.Amount + streakBonus;
                         break;
                     }
+                    case "currency":
                     case "economics":
-                        if (config.UseEconomics && Economics != null)
-                            Economics.Call("Deposit", player.UserIDString, (double)r.Amount);
-                        break;
                     case "server_rewards":
-                        if (config.UseServerRewards && ServerRewards != null)
+                    {
+                        string target = r.Type == "currency" ? _resolvedCurrency : r.Type;
+                        if (target == "economics" && Economics != null)
+                            Economics.Call("Deposit", player.UserIDString, (double)r.Amount);
+                        else if (target == "server_rewards" && ServerRewards != null)
                             ServerRewards.Call("AddPoints", player.userID, r.Amount);
                         break;
+                    }
                     case "skill_xp":
                         if (config.UseSkillTree && SkillTree != null)
                             SkillTree.Call("AwardXP", player, (double)r.Amount, Name);
@@ -2140,6 +2245,13 @@ namespace Oxide.Plugins
             return true;
         }
 
+        // Returns expiry as Unix ticks for sort comparison (0 if no cooldown record)
+        private long GetCooldownExpiry(PlayerData data, string id)
+        {
+            if (!data.Cooldowns.TryGetValue(id, out string cdStr)) return 0;
+            return DateTime.Parse(cdStr).Ticks;
+        }
+
         private QuestDefinition GetQuest(string id)
         {
             for (int i = 0; i < _quests.Count; i++)
@@ -2164,6 +2276,34 @@ namespace Oxide.Plugins
                     !q.Category.ToLower().Contains(search)) continue;
                 result.Add(q);
             }
+
+            // Sort: available quests first (by tier index ascending), then cooldown/locked quests
+            // last (sorted by remaining cooldown time ascending so shortest CD appears first).
+            result.Sort((a, b) =>
+            {
+                string cdA, cdB;
+                bool aOnCd   = a.Repeatable && a.CooldownSeconds > 0 && IsOnCooldown(data, a.Id, out cdA);
+                bool bOnCd   = b.Repeatable && b.CooldownSeconds > 0 && IsOnCooldown(data, b.Id, out cdB);
+                bool aLocked = !aOnCd && TierIndexFromName(a.Tier) > GetTierIndex(data);
+                bool bLocked = !bOnCd && TierIndexFromName(b.Tier) > GetTierIndex(data);
+                bool aDim    = aOnCd || aLocked;
+                bool bDim    = bOnCd || bLocked;
+
+                if (aDim != bDim) return aDim ? 1 : -1; // available before dimmed
+
+                if (!aDim)
+                    return TierIndexFromName(a.Tier).CompareTo(TierIndexFromName(b.Tier)); // by tier asc
+
+                // Both on cooldown — sort by remaining seconds ascending (shortest wait first)
+                if (aOnCd && bOnCd)
+                {
+                    long aExp = GetCooldownExpiry(data, a.Id);
+                    long bExp = GetCooldownExpiry(data, b.Id);
+                    return aExp.CompareTo(bExp);
+                }
+                return 0;
+            });
+
             return result;
         }
 
@@ -2223,20 +2363,20 @@ namespace Oxide.Plugins
             // Header 56px
             DrawHeader(c, P, player, data, tier, state);
 
-            // Footer strip 34px
-            UIPanel(c, P, "", C_BG2, "0 0", "1 0", 3, 0, 0, 34);
-            UILabel(c, P, C_TXT_MD, $"INFINITUM CONTRACTOR NETWORK  ·  v{Version}", 8, "0.2 0", "0.8 0", 0, 0, 0, 34, TextAnchor.MiddleCenter);
+            // Footer strip — only under the left sidebar (x=3–263); right side is handled by the chain strip in R
+            UIPanel(c, P, "", C_BG2, "0 0", "0 0", 3, 0, 263, 34);
 
-            // Left sidebar 260px
-            string L = "IQ_L";
+            // Left sidebar 260px — seed PanelFlip=false so first RefreshPanels flips to IQ_LA and destroys IQ_LB (no-op)
+            state.PanelFlip = false;
+            string L = "IQ_LB";
             UIPanel(c, P, L, C_BG3, "0 0", "0 1", 3, 34, 263, -56);
 
-            // Divider
-            UIGlowLine(c, P, "0 0", "0 1", 264, 34, 265, -56);
+            // Divider — full height including footer row
+            UIGlowLine(c, P, "0 0", "0 1", 264, 0, 265, -56);
 
-            // Right panel ~635px
-            string R = "IQ_R";
-            UIPanel(c, P, R, C_BG1, "0 0", "1 1", 265, 34, 0, -56);
+            // Right panel — extends to y=0 so chain strip occupies the footer space on the right side
+            string R = "IQ_RB";
+            UIPanel(c, P, R, C_BG1, "0 0", "1 1", 265, 0, 0, -56);
 
             DrawLeftSidebar(c, L, player, state, data);
             DrawRightPanel(c, R, player, state, data);
@@ -2249,31 +2389,39 @@ namespace Oxide.Plugins
             _ui.Remove(player.userID);
             CuiHelper.DestroyUi(player, UI_MAIN);
             CuiHelper.DestroyUi(player, UI_REWARDLIST);
+            // destroy both flip variants in case one is active
+            CuiHelper.DestroyUi(player, "IQ_LA");
+            CuiHelper.DestroyUi(player, "IQ_LB");
+            CuiHelper.DestroyUi(player, "IQ_RA");
+            CuiHelper.DestroyUi(player, "IQ_RB");
         }
 
-        // Partial redraw — only replaces sidebar + right panel, keeps header/footer/background intact (no full-screen flicker)
+        // Partial redraw — additive swap: new panels are added BEFORE old ones are destroyed,
+        // eliminating the blank-frame flash on every navigation click.
         private void RefreshPanels(BasePlayer player)
         {
             if (!_ui.TryGetValue(player.userID, out var state)) return;
             var data = GetOrCreate(player);
 
-            CuiHelper.DestroyUi(player, "IQ_L");
-            CuiHelper.DestroyUi(player, "IQ_R");
-            CuiHelper.DestroyUi(player, UI_REWARDLIST);
+            // Alternate between A/B names so the incoming panel renders before the outgoing one is removed
+            state.PanelFlip = !state.PanelFlip;
+            string L    = state.PanelFlip ? "IQ_LA" : "IQ_LB";
+            string R    = state.PanelFlip ? "IQ_RA" : "IQ_RB";
+            string oldL = state.PanelFlip ? "IQ_LB" : "IQ_LA";
+            string oldR = state.PanelFlip ? "IQ_RB" : "IQ_RA";
 
             var c = new CuiElementContainer();
             string P = "IQ_P";
-
-            string L = "IQ_L";
             UIPanel(c, P, L, C_BG3, "0 0", "0 1", 3, 34, 263, -56);
-
-            string R = "IQ_R";
             UIPanel(c, P, R, C_BG1, "0 0", "1 1", 265, 34, 0, -56);
-
             DrawLeftSidebar(c, L, player, state, data);
             DrawRightPanel(c, R, player, state, data);
 
+            // Add new panels first (they appear instantly), then remove the old ones
             CuiHelper.AddUi(player, c);
+            CuiHelper.DestroyUi(player, oldL);
+            CuiHelper.DestroyUi(player, oldR);
+            CuiHelper.DestroyUi(player, UI_REWARDLIST);
         }
 
         // ─────────────────────── CUI — Header ─────────────────────────────────
@@ -2296,10 +2444,14 @@ namespace Oxide.Plugins
                 $"Tier: {tn}", 9, "0 1", "0 1", 20, -42, 14 + pw - 2, -14,
                 "iq.ui tab ranks", true);
 
-            // Stats row
-            string streakStr = data.Streak > 0 ? $"  ·  +{data.Streak}d streak" : "";
-            string stats = $"{data.TotalCompletions()} completed  ·  {data.Reputation:N0} rep  ·  {data.ActiveQuests.Count}/{TierSlots[tier]} slots{streakStr}";
-            UILabel(c, P, C_TXT_MD, stats, 9, "0 1", "0.72 1", 14, -56, 0, -44, TextAnchor.MiddleLeft);
+            // Stats row — compact text
+            {
+                int   totalSlots = TierSlots[tier];
+                int   usedSlots  = data.ActiveQuests.Count;
+                string streakPart = data.Streak > 0 ? $"  ·  +{data.Streak}d streak" : "";
+                string stats = $"{usedSlots}/{totalSlots} slots  ·  {data.TotalCompletions()} done  ·  {data.Reputation:N0} rep{streakPart}";
+                UILabel(c, P, C_TXT_MD, stats, 8, "0 1", "0.72 1", 14f, -56f, 0f, -44f, TextAnchor.MiddleLeft);
+            }
 
             // Mode toggle button — distinct background so it's clearly a button
             bool isFullscreen = state.Mode == "fullscreen";
@@ -2314,29 +2466,34 @@ namespace Oxide.Plugins
         }
 
         // ─────────────────────── CUI — Tier Progression (Ranks right panel) ──
+        // Content is constrained to left 62% of the panel; right 38% is reserved for the
+        // decoration image (soldier/character art).
         private void DrawTierProgression(CuiElementContainer c, string parent, PlayerData data)
         {
             int curTier = GetTierIndex(data);
             int curXp   = data.TierXP;
 
-            const float ROW = 54f;
+            const float ROW   = 54f;
+            const string RMAX = "0.62 1"; // right edge anchor for all left-column content
+
+            // Decoration image
+            DrawRankDecoImage(c, parent);
 
             // Header
             UILabel(c, parent, UIColor(config.ThemeColor, 1f), "TIER PROGRESSION", 13,
-                "0 1", "1 1", 20, -50, -20, -10, TextAnchor.MiddleLeft, true);
+                "0 1", RMAX, 20, -50, -20, -10, TextAnchor.MiddleLeft, true);
             UILabel(c, parent, C_TXT_MD, "Earn XP from quest rewards to advance tiers and unlock more contract slots.",
-                9, "0 1", "1 1", 20, -72, -20, -50, TextAnchor.MiddleLeft);
-            UIGlowLine(c, parent, "0 1", "1 1", 20, -74, -20, -73);
+                9, "0 1", RMAX, 20, -72, -20, -50, TextAnchor.MiddleLeft);
+            UIGlowLine(c, parent, "0 1", RMAX, 20, -74, -20, -73);
 
             // Tier rows — Legend at top, Recruit at bottom
             float ry = -80f;
             for (int i = TierNames.Length - 1; i >= 0; i--)
             {
-                bool isCur   = i == curTier;
-                bool isDone  = i < curTier;
+                bool isCur    = i == curTier;
+                bool isDone   = i < curTier;
                 bool isLocked = !isCur && !isDone;
 
-                // Row bg: full tier-color tint (active = full TierBg, others = lighter TierRowBg)
                 string rowBg   = isCur ? TierBg[i] : TierRowBg[i];
                 string nameCol = isCur ? TierColors[i] : (isDone ? C_OK : C_TXT_MD);
                 string xpText;
@@ -2352,40 +2509,35 @@ namespace Oxide.Plugins
                 else
                     xpText = $"{TierThresholds[i]:N0} XP required";
 
-                // Row background: blurred glass base + subtle tier-color tint
-                UIPanel(c, parent, "", isCur ? "0 0 0 0.35" : "0 0 0 0.12", "0 1", "1 1", 0, ry - ROW, 0, ry, MAT_BLUR);
-                UIPanel(c, parent, "", rowBg, "0 1", "1 1", 0, ry - ROW, 0, ry);
-                // Thin separator between rows
-                UIPanel(c, parent, "", C_DIV, "0 1", "1 1", 6, ry - ROW, 0, ry - ROW + 1f);
-                // Thick left accent bar
-                UIPanel(c, parent, "", TierColors[i],  "0 1", "0 1", 0,  ry - ROW, 6,  ry);
+                // Row background (constrained to left column)
+                UIPanel(c, parent, "", isCur ? "0 0 0 0.35" : "0 0 0 0.12", "0 1", RMAX, 0, ry - ROW, 0, ry, MAT_BLUR);
+                UIPanel(c, parent, "", rowBg, "0 1", RMAX, 0, ry - ROW, 0, ry);
+                UIPanel(c, parent, "", C_DIV, "0 1", RMAX, 6, ry - ROW, 0, ry - ROW + 1f);
+                UIPanel(c, parent, "", TierColors[i], "0 1", "0 1", 0, ry - ROW, 6, ry);
 
-                // Current tier: active arrow indicator
                 if (isCur)
                     UILabel(c, parent, TierColors[i], "▶", 11, "0 1", "0 1", 8, ry - ROW, 24, ry, TextAnchor.MiddleCenter, true);
 
-                // Tier name — always bold
                 UILabel(c, parent, nameCol, TierNames[i], 13,
-                    "0 1", "0.45 1", 26, ry - ROW, 0, ry, TextAnchor.MiddleLeft, true);
+                    "0 1", "0.28 1", 26, ry - ROW, 0, ry, TextAnchor.MiddleLeft, true);
 
-                // Locked badge — vertically centered beside the tier name
                 if (isLocked)
                 {
-                    float mid = ry - ROW * 0.5f;  // vertical center of this row
+                    float mid = ry - ROW * 0.5f;
                     UIPanel(c, parent, "", "0.150 0.018 0.018 0.80", "0 1", "0 1", 152, mid - 8, 210, mid + 8);
                     UILabel(c, parent, C_ERR, "LOCKED", 7, "0 1", "0 1", 152, mid - 8, 210, mid + 8, TextAnchor.MiddleCenter, true);
                 }
 
                 UILabel(c, parent, C_TXT_HI, $"{TierSlots[i]} slots", 9,
-                    "0.45 1", "0.65 1", 0, ry - ROW, 0, ry, TextAnchor.MiddleCenter);
+                    "0.28 1", "0.45 1", 0, ry - ROW, 0, ry, TextAnchor.MiddleCenter);
 
                 UILabel(c, parent, isCur ? C_TXT_HI : (isDone ? C_OK : C_TXT_MD), xpText, 9,
-                    "0.65 1", "1 1", 0, ry - ROW, -16, ry, TextAnchor.MiddleRight);
+                    "0.45 1", RMAX, 0, ry - ROW, -10, ry, TextAnchor.MiddleRight);
 
                 ry -= ROW;
             }
 
-            // XP progress bar
+            // XP progress bar (left column)
             if (curTier < TierThresholds.Length - 1)
             {
                 int prev  = TierThresholds[curTier];
@@ -2393,14 +2545,12 @@ namespace Oxide.Plugins
                 float pct = Mathf.Clamp01((float)(curXp - prev) / (next - prev));
                 float barY = ry - 14f;
 
-                // Progress text — split so tier name renders in its tier color
                 string pctLabel  = $"{(int)(pct * 100)}%  to  ";
                 string tierLabel = TierNames[curTier + 1];
                 string barId = $"{parent}_TPBar";
-                UIPanel(c, parent, barId, C_BTN, "0 1", "1 1", 20, barY - 10, -20, barY);
-                // Progress text below the bar
-                UILabel(c, parent, C_TXT_HI,               pctLabel,  9, "0 1", "0.5 1", 20,  barY - 24, 0,   barY - 12, TextAnchor.MiddleRight);
-                UILabel(c, parent, TierColors[curTier + 1], tierLabel, 9, "0.5 1", "1 1",  0,  barY - 24, -20, barY - 12, TextAnchor.MiddleLeft);
+                UIPanel(c, parent, barId, C_BTN, "0 1", RMAX, 20, barY - 10, -20, barY);
+                UILabel(c, parent, C_TXT_HI,               pctLabel,  9, "0 1",   "0.31 1", 20, barY - 24,  0,   barY - 12, TextAnchor.MiddleRight);
+                UILabel(c, parent, TierColors[curTier + 1], tierLabel, 9, "0.31 1", RMAX,    0,  barY - 24, -20,  barY - 12, TextAnchor.MiddleLeft);
                 if (pct > 0f)
                     UIPanel(c, barId, "", TierColors[curTier], "0 0", $"{pct:F3} 1", 0, 0, 0, 0);
             }
@@ -2409,12 +2559,38 @@ namespace Oxide.Plugins
         // ─────────────────────── CUI — Left Sidebar ───────────────────────────
         private void DrawLeftSidebar(CuiElementContainer c, string L, BasePlayer player, UiState state, PlayerData data)
         {
-            // Tab row 30px at top
-            DrawSideTab(c, L, "BOARD",    "board",    state.Tab, 0f,       0.25f);
-            DrawSideTab(c, L, "ACTIVE",   "active",   state.Tab, 0.25f,    0.5f);
-            DrawSideTab(c, L, "ARCHIVES", "archives", state.Tab, 0.5f,     0.75f);
-            DrawSideTab(c, L, "RANKS",    "ranks",    state.Tab, 0.75f,    1f);
-            UIGlowLine(c, L, "0 1", "1 1", 0, -31, 0, -30);
+            // Default to first category when none is selected — no "ALL" chip means board must always be filtered
+            if (state.Tab == "board" && string.IsNullOrEmpty(state.Cat))
+            {
+                var firstCat = _quests
+                    .Select(q => q.Category)
+                    .Where(cat => !string.IsNullOrEmpty(cat))
+                    .OrderBy(cat => cat, StringComparer.OrdinalIgnoreCase)
+                    .FirstOrDefault();
+                if (firstCat != null) state.Cat = firstCat;
+            }
+
+            // Pre-compute filtered board list once — reused for badges AND the list render below
+            var cachedBoardList = FilteredQuests(player, state);
+
+            // Compute badge strings for each tab
+            int boardCount   = cachedBoardList.Count;
+            int activeTotal  = data.ActiveQuests.Count + data.ReadyToCollect.Count;
+            int tierSlots    = TierSlots[GetTierIndex(data)];
+            int archiveCount = data.Completed.Count;
+
+            string boardBadge   = boardCount   > 0 ? boardCount.ToString()                           : null;
+            string activeBadge  = activeTotal  > 0 ? $"{activeTotal}/{tierSlots}"                    : null;
+            string archiveBadge = archiveCount > 0 ? (archiveCount > 99 ? "99+" : archiveCount.ToString()) : null;
+
+            // Tab row 31px at top — proportional widths give ARCHIVES more room
+            // ACTIVE badge: green when slots in use, amber when full
+            string activeBadgeCol = (data.ActiveQuests.Count >= tierSlots) ? C_WRN : C_OK;
+            DrawSideTab(c, L, "BOARD",    "board",    state.Tab, 0f,    0.23f, boardBadge,   UIColor(config.ThemeColor, 1f));
+            DrawSideTab(c, L, "ACTIVE",   "active",   state.Tab, 0.23f, 0.46f, activeBadge,  activeBadgeCol);
+            DrawSideTab(c, L, "ARCHIVES", "archives", state.Tab, 0.46f, 0.73f, archiveBadge, C_TXT_MD);
+            DrawSideTab(c, L, "RANKS",    "ranks",    state.Tab, 0.73f, 1f);
+            UIGlowLine(c, L, "0 1", "1 1", 0, -32, 0, -31);
 
             bool isBoard = state.Tab == "board";
 
@@ -2425,32 +2601,77 @@ namespace Oxide.Plugins
                     if (!string.IsNullOrEmpty(q.Category)) catSet.Add(q.Category);
 
             bool showCatRow = isBoard && catSet.Count > 1;
+            float catH = 0f;
             if (showCatRow)
             {
-                UIPanel(c, L, "", C_BG0, "0 1", "1 1", 0, -55, 0, -31);
                 var cats = new List<string>(catSet);
                 cats.Sort();
-                cats.Insert(0, "");
-                float cx = 4f;
-                foreach (var cat in cats)
+                int catCount = cats.Count;
+
+                // Decide rows: if all chips fit at ≥46px wide use 1 row, otherwise 2 rows
+                const float CHIP_MARGIN = 4f;
+                const float CHIP_GAP    = 3f;
+                const float CHIP_H      = 17f;
+                const float USABLE_W    = 252f; // sidebar 260px - 4px each side
+                int maxInOneRow = Mathf.Max(1, (int)((USABLE_W + CHIP_GAP) / (46f + CHIP_GAP)));
+                bool twoRows    = catCount > maxInOneRow;
+                int  r1Count    = twoRows ? (catCount + 1) / 2 : catCount;
+                int  r2Count    = catCount - r1Count;
+                float r1W = (USABLE_W - CHIP_GAP * (r1Count - 1)) / r1Count;
+                float r2W = r2Count > 0 ? (USABLE_W - CHIP_GAP * (r2Count - 1)) / r2Count : 0;
+                catH = twoRows ? (CHIP_H * 2 + CHIP_GAP + 8f) : (CHIP_H + 8f);
+
+                float zoneTop = -32f;
+                float zoneBot = -(32f + catH);
+                UIPanel(c, L, "", "0.045 0.043 0.054 1", "0 1", "1 1", 0, zoneBot, 0, zoneTop);
+                UIPanel(c, L, "", C_DIV, "0 1", "1 1", 0, zoneTop - 1f, 0, zoneTop); // separator
+
+                // Helper: draw one chip
+                Action<string, float, float, float> drawChip = (cat, cx, cy_top, chipW) =>
                 {
-                    string label = string.IsNullOrEmpty(cat) ? "ALL" : cat.ToUpper();
-                    bool sel  = string.Equals(state.Cat, cat, StringComparison.OrdinalIgnoreCase);
-                    float cw  = label.Length * 6.2f + 10f;
-                    string bg  = sel ? UIColor(config.ThemeColor, 0.75f) : "0.180 0.178 0.210 0.90";
-                    string txt = sel ? "0.04 0.04 0.04 1" : C_TXT_HI;
-                    UIButton(c, L, bg, txt, label, 7,
-                        "0 1", "0 1", cx, -53, cx + cw, -33, $"iq.ui filter cat {cat}");
-                    cx += cw + 3f;
-                    if (cx > 240f) break;
+                    string label = cat.ToUpper();
+                    bool sel = string.Equals(state.Cat, cat, StringComparison.OrdinalIgnoreCase);
+                    string cmd = sel ? "iq.ui filter cat " : $"iq.ui filter cat {cat}";
+                    float cy_bot = cy_top - CHIP_H;
+                    if (sel)
+                    {
+                        UIPanel(c, L,  "", UIColor(config.ThemeColor, 0.88f), "0 1", "0 1", cx, cy_bot, cx + chipW, cy_top);
+                        UILabel(c, L,  C_BG0, label, 7, "0 1", "0 1", cx, cy_bot, cx + chipW, cy_top, TextAnchor.MiddleCenter, true);
+                        UIButton(c, L, "0 0 0 0", "0 0 0 0", "", 1, "0 1", "0 1", cx, cy_bot, cx + chipW, cy_top, cmd);
+                    }
+                    else
+                    {
+                        UIPanel(c, L,  "", "0.085 0.083 0.100 0.95", "0 1", "0 1", cx, cy_bot, cx + chipW, cy_top);
+                        UILabel(c, L,  C_TXT_DM, label, 7, "0 1", "0 1", cx, cy_bot, cx + chipW, cy_top, TextAnchor.MiddleCenter);
+                        UIButton(c, L, "0 0 0 0", "0 0 0 0", "", 1, "0 1", "0 1", cx, cy_bot, cx + chipW, cy_top, cmd);
+                    }
+                };
+
+                // Row 1
+                float row1Top = zoneTop - 4f;
+                float cx1 = CHIP_MARGIN;
+                for (int i = 0; i < r1Count; i++)
+                {
+                    drawChip(cats[i], cx1, row1Top, r1W);
+                    cx1 += r1W + CHIP_GAP;
+                }
+                // Row 2 (if needed)
+                if (twoRows)
+                {
+                    float row2Top = row1Top - CHIP_H - CHIP_GAP;
+                    float cx2 = CHIP_MARGIN;
+                    for (int i = r1Count; i < catCount; i++)
+                    {
+                        drawChip(cats[i], cx2, row2Top, r2W);
+                        cx2 += r2W + CHIP_GAP;
+                    }
                 }
             }
 
             // Search bar (board tab only, 26px below category row)
-            float catH = showCatRow ? 24f : 0f;
             if (isBoard)
             {
-                float sbTop    = -(31f + catH);
+                float sbTop    = -(32f + catH);
                 float sbBot    = sbTop - 26f;
                 bool  hasSearch = !string.IsNullOrEmpty(state.Search);
                 // Search bar — C_BTN panel IS the named container so it captures mouse events
@@ -2492,7 +2713,7 @@ namespace Oxide.Plugins
             }
 
             // Compute list
-            float tabsH = 31f + catH + (isBoard ? 26f : 0f);
+            float tabsH = 32f + catH + (isBoard ? 26f : 0f);
             List<QuestDefinition> boardList = null;
             int itemCount;
             switch (state.Tab)
@@ -2502,45 +2723,75 @@ namespace Oxide.Plugins
                 case "archives": itemCount = data.Completed.Count;    break;
                 case "ranks":    itemCount = 0; break;  // ranks draws its own list, no pagination
                 default:
-                    boardList = FilteredQuests(player, state);
+                    boardList = cachedBoardList; // reuse — already computed above for badge count
                     itemCount = boardList.Count;
                     break;
             }
 
-            int rowsPerPage = state.Mode == "fullscreen" ? RowsPerPageFs : RowsPerPageWin;
-            int totalPages = Math.Max(1, (itemCount + rowsPerPage - 1) / rowsPerPage);
-            int page  = Math.Min(state.Page, totalPages - 1);
-            int start = page * rowsPerPage;
-            int end   = Math.Min(start + rowsPerPage, itemCount);
-
-            // List area panel — bottom offset 38 (not 34) to leave a 4px gap above the pagination bar
+            // List area panel — full height, scroll view handles scrolling
             string LL = "IQ_LL";
-            UIPanel(c, L, LL, "0 0 0 0", "0 0", "1 1", 0, 38, 0, -tabsH);
+            UIPanel(c, L, LL, "0 0 0 0", "0 0", "1 1", 0, 0, 0, -tabsH);
 
-            if (itemCount == 0)
+            // Viewport height: L is 550px tall in window mode (640 - 56 header - 34 footer),
+            // LL subtracts tabsH. Fullscreen is larger; 800 is a safe floor for both.
+            float viewportH = state.Mode == "fullscreen" ? 800f : 550f - tabsH;
+
+            if (state.Tab == "ranks")
             {
-                string empty = state.Tab == "active"   ? "No active contracts." :
-                               state.Tab == "archives" ? "No completed contracts." :
-                                                         "No contracts match filters.";
-                UILabel(c, LL, C_TXT_DM, empty, 10, "0.05 0.38", "0.95 0.62", 0, -12, 0, 12, TextAnchor.MiddleCenter);
+                int rankCount = Math.Min(_players.Count, config.LeaderboardSize);
+                string SV = AddScrollView(c, LL, rankCount, viewportH);
+                DrawRanksRows(c, SV, player, state);
+            }
+            else if (itemCount == 0)
+            {
+                // Empty state — icon + message + contextual CTA
+                switch (state.Tab)
+                {
+                    case "active":
+                        int slots = TierSlots[GetTierIndex(data)];
+                        UILabel(c, LL, C_TXT_DM,  "No active contracts",        11, "0.05 0.5",  "0.95 0.5",  0, 4,  0, 22, TextAnchor.MiddleCenter, true);
+                        UILabel(c, LL, C_TXT_DM,  $"You have {slots} slot{(slots == 1 ? "" : "s")} available", 9, "0.05 0.5", "0.95 0.5", 0, -12, 0, 4, TextAnchor.MiddleCenter);
+                        UIButton(c, LL, UIColor(config.ThemeColor, 0.85f), C_BG0, "Browse Board →", 10,
+                            "0.2 0.5", "0.8 0.5", 0, -38, 0, -18, "iq.ui tab board", true);
+                        break;
+                    case "archives":
+                        UILabel(c, LL, C_TXT_DM, "No completed contracts yet",   11, "0.05 0.5", "0.95 0.5", 0, 4,  0, 22, TextAnchor.MiddleCenter, true);
+                        UILabel(c, LL, C_TXT_DM, "Complete a contract to see it here", 9, "0.05 0.5", "0.95 0.5", 0, -12, 0, 4, TextAnchor.MiddleCenter);
+                        UIButton(c, LL, UIColor(config.ThemeColor, 0.85f), C_BG0, "Browse Board →", 10,
+                            "0.2 0.5", "0.8 0.5", 0, -38, 0, -18, "iq.ui tab board", true);
+                        break;
+                    default: // board (filtered = 0)
+                        bool hasSearch = !string.IsNullOrEmpty(state.Search);
+                        string emptyMsg = hasSearch
+                            ? $"No results for  \"{state.Search}\""
+                            : $"No contracts in  {state.Cat}";
+                        UILabel(c, LL, C_TXT_DM, emptyMsg, 11, "0.05 0.5", "0.95 0.5", 0, 4, 0, 22, TextAnchor.MiddleCenter, true);
+                        if (hasSearch)
+                        {
+                            UILabel(c, LL, C_TXT_DM, "Try a different search term", 9, "0.05 0.5", "0.95 0.5", 0, -12, 0, 4, TextAnchor.MiddleCenter);
+                            UIButton(c, LL, C_BTN, UIColor(config.ThemeColor, 1f), "Clear Search", 10,
+                                "0.2 0.5", "0.8 0.5", 0, -38, 0, -18, "iq.ui search", true);
+                        }
+                        break;
+                }
             }
             else
             {
+                string SV = AddScrollView(c, LL, itemCount, viewportH);
                 switch (state.Tab)
                 {
                     case "board":
-                        for (int i = start; i < end; i++)
-                            DrawListRow(c, LL, boardList[i], i - start, state.Detail == boardList[i].Id, data);
+                        for (int i = 0; i < itemCount; i++)
+                            DrawListRow(c, SV, boardList[i], i, state.Detail == boardList[i].Id, data);
                         break;
                     case "active":
-                        for (int i = start; i < end; i++)
+                        for (int i = 0; i < itemCount; i++)
                         {
                             if (i < data.ReadyToCollect.Count)
                             {
-                                // Ready-to-collect shown at top with green badge
                                 var rcDef = GetQuest(data.ReadyToCollect[i].Id);
                                 if (rcDef != null)
-                                    DrawListRow(c, LL, rcDef, i - start, state.Detail == rcDef.Id, data,
+                                    DrawListRow(c, SV, rcDef, i, state.Detail == rcDef.Id, data,
                                         isReady: true);
                             }
                             else
@@ -2548,58 +2799,115 @@ namespace Oxide.Plugins
                                 int ai = i - data.ReadyToCollect.Count;
                                 var aqDef = GetQuest(data.ActiveQuests[ai].Id);
                                 if (aqDef != null)
-                                    DrawListRow(c, LL, aqDef, i - start, state.Detail == aqDef.Id, data,
+                                    DrawListRow(c, SV, aqDef, i, state.Detail == aqDef.Id, data,
                                         isActive: true, activeQuest: data.ActiveQuests[ai]);
                             }
                         }
                         break;
                     case "archives":
-                        for (int i = start; i < end; i++)
+                        for (int i = 0; i < itemCount; i++)
                         {
-                            int ri = data.Completed.Count - 1 - (start + (i - start));
+                            int ri = data.Completed.Count - 1 - i;
                             if (ri < 0) continue;
                             var arDef = GetQuest(data.Completed[ri].Id);
                             if (arDef != null)
-                                DrawListRow(c, LL, arDef, i - start, state.Detail == arDef.Id, data,
+                                DrawListRow(c, SV, arDef, i, state.Detail == arDef.Id, data,
                                     isArchive: true, archiveRecord: data.Completed[ri]);
                         }
                         break;
-                    case "ranks":
-                        DrawRanksRows(c, LL, player, state);
-                        break;
                 }
             }
-
-            // Pagination 34px at bottom
-            UIPanel(c, L, "", C_BG2, "0 0", "1 0", 0, 0, 0, 34);
-            UIGlowLine(c, L, "0 0", "1 0", 0, 33, 0, 34);
-            if (page > 0)
-                UIButton(c, L, UIColor(config.ThemeColor, 0.80f), C_BG0, "◀", 11,
-                    "0 0", "0 0", 4, 5, 28, 29, $"iq.ui page {page - 1}", true);
-            UILabel(c, L, C_TXT_DM, $"{page + 1} / {totalPages}", 9,
-                "0 0", "1 0", 28, 0, -28, 34, TextAnchor.MiddleCenter);
-            if (page < totalPages - 1)
-                UIButton(c, L, UIColor(config.ThemeColor, 0.80f), C_BG0, "▶", 11,
-                    "1 0", "1 0", -28, 5, -4, 29, $"iq.ui page {page + 1}", true);
         }
 
+        // Creates a vertical scroll view inside parent, sized for rowCount rows.
+        // Returns the name of the scroll view (use as parent for row elements).
+        // Returns the name of the CONTENT panel — rows must be parented here, not to the scroll view element.
+        // viewportH: estimated height of the visible area. Content must be >= viewport to avoid
+        // Unity ScrollRect positioning content at the bottom when it is shorter than the viewport.
+        private string AddScrollView(CuiElementContainer c, string parent, int rowCount, float viewportH = 520f)
+        {
+            float contentH = Math.Max(rowCount * ROW_H + 2f, viewportH);
+            string svName      = parent + "_SV";
+            string contentName = parent + "_SC";
+
+            // Scroll view element — defines the visible window
+            c.Add(new CuiElement
+            {
+                Name   = svName,
+                Parent = parent,
+                Components =
+                {
+                    new CuiScrollViewComponent
+                    {
+                        Vertical          = true,
+                        Horizontal        = false,
+                        MovementType      = ScrollRect.MovementType.Elastic,
+                        Elasticity        = 0.1f,
+                        ScrollSensitivity = 20f,
+                        Inertia           = true,
+                        DecelerationRate  = 0.135f,
+                        ContentTransform  = new CuiRectTransform
+                        {
+                            AnchorMin = "0 1", AnchorMax = "1 1",
+                            OffsetMin = $"0 -{contentH}", OffsetMax = "0 0"
+                        },
+                        VerticalScrollbar = new CuiScrollbar
+                        {
+                            AutoHide    = true,
+                            Size        = 6f,
+                            HandleColor = UIColor(config.ThemeColor, 0.55f),
+                            TrackColor  = "0.06 0.05 0.07 0.55"
+                        }
+                    },
+                    new CuiRectTransformComponent
+                    {
+                        AnchorMin = "0 0", AnchorMax = "1 1",
+                        OffsetMin = "0 0", OffsetMax = "0 0"
+                    }
+                }
+            });
+
+            // Content panel — same anchor/offset as ContentTransform.
+            // Rows are parented HERE so the scroll view can move them as a unit.
+            UIPanel(c, svName, contentName, "0 0 0 0", "0 1", "1 1", 0, -contentH, 0, 0);
+
+            return contentName;
+        }
+
+        // badgeColor: CUI color string for the badge pill — null = theme color
         private void DrawSideTab(CuiElementContainer c, string parent, string label, string tab,
-            string current, float aL, float aR)
+            string current, float aL, float aR, string badge = null, string badgeColor = null)
         {
             bool active = current == tab;
-            string bg  = active ? UIColor(config.ThemeColor, 0.95f) : "0.055 0.053 0.062 0.98";
-            string txt = active ? C_BG0 : C_TXT_MD;
+            string bg  = active ? UIColor(config.ThemeColor, 0.22f) : "0.040 0.038 0.046 0.98";
+            string txt = active ? UIColor(config.ThemeColor, 1f) : "0.420 0.418 0.440 1";
             c.Add(new CuiButton
             {
                 Button = { Color = bg, Command = $"iq.ui tab {tab}" },
-                RectTransform = { AnchorMin = $"{aL:F4} 1", AnchorMax = $"{aR:F4} 1", OffsetMin = "1 -29", OffsetMax = "-1 -1" },
+                RectTransform = { AnchorMin = $"{aL:F4} 1", AnchorMax = $"{aR:F4} 1", OffsetMin = "1 -31", OffsetMax = "-1 -1" },
                 Text = { Text = label, FontSize = 9, Color = txt,
                     Align = TextAnchor.MiddleCenter, Font = active ? "robotocondensed-bold.ttf" : "robotocondensed-regular.ttf" }
             }, parent);
-            // Active tab: accent bottom highlight strip
+
             if (active)
-                UIPanel(c, parent, "", UIColor(config.ThemeColor, 0.7f),
-                    $"{aL:F4} 1", $"{aR:F4} 1", 1, -30, -1, -28);
+            {
+                // Bottom accent strip — bright + glow simulation (two layers)
+                UIPanel(c, parent, "", UIColor(config.ThemeColor, 0.35f), $"{aL:F4} 1", $"{aR:F4} 1", 1, -32, -1, -30);
+                UIPanel(c, parent, "", UIColor(config.ThemeColor, 1f),    $"{aL:F4} 1", $"{aR:F4} 1", 1, -31, -1, -30);
+                // Top accent strip — thin line at top of active tab
+                UIPanel(c, parent, "", UIColor(config.ThemeColor, 0.55f), $"{aL:F4} 1", $"{aR:F4} 1", 1, -2,  -1, -1);
+                // Left/right edge lines to frame the active tab
+                UIPanel(c, parent, "", UIColor(config.ThemeColor, 0.30f), $"{aL:F4} 1", $"{aL:F4} 1", 1, -30, 2,  -1);
+                UIPanel(c, parent, "", UIColor(config.ThemeColor, 0.30f), $"{aR:F4} 1", $"{aR:F4} 1", -2, -30, -1, -1);
+            }
+
+            // Badge — just the number, no background, colour-coded per context
+            if (!string.IsNullOrEmpty(badge))
+            {
+                string bc = badgeColor ?? UIColor(config.ThemeColor, 1f);
+                UILabel(c, parent, bc, badge, 7,
+                    $"{aR:F4} 1", $"{aR:F4} 1", -30, -13, -2, -3, TextAnchor.MiddleCenter, true);
+            }
         }
 
         private void DrawListRow(CuiElementContainer c, string parent, QuestDefinition def, int idx,
@@ -2626,47 +2934,82 @@ namespace Oxide.Plugins
                 rowPctInt = (int)(rowPct * 100f);
             }
 
-            string rowBg = isReady  ? C_OK_BG :
-                           selected ? C_SEL :
-                           idx % 2 == 0 ? C_BG4 : C_BG5;
+            // Board-only state checks (cooldown / locked) — used for row tint + meta line
+            bool isBoardRow = !isActive && !isArchive && !isReady;
+            string cdRow = "";
+            bool onCooldownRow = isBoardRow && def.Repeatable && def.CooldownSeconds > 0
+                && IsOnCooldown(data, def.Id, out cdRow);
+            bool tierLockedRow = isBoardRow && TierIndexFromName(def.Tier) > GetTierIndex(data);
+            bool slotsFullRow  = isBoardRow && !tierLockedRow && !onCooldownRow
+                && data.ActiveQuests.Count >= TierSlots[GetTierIndex(data)];
+            bool dimRow = onCooldownRow || tierLockedRow;
+
+            string rowBg = isReady       ? C_OK_BG :
+                           selected      ? C_SEL :
+                           dimRow        ? "0.038 0.036 0.042 0.65" :
+                           idx % 2 == 0  ? C_BG4 : C_BG5;
             UIPanel(c, parent, "", rowBg, "0 1", "1 1", 0, bot, 0, top);
-            UIPanel(c, parent, "", isReady ? C_OK : TierColors[tier], "0 1", "0 1", 0, bot, 3, top);
+            string leftBar = isReady ? C_OK : (dimRow ? C_TXT_DM : TierColors[tier]);
+            UIPanel(c, parent, "", leftBar, "0 1", "0 1", 0, bot, 3, top);
             if (selected) UIPanel(c, parent, "", UIColor(config.ThemeColor, 0.95f), "1 1", "1 1", -3, bot, 0, top);
 
             // Bottom divider
             UIPanel(c, parent, "", C_DIV, "0 1", "1 1", 3, bot, 0, bot + 1f);
 
-
-            string titleColor = isReady ? C_OK : C_TXT_HI;
-            string title = def.Title.Length > 24 ? def.Title.Substring(0, 22) + ".." : def.Title;
-            UILabel(c, parent, titleColor, title, 10,
-                "0 1", "1 1", 7, bot + 14f, -36, top - 2f, TextAnchor.MiddleLeft, selected || isReady);
-
-            string questTypeBadge = def.Weekly ? "✦ WEEKLY  ·  " : def.Daily ? "↻ DAILY  ·  " : "";
-            string meta;
-            if (isReady)
-                meta = "★ COLLECT";
-            else if (isActive && activeQuest != null)
-                meta = $"{questTypeBadge}{def.Category}  ·  {rowPctInt}%";
-            else if (isArchive && archiveRecord != null)
-                meta = $"{questTypeBadge}{def.Category}  ·  x{archiveRecord.Times}";
-            else
-                meta = $"{questTypeBadge}{def.Category}  ·  {Stars(def.DifficultyStars)}";
-
-            string metaColor = isReady ? C_OK : (selected ? UIColor(config.ThemeColor, 0.90f) : C_TXT_MD);
-            UILabel(c, parent, metaColor, meta, 8,
-                "0 1", "1 1", 7, bot + 2f, -36, bot + 16f, TextAnchor.MiddleLeft);
-
-            // VIP badge (top-right corner, shown when quest has VIP rewards)
-            bool hasVipRewards = def.VipRewards != null && def.VipRewards.Count > 0;
-            float iconRightEdge = hasVipRewards ? -68f : -6f;
-            if (hasVipRewards)
+            // Progress bar strip (active rows only)
+            if (isActive && rowPct >= 0f)
             {
-                UIPanel(c, parent, "", "0.35 0.25 0.02 0.90", "1 1", "1 1", -65, bot + 24, -4, top - 4);
-                UILabel(c, parent, "0.980 0.820 0.200 1", "★ VIP", 7, "1 1", "1 1", -65, bot + 24, -4, top - 4, TextAnchor.MiddleCenter, true);
+                string barId = $"IQ_LB{idx}";
+                UIPanel(c, parent, barId, C_BTN, "0 1", "1 1", 3, bot + 1f, 0, bot + 4f);
+                if (rowPct > 0f)
+                    UIPanel(c, barId, "", UIColor(config.ThemeColor, 0.85f), "0 0", $"{rowPct:F3} 1", 0, 0, 0, 0);
             }
 
-            // Objective icon (right edge, 22×22)
+            // Title — top zone of row
+            string titleColor = isReady ? C_OK : (dimRow ? C_TXT_DM : C_TXT_HI);
+            string title = def.Title.Length > 26 ? def.Title.Substring(0, 24) + ".." : def.Title;
+            UILabel(c, parent, titleColor, title, 10,
+                "0 1", "1 1", 7, bot + 22f, -36, top - 3f, TextAnchor.MiddleLeft, (selected || isReady) && !dimRow);
+
+            // Meta line — middle zone
+            string chainBadge = !string.IsNullOrEmpty(def.ChainId) ? $"⛓ PART {def.ChainOrder + 1}  ·  " : "";
+            string questTypeBadge = chainBadge + (def.Weekly ? "✦ WEEKLY  ·  " : def.Daily ? "↻ DAILY  ·  " : "");
+            string meta;
+            string metaColor;
+            if (isReady)
+            { meta = "★ COLLECT";                                                 metaColor = C_OK; }
+            else if (onCooldownRow)
+            { meta = $"CD  {cdRow}";                                              metaColor = C_ERR; }
+            else if (tierLockedRow)
+            { meta = "TIER LOCKED";                                               metaColor = C_ERR; }
+            else if (slotsFullRow)
+            { meta = "SLOTS FULL";                                                metaColor = C_WRN; }
+            else if (isActive && activeQuest != null)
+            { meta = $"{questTypeBadge}{def.Category}  ·  {rowPctInt}%";         metaColor = selected ? UIColor(config.ThemeColor, 0.90f) : C_TXT_MD; }
+            else if (isArchive && archiveRecord != null)
+            { meta = $"{questTypeBadge}{def.Category}  ·  x{archiveRecord.Times}"; metaColor = selected ? UIColor(config.ThemeColor, 0.90f) : C_TXT_MD; }
+            else
+            { meta = $"{questTypeBadge}{def.Category}  ·  {Stars(def.DifficultyStars)}"; metaColor = selected ? UIColor(config.ThemeColor, 0.90f) : C_TXT_MD; }
+
+            UILabel(c, parent, metaColor, meta, 8,
+                "0 1", "1 1", 7, bot + 12f, -36, bot + 22f, TextAnchor.MiddleLeft);
+
+            // Objective preview line — bottom zone (first objective as readable text)
+            if (def.Objectives.Count > 0 && !isArchive)
+            {
+                var firstObj = def.Objectives[0];
+                string objPreview = !string.IsNullOrEmpty(firstObj.Description)
+                    ? firstObj.Description
+                    : $"{ObjectiveTypeDisplay(firstObj.Type)} {firstObj.Target}  ×{firstObj.Count}";
+                if (objPreview.Length > 34) objPreview = objPreview.Substring(0, 32) + "..";
+                string previewColor = isActive && activeQuest != null && activeQuest.Progress.Count > 0
+                    && activeQuest.Progress[0] >= firstObj.Count ? C_OK : C_TXT_DM;
+                UILabel(c, parent, previewColor, objPreview, 8,
+                    "0 1", "1 1", 7, bot + 2f, -36, bot + 12f, TextAnchor.MiddleLeft);
+            }
+
+            // Objective icon (right edge, 36×36 — VIP badge removed, full space for icon)
+            const float iconRightEdge = -6f;
             if (def.Objectives.Count > 0)
             {
                 var firstObj = def.Objectives[0];
@@ -2675,13 +3018,42 @@ namespace Oxide.Plugins
                 {
                     string killImg = GetKillObjectiveIcon(firstObj);
                     if (killImg != null)
-                        UIImage(c, parent, killImg, "1 1", "1 1", iconRightEdge - 30, bot + 6, iconRightEdge, top - 6);
+                        UIImage(c, parent, killImg, "1 1", "1 1", iconRightEdge - 36, bot + 8, iconRightEdge, top - 8);
                 }
                 else
                 {
                     int iconId = GetObjectiveIconItemId(firstObj);
                     if (iconId != 0)
-                        UIItemIcon(c, parent, iconId, "1 1", "1 1", iconRightEdge - 30, bot + 6, iconRightEdge, top - 6);
+                        UIItemIcon(c, parent, iconId, "1 1", "1 1", iconRightEdge - 36, bot + 8, iconRightEdge, top - 8);
+                }
+            }
+
+            // Streak badge on daily rows — always shown; bright when streak active, dim placeholder otherwise
+            if (def.Daily)
+            {
+                bool hasStreak = data.Streak > 0;
+                string streakImg = GetImage("iq_streak_icon", 0);
+                if (streakImg != null)
+                {
+                    // Icon: full opacity when streak active, dim when not
+                    if (hasStreak)
+                        UIImage(c, parent, streakImg, "1 1", "1 1", iconRightEdge - 16f, top - 24f, iconRightEdge, top - 8f);
+                    else
+                        UIImage(c, parent, streakImg, "1 1", "1 1", iconRightEdge - 16f, top - 24f, iconRightEdge, top - 8f);
+                    // Streak count overlay (only when active)
+                    if (hasStreak)
+                        UILabel(c, parent, UIColor("#FF9020", 1f), $"{data.Streak}", 6,
+                            "1 1", "1 1", iconRightEdge - 16f, top - 24f, iconRightEdge, top - 8f, TextAnchor.LowerRight, true);
+                }
+                else
+                {
+                    // Fallback pill — always visible on daily rows
+                    string pillBg  = hasStreak ? UIColor("#FF6B00", 0.35f) : "0.15 0.12 0.10 0.55";
+                    string pillTxt = hasStreak ? UIColor("#FF9020", 1f)    : UIColor("#FF6B00", 0.45f);
+                    string pillLbl = hasStreak ? $"+{data.Streak}d"        : "↻";
+                    UIPanel(c, parent, "", pillBg, "1 1", "1 1", iconRightEdge - 34f, top - 22f, iconRightEdge, top - 9f);
+                    UILabel(c, parent, pillTxt, pillLbl, 7,
+                        "1 1", "1 1", iconRightEdge - 34f, top - 22f, iconRightEdge, top - 9f, TextAnchor.MiddleCenter, true);
                 }
             }
 
@@ -2741,7 +3113,7 @@ namespace Oxide.Plugins
             if (state.Tab == "ranks")
             {
                 if (state.SelectedPlayer != 0 && _players.TryGetValue(state.SelectedPlayer, out var rp))
-                    DrawRankProfile(c, R, rp, state.SelectedPlayer == player.userID);
+                    DrawRankProfile(c, R, rp, state.SelectedPlayer == player.userID, state.SelectedPlayer);
                 else
                     DrawTierProgression(c, R, data);
                 return;
@@ -2779,9 +3151,11 @@ namespace Oxide.Plugins
             string cdFmt  = displayCd > 0 ? FormatTime(TimeSpan.FromSeconds(displayCd)) : "—";
             if (detailIsVip && def.VipCooldownSeconds > 0 && def.CooldownSeconds > 0) cdFmt += " ★";
             string tlFmt  = def.TimeLimitMinutes > 0 ? FormatTime(TimeSpan.FromMinutes(def.TimeLimitMinutes)) : "—";
-            string detailBadge = def.Weekly ? "✦ WEEKLY  ·  " : def.Daily ? "↻ DAILY  ·  " : "";
-            string metaLine = $"{detailBadge}{TierNames[tier]}  ·  {def.Category}  ·  {Stars(def.DifficultyStars)}  ·  Repeat  {(def.Repeatable ? "Yes" : "No")}  ·  CD  {cdFmt}  ·  Time  {tlFmt}";
-            UILabel(c, R, C_TXT_DM, metaLine, 8, "0 1", "1 1", 12, -66, -122, -44, TextAnchor.MiddleLeft);
+            // Classification stamp — dossier style: type prefix + clearance tier + category + difficulty + repeat + cd
+            string classPrefix = def.Weekly ? "✦ WEEKLY  ·  " : def.Daily ? "↻ DAILY  ·  " : "";
+            string repeatStamp = def.Repeatable ? "REPEATABLE" : "SINGLE-USE";
+            string metaLine = $"{classPrefix}{TierNames[tier].ToUpper()}  ·  {def.Category.ToUpper()}  ·  {Stars(def.DifficultyStars)}  ·  {repeatStamp}  ·  CD {cdFmt}  ·  TL {tlFmt}";
+            UILabel(c, R, UIColor(config.ThemeColor, 0.50f), metaLine, 8, "0 1", "1 1", 12, -66, -122, -44, TextAnchor.MiddleLeft);
 
             // Action button — top-right of header (112 × 44px)
             if (readyQ != null)
@@ -2842,7 +3216,7 @@ namespace Oxide.Plugins
 
             // Objective cards — icon card (same as rewards) + description label + bar below
             const float OBJ_W      = 88f;   // card width  — matches reward boxW
-            const float OBJ_CARD_H = 80f;   // card height — matches reward boxH
+            const float OBJ_CARD_H = 68f;   // card height — matches reward boxH
             const float OBJ_BAR_H  = 5f;    // progress bar below card
             const float OBJ_LBL_H  = 16f;   // description label below bar
             const float OBJ_GAP    = 10f;
@@ -2924,7 +3298,7 @@ namespace Oxide.Plugins
             string S_ECO   = UIColor("#5BC85B", 1f);
             string S_RP    = UIColor("#C890F0", 1f);
 
-            float boxW = 88f, boxH = 80f, boxGap = 10f;
+            float boxW = 88f, boxH = 68f, boxGap = 10f;
             float rx = 12f, boxRowY = ry - 25f;
             const int REWARD_CARD_MAX = 5;
             bool stdCapped = def.Rewards.Count > REWARD_CARD_MAX;
@@ -2975,6 +3349,14 @@ namespace Oxide.Plugins
                             typeCol = S_ECO;  typeLabel = "$";   amtLabel = $"${rw.Amount}";       break;
                         case "server_rewards":
                             typeCol = S_RP;   typeLabel = "RP";  amtLabel = $"{rw.Amount} RP";    break;
+                        case "currency":
+                        {
+                            if (_resolvedCurrency == "economics")
+                            { typeCol = S_ECO; typeLabel = "$";  amtLabel = $"${rw.Amount}"; }
+                            else
+                            { typeCol = S_RP;  typeLabel = "RP"; amtLabel = $"{rw.Amount} RP"; }
+                            break;
+                        }
                         case "skill_xp":
                             typeCol = S_XP;   typeLabel = "SKL"; amtLabel = $"+{rw.Amount} XP";  break;
                         case "command":
@@ -2985,10 +3367,27 @@ namespace Oxide.Plugins
                             amtLabel  = $"x{rw.Amount}";
                             break;
                     }
-                    UILabel(c, R, typeCol, typeLabel, 22, "0 1", "0 1",
-                        rx, boxRowY - boxH + 16, rx + boxW, boxRowY - 18, TextAnchor.MiddleCenter, true);
-                    UILabel(c, R, S_TEXT, amtLabel, 9, "0 1", "0 1",
-                        rx, boxRowY - boxH, rx + boxW, boxRowY - boxH + 16, TextAnchor.MiddleCenter);
+                    // Check for custom icon image
+                    bool isRpType  = rw.Type.ToLower() == "server_rewards" || rw.Type.ToLower() == "currency";
+                    bool isRepType = rw.Type.ToLower() == "reputation";
+                    bool isXpType  = rw.Type.ToLower() == "tier_xp" || rw.Type.ToLower() == "skill_xp";
+                    string iconKey = isRpType ? "iq_rp_icon" : (isRepType ? "iq_rep_icon" : (isXpType ? "iq_xp_icon" : null));
+                    string iconPng = iconKey != null ? GetImage(iconKey, 0) : null;
+
+                    if (iconPng != null)
+                    {
+                        // Icon in upper area, amount label at bottom — matches item card layout
+                        UIImage(c, R, iconPng, "0 1", "0 1", rx + 6, boxRowY - boxH + 16, rx + boxW - 6, boxRowY - 16);
+                        UILabel(c, R, S_TEXT, amtLabel, 9, "0 1", "0 1",
+                            rx, boxRowY - boxH, rx + boxW, boxRowY - boxH + 16, TextAnchor.MiddleCenter);
+                    }
+                    else
+                    {
+                        UILabel(c, R, typeCol, typeLabel, 22, "0 1", "0 1",
+                            rx, boxRowY - boxH + 16, rx + boxW, boxRowY - 18, TextAnchor.MiddleCenter, true);
+                        UILabel(c, R, S_TEXT, amtLabel, 9, "0 1", "0 1",
+                            rx, boxRowY - boxH, rx + boxW, boxRowY - boxH + 16, TextAnchor.MiddleCenter);
+                    }
                 }
 
                 rx += boxW + boxGap;
@@ -3018,11 +3417,26 @@ namespace Oxide.Plugins
 
                 if (!isVip)
                 {
-                    // Locked banner for non-VIP players
-                    UIPanel(c, R, "", "0.14 0.10 0.02 0.88", "0 1", "1 1", 12, vy - 50, -12, vy - 20);
-                    UILabel(c, R, S_VIP_HDR, "⊘  VIP MEMBERS RECEIVE BONUS REWARDS  ⊘", 9,
-                        "0 1", "1 1", 12, vy - 50, -12, vy - 20, TextAnchor.MiddleCenter, true);
-                    chipY = vy - 54f;
+                    // Show dim card stubs so non-VIP can see what they're missing
+                    float vx = 12f;
+                    float vboxRowY = vy - 25f;
+                    int vShow = Math.Min(def.VipRewards.Count, REWARD_CARD_MAX);
+                    for (int vi = 0; vi < vShow; vi++)
+                    {
+                        if (vx + boxW > 600f) { vx = 12f; vboxRowY -= boxH + 8f; }
+                        // Dim gold stub — locked overlay
+                        UIPanel(c, R, "", "0.16 0.12 0.02 0.75", "0 1", "0 1", vx, vboxRowY - boxH, vx + boxW, vboxRowY);
+                        UIPanel(c, R, "", "0.60 0.46 0.04 0.12", "0 1", "0 1", vx, vboxRowY - 2f,   vx + boxW, vboxRowY);
+                        UIPanel(c, R, "", "0.50 0.38 0.04 0.35", "0 1", "0 1", vx, vboxRowY - 2f,   vx + boxW, vboxRowY - 1f);
+                        UILabel(c, R, "0.55 0.42 0.04 0.55", "⊘", 22,
+                            "0 1", "0 1", vx, vboxRowY - boxH, vx + boxW, vboxRowY, TextAnchor.MiddleCenter, true);
+                        vx += boxW + boxGap;
+                    }
+                    // Callout label below stubs
+                    UIPanel(c, R, "", "0.14 0.10 0.02 0.55", "0 1", "1 1", 12, vboxRowY - boxH - 20f, -12, vboxRowY - boxH - 2f);
+                    UILabel(c, R, S_VIP_HDR, "★  VIP members unlock these bonus rewards", 8,
+                        "0 1", "1 1", 16, vboxRowY - boxH - 20f, -12, vboxRowY - boxH - 2f, TextAnchor.MiddleLeft);
+                    chipY = vboxRowY - boxH - 24f;
                 }
                 else
                 {
@@ -3071,6 +3485,10 @@ namespace Oxide.Plugins
                                 case "reputation":     vTypeLabel = "REP"; vAmtLabel = $"+{vr.Amount} Rep"; break;
                                 case "economics":      vTypeLabel = "$";   vAmtLabel = $"${vr.Amount}";     break;
                                 case "server_rewards": vTypeLabel = "RP";  vAmtLabel = $"{vr.Amount} RP";   break;
+                                case "currency":
+                                    vTypeLabel = _resolvedCurrency == "economics" ? "$" : "RP";
+                                    vAmtLabel  = _resolvedCurrency == "economics" ? $"${vr.Amount}" : $"{vr.Amount} RP";
+                                    break;
                                 case "skill_xp":       vTypeLabel = "SKL"; vAmtLabel = $"+{vr.Amount} XP"; break;
                                 case "command":        vTypeLabel = "CMD"; vAmtLabel = "Custom";            break;
                                 default:
@@ -3097,26 +3515,8 @@ namespace Oxide.Plugins
                 }
             }
 
-            // Prereqs
-            if (def.RequiredIds != null && def.RequiredIds.Count > 0)
-            {
-                float py = chipY - 38f;
-                UILabel(c, R, C_TXT_DM, "Requires:", 8, "0 1", "0 1", 12, py - 18, 78, py, TextAnchor.MiddleLeft);
-                float px = 80f;
-                foreach (var rid in def.RequiredIds)
-                {
-                    var req = GetQuest(rid);
-                    bool met = IsCompleted(data, rid);
-                    string rl = req?.Title ?? rid;
-                    float rw = rl.Length * 6.5f + 12f;
-                    UIPanel(c, R, "", met ? C_OK_BG : C_ERR_BG, "0 1", "0 1", px, py - 18, px + rw, py);
-                    UILabel(c, R, met ? C_OK : C_ERR, rl, 8,
-                        "0 1", "0 1", px + 4, py - 18, px + rw - 4, py, TextAnchor.MiddleCenter);
-                    px += rw + 4f;
-                }
-            }
-
-            // Chain timeline
+            // Chain progress strip — anchored to the BOTTOM of the right panel (never overflows content)
+            // Drawn before bottom-action returns so it appears under those panels
             if (!string.IsNullOrEmpty(def.ChainId))
             {
                 var chain = new List<QuestDefinition>();
@@ -3126,37 +3526,54 @@ namespace Oxide.Plugins
 
                 if (chain.Count > 1)
                 {
-                    float cy = chipY - (def.RequiredIds != null && def.RequiredIds.Count > 0 ? 42f : 12f);
-                    string chainLabel = !string.IsNullOrEmpty(def.ChainTitle) ? def.ChainTitle : $"Chain: {def.ChainId}";
-                    UILabel(c, R, UIColor(config.ThemeColor, 0.82f), chainLabel.ToUpper(), 9, "0 1", "1 1", 12, cy - 18, 300, cy, TextAnchor.MiddleLeft, true);
-                    UIGlowLine(c, R, "0 1", "1 1", 12, cy - 21, -12, cy - 20);
-
-                    float dotX = 12f;
-                    float dotY = cy - 22f;
-                    float dotR = cy - 38f;
-                    bool chainDone = data.CompletedChains.Contains(def.ChainId);
-
+                    // 34px strip anchored to bottom of R (this IS the footer on the right side)
+                    UIPanel(c, R, "", C_BG2, "0 0", "1 0", 0, 0, 0, 34);
+                    UIGlowLine(c, R, "0 0", "1 0", 0, 33, 0, 34); // top separator line
+                    // Chain name label on left
+                    string chainLabel = !string.IsNullOrEmpty(def.ChainTitle)
+                        ? def.ChainTitle.ToUpper()
+                        : def.ChainId.ToUpper();
+                    int chainLabelW = chainLabel.Length * 7 + 16;
+                    UILabel(c, R, UIColor(config.ThemeColor, 0.65f), chainLabel, 8,
+                        "0 0", "0 0", 8, 0, chainLabelW, 34, TextAnchor.MiddleLeft, true);
+                    // Dots + connectors
+                    float dotStartX = chainLabelW + 6f;
+                    float dotSpacing = Math.Min(52f, (600f - dotStartX) / Math.Max(chain.Count, 1));
+                    float dx = dotStartX;
                     for (int ci = 0; ci < chain.Count; ci++)
                     {
-                        var cq = chain[ci];
-                        bool cDone = IsCompleted(data, cq.Id);
-                        bool cCur  = cq.Id == def.Id;
-                        bool isLast = ci == chain.Count - 1;
+                        var cq    = chain[ci];
+                        bool cDone   = IsCompleted(data, cq.Id);
+                        bool cCur    = cq.Id == def.Id;
+                        bool cLocked = !cDone && !cCur && !PrereqsMet(data, cq);
+                        bool cActive = IsActive(data, cq.Id);
 
-                        // Dot
-                        string dotCol = cDone ? C_OK : cCur ? UIColor(config.ThemeColor, 1f) : C_BTN_HI;
-                        UIPanel(c, R, "", dotCol, "0 1", "0 1", dotX + 2, dotY - 2, dotX + 12, dotR + 2);
+                        // Dot color: green=done, theme=current/active, red=locked, yellow=upcoming (available, not started)
+                        string dotCol  = cDone   ? C_OK
+                                       : cActive ? UIColor(config.ThemeColor, 1f)
+                                       : cCur    ? UIColor(config.ThemeColor, 1f)
+                                       : cLocked ? C_ERR
+                                       : C_WRN;   // yellow = reachable but not yet started
+                        string lblCol  = cDone   ? C_OK
+                                       : cCur    ? C_TXT_HI
+                                       : cLocked ? C_ERR
+                                       : C_WRN;
 
-                        // Label below dot
-                        string cLabel = cq.Title.Length > 12 ? cq.Title.Substring(0, 10) + ".." : cq.Title;
-                        UILabel(c, R, cDone ? C_OK : cCur ? C_TXT_HI : C_TXT_DM, cLabel, 7,
-                            "0 1", "0 1", dotX - 4, dotR - 12, dotX + 58, dotR, TextAnchor.MiddleCenter);
+                        // Dot + label
+                        UIPanel(c, R, "", dotCol, "0 0", "0 0", dx, 18, dx + 8, 26);
+                        string cLabel = cq.Title.Length > 9 ? cq.Title.Substring(0, 7) + ".." : cq.Title;
+                        UILabel(c, R, lblCol, cLabel, 6,
+                            "0 0", "0 0", dx - 14, 4, dx + 22, 16, TextAnchor.MiddleCenter);
 
-                        dotX += 64f;
+                        // Connector to next
+                        if (ci < chain.Count - 1)
+                            UIPanel(c, R, "", cDone ? C_OK : C_DIV, "0 0", "0 0", dx + 8, 21, dx + dotSpacing - 2, 23);
 
-                        // Connector line to next
-                        if (!isLast)
-                            UIPanel(c, R, "", cDone ? C_OK : C_DIV, "0 1", "0 1", dotX - 52, dotY - 7, dotX - 2, dotY - 9);
+                        // Clickable: open that quest's detail — if locked, clicking highlights in red (detail shows LOCKED)
+                        UIButton(c, R, "0 0 0 0", "0 0 0 0", "", 1,
+                            "0 0", "0 0", dx - 14, 2, dx + 24, 32, $"iq.ui detail {cq.Id}");
+
+                        dx += dotSpacing;
                     }
                 }
             }
@@ -3216,61 +3633,134 @@ namespace Oxide.Plugins
             return null;
         }
 
-        private void DrawRankProfile(CuiElementContainer c, string R, PlayerData pd, bool isMe)
+        // Draws the right-side decoration image (soldier/character art) into the right panel R.
+        private void DrawRankDecoImage(CuiElementContainer c, string parent)
+        {
+            string decoImg = GetImage("iq_ranks_deco", 0);
+            if (string.IsNullOrEmpty(decoImg)) return;
+
+            // Character image — right-edge anchored, 354px wide, slight right overflow for bleed
+            UIImage(c, parent, decoImg, "1 0", "1 1", -340, 0, 14, 0);
+
+            // Left-to-right gradient fade — blends image into the right panel background
+            UIPanel(c, parent, "", "0.06 0.06 0.07 0.90", "0.62 0", "0.645 1", 0, 0, 0, 0);
+            UIPanel(c, parent, "", "0.06 0.06 0.07 0.65", "0.645 0", "0.670 1", 0, 0, 0, 0);
+            UIPanel(c, parent, "", "0.06 0.06 0.07 0.38", "0.670 0", "0.695 1", 0, 0, 0, 0);
+            UIPanel(c, parent, "", "0.06 0.06 0.07 0.18", "0.695 0", "0.720 1", 0, 0, 0, 0);
+            UIPanel(c, parent, "", "0.06 0.06 0.07 0.07", "0.720 0", "0.745 1", 0, 0, 0, 0);
+        }
+
+        // ── Rank profile card — shown on right panel when a leaderboard player is selected ──────
+        // Layout: left 62% = player info; right 38% = decoration art (DrawRankDecoImage).
+        // steamId is used to look up the cached Steam avatar from ImageLibrary.
+        private void DrawRankProfile(CuiElementContainer c, string R, PlayerData pd, bool isMe, ulong steamId)
         {
             int tier = GetTierIndex(pd);
+            const string RMAX = "0.62 1";
 
-            // Profile header
-            UIPanel(c, R, "", TierBg[tier], "0 1", "1 1", 0, -66, 0, 0);
-            UIPanel(c, R, "", TierColors[tier], "0 1", "0 1", 0, -66, 3, 0);
-            UIPanel(c, R, "", C_DIV, "0 1", "1 1", 0, -67, 0, -66);
-            UILabel(c, R, isMe ? C_OK : C_TXT_HI, pd.DisplayName, 15, "0 1", "0.78 1", 12, -44, 0, -2, TextAnchor.MiddleLeft, true);
-            UILabel(c, R, TierColors[tier], TierNames[tier], 9, "0 1", "0.4 1", 12, -66, 0, -46, TextAnchor.MiddleLeft);
-            if (isMe) UILabel(c, R, C_OK, "YOU", 9, "0.4 1", "0.7 1", 0, -66, 0, -46, TextAnchor.MiddleLeft, true);
+            // Decoration image
+            DrawRankDecoImage(c, R);
 
-            // Stats grid
-            float sy = -86f;
-            DrawStatBlock(c, R, "COMPLETIONS", pd.TotalCompletions().ToString(), 12, sy);
-            DrawStatBlock(c, R, "REPUTATION",  pd.Reputation.ToString("N0"),     148, sy);
-            DrawStatBlock(c, R, "STREAK",      $"{pd.Streak}d",                  284, sy);
-            DrawStatBlock(c, R, "ACTIVE",      pd.ActiveQuests.Count.ToString(), 420, sy);
+            // ── Header strip ─────────────────────────────────────────────────────
+            UIPanel(c, R, "", TierBg[tier], "0 1", RMAX, 0, -82, 0, 0);
+            UIPanel(c, R, "", TierColors[tier], "0 1", "0 1", 0, -82, 4, 0);
+            UIGlowLine(c, R, "0 1", RMAX, 0, -83, 0, -82);
 
-            // Tier progress bar — driven by TierXP
-            float ry2 = sy - 56f;
-            UILabel(c, R, UIColor(config.ThemeColor, 0.82f), "TIER PROGRESS", 9, "0 1", "1 1", 12, ry2 - 18, 130, ry2, TextAnchor.MiddleLeft, true);
+            // ── Player avatar (Steam, 56×56 px square in header) ────────────────
+            string avatarPng = GetImage($"iq_avatar_{steamId}", 0);
+            float nameOffX   = 14f;
+            if (avatarPng != null)
+            {
+                // Avatar square with tier-color border
+                UIPanel(c, R, "", TierColors[tier], "0 1", "0 1", 12, -80, 70, -24);
+                UIImage(c, R, avatarPng, "0 1", "0 1", 13, -79, 69, -25);
+                nameOffX = 78f; // shift name right to avoid avatar
+            }
+
+            // Player name (large)
+            UILabel(c, R, isMe ? C_OK : C_TXT_HI, pd.DisplayName, 17,
+                "0 1", RMAX, nameOffX, -50, 0, -4, TextAnchor.MiddleLeft, true);
+
+            // Tier badge pill
+            float badgeX = nameOffX;
+            UIPanel(c, R, "", TierBg[tier], "0 1", "0 1", badgeX, -80, badgeX + 96, -56);
+            UIPanel(c, R, "", TierColors[tier], "0 1", "0 1", badgeX, -80, badgeX + 2, -56);
+            UILabel(c, R, TierColors[tier], TierNames[tier], 8,
+                "0 1", "0 1", badgeX + 4, -80, badgeX + 96, -56, TextAnchor.MiddleLeft, true);
+
+            // YOU badge
+            if (isMe)
+            {
+                UIPanel(c, R, "", C_OK_BG, "0 1", "0 1", badgeX + 100, -80, badgeX + 134, -56);
+                UILabel(c, R, C_OK, "YOU", 7, "0 1", "0 1", badgeX + 100, -80, badgeX + 134, -56, TextAnchor.MiddleCenter, true);
+            }
+
+            // ── Stats grid (4 blocks, 118px each, 6px gap, starting at x=14) ────
+            float sy = -100f;
+            DrawRankStatBlock(c, R, "COMPLETIONS", pd.TotalCompletions().ToString(), 14,  sy);
+            DrawRankStatBlock(c, R, "REPUTATION",  pd.Reputation.ToString("N0"),     140, sy);
+            DrawRankStatBlock(c, R, "STREAK",      $"{pd.Streak}d",                  266, sy);
+            DrawRankStatBlock(c, R, "ACTIVE",      pd.ActiveQuests.Count.ToString(), 392, sy);
+
+            // ── Tier progress bar ────────────────────────────────────────────────
+            float ry2 = sy - 60f;
+            UILabel(c, R, UIColor(config.ThemeColor, 0.82f), "TIER PROGRESS", 9,
+                "0 1", "0 1", 14, ry2 - 16, 140, ry2, TextAnchor.MiddleLeft, true);
+
             int totalXp    = pd.TierXP;
             int nextThresh = tier < TierThresholds.Length - 1 ? TierThresholds[tier + 1] : TierThresholds[tier];
             int prevThresh = TierThresholds[tier];
             float tierPct  = tier >= TierThresholds.Length - 1 ? 1f :
                 nextThresh > prevThresh ? Mathf.Clamp01((float)(totalXp - prevThresh) / (nextThresh - prevThresh)) : 1f;
 
-            string barProg = "IQ_TP";
-            UIPanel(c, R, barProg, C_BTN, "0 1", "1 1", 12, ry2 - 36, -12, ry2 - 20);
+            string barProg = R + "_TPBar";
+            UIPanel(c, R, barProg, C_BTN, "0 1", RMAX, 14, ry2 - 34, -14, ry2 - 18);
             if (tierPct > 0f)
                 UIPanel(c, barProg, "", TierColors[tier], "0 0", $"{tierPct:F3} 1", 0, 0, 0, 0);
-            string nextTierName = tier < TierNames.Length - 1 ? TierNames[tier + 1] : "MAX";
-            UILabel(c, R, C_TXT_DM, tier >= TierThresholds.Length - 1
-                ? "MAX TIER REACHED"
-                : $"{totalXp} / {nextThresh} XP  →  {nextTierName}",
-                8, "0 1", "1 1", 12, ry2 - 50, -12, ry2 - 36, TextAnchor.MiddleCenter);
 
-            // Recent completions
-            float recY = ry2 - 64f;
-            UILabel(c, R, UIColor(config.ThemeColor, 0.82f), "RECENT CONTRACTS", 9, "0 1", "1 1", 12, recY - 18, 170, recY, TextAnchor.MiddleLeft, true);
-            UIGlowLine(c, R, "0 1", "1 1", 12, recY - 21, -12, recY - 20);
-            int recCount = Math.Min(pd.Completed.Count, 5);
+            string nextTierName = tier < TierNames.Length - 1 ? TierNames[tier + 1] : "MAX";
+            UILabel(c, R, C_TXT_DM,
+                tier >= TierThresholds.Length - 1
+                    ? "MAX TIER REACHED"
+                    : $"{totalXp:N0} / {nextThresh:N0} XP  →  {nextTierName}",
+                8, "0 1", RMAX, 14, ry2 - 50, -14, ry2 - 34, TextAnchor.MiddleCenter);
+
+            // ── Recent contracts ─────────────────────────────────────────────────
+            float recY = ry2 - 62f;
+            UILabel(c, R, UIColor(config.ThemeColor, 0.82f), "RECENT CONTRACTS", 9,
+                "0 1", "0 1", 14, recY - 16, 180, recY, TextAnchor.MiddleLeft, true);
+            UIGlowLine(c, R, "0 1", RMAX, 14, recY - 19, 0, recY - 18);
+
+            int recCount = Math.Min(pd.Completed.Count, 6);
             for (int i = 0; i < recCount; i++)
             {
-                var rec = pd.Completed[pd.Completed.Count - 1 - i];
-                var def = GetQuest(rec.Id);
-                float rt = recY - 24f - i * 22f;
-                string qTitle = def?.Title ?? rec.Id;
-                int qt = def != null ? TierIndexFromName(def.Tier) : 0;
-                UIPanel(c, R, "", TierColors[qt], "0 1", "0 1", 12, rt - 16, 14, rt);
-                UILabel(c, R, C_TXT_MD, qTitle, 9, "0 1", "1 1", 18, rt - 18, -90, rt, TextAnchor.MiddleLeft);
-                UILabel(c, R, C_TXT_DM, DateTime.Parse(rec.At).ToLocalTime().ToString("MM-dd"), 8,
-                    "1 1", "1 1", -88, rt - 18, -8, rt, TextAnchor.MiddleRight);
+                var rec  = pd.Completed[pd.Completed.Count - 1 - i];
+                var rDef = GetQuest(rec.Id);
+                float rt = recY - 22f - i * 22f;
+                string qTitle = rDef?.Title ?? rec.Id;
+                int qt = rDef != null ? TierIndexFromName(rDef.Tier) : 0;
+
+                if (i % 2 == 0)
+                    UIPanel(c, R, "", C_BG4, "0 1", RMAX, 14, rt - 18, 0, rt);
+                UIPanel(c, R, "", TierColors[qt], "0 1", "0 1", 14, rt - 16, 16, rt);
+                UILabel(c, R, C_TXT_MD, qTitle, 9, "0 1", RMAX, 20, rt - 18, -78, rt, TextAnchor.MiddleLeft);
+                UILabel(c, R, C_TXT_DM, DateTime.Parse(rec.At).ToLocalTime().ToString("MM-dd"),
+                    8, "0 1", RMAX, -76, rt - 18, -14, rt, TextAnchor.MiddleRight);
             }
+            if (recCount == 0)
+                UILabel(c, R, C_TXT_DM, "No completed contracts yet.", 9,
+                    "0 1", RMAX, 14, recY - 40, 0, recY - 18, TextAnchor.MiddleLeft);
+        }
+
+        // Smaller stat block sized to fit 4 blocks in the 62%-wide left column (~510px usable).
+        // Each block: 118px wide with 8px gap → 4 × 118 + 3 × 8 = 496px, starting at x=14.
+        private void DrawRankStatBlock(CuiElementContainer c, string parent, string label, string value, float x, float y)
+        {
+            const float w = 118f;
+            UIPanel(c, parent, "", C_BG3, "0 1", "0 1", x, y - 46, x + w, y);
+            UIPanel(c, parent, "", C_DIV, "0 1", "0 1", x, y - 46, x + w, y - 44);
+            UILabel(c, parent, C_TXT_HI, value, 17, "0 1", "0 1", x + 4, y - 34, x + w - 4, y - 2, TextAnchor.MiddleCenter, true);
+            UILabel(c, parent, C_TXT_DM, label, 7, "0 1", "0 1", x + 4, y - 46, x + w - 4, y - 34, TextAnchor.MiddleCenter);
         }
 
         private void DrawStatBlock(CuiElementContainer c, string parent, string label, string value, float x, float y)
@@ -3376,6 +3866,7 @@ namespace Oxide.Plugins
                 case "reputation":    return $"+{rw.Amount} Reputation";
                 case "economics":     return $"${rw.Amount} Economics";
                 case "server_rewards":return $"{rw.Amount} RP";
+                case "currency":      return _resolvedCurrency == "economics" ? $"${rw.Amount}" : $"{rw.Amount} RP";
                 case "skill_xp":      return $"+{rw.Amount} Skill XP";
                 case "command":       return "Custom Reward";
                 default:              return $"{rw.Type}  ×{rw.Amount}";
@@ -3834,13 +4325,6 @@ namespace Oxide.Plugins
                     RefreshPanels(player);
                     break;
                 }
-                case "page":
-                {
-                    if (!_ui.TryGetValue(player.userID, out var ps)) return;
-                    ps.Page = arg.GetInt(1, 0);
-                    RefreshPanels(player);
-                    break;
-                }
                 case "filter":
                 {
                     if (!_ui.TryGetValue(player.userID, out var fs)) return;
@@ -3869,11 +4353,10 @@ namespace Oxide.Plugins
                 {
                     string qid = arg.GetString(1);
                     bool accepted = AcceptQuest(player, qid);
-                    // Only switch to active tab when acceptance succeeded; on failure the player
-                    // stays on the board detail view so they can see why they're blocked.
-                    if (accepted && _ui.TryGetValue(player.userID, out var aqs))
-                    { aqs.Tab = "active"; aqs.Detail = qid; aqs.Page = 0; }
-                    OpenUI(player);
+                    // Stay on the board tab so the player can keep browsing.
+                    // The right panel will update to show IN PROGRESS state for the quest they just accepted.
+                    // Tab only changes if the player manually clicks ACTIVE.
+                    RefreshPanels(player);
                     break;
                 }
                 case "abandon":
@@ -4639,7 +5122,7 @@ namespace Oxide.Plugins
         }
 
         // Short label for card reward row (no shortname — just amount)
-        private static string RewardShortLabel(RewardDef r)
+        private string RewardShortLabel(RewardDef r)
         {
             switch (r.Type.ToLower())
             {
@@ -4649,6 +5132,7 @@ namespace Oxide.Plugins
                 case "reputation":     return $"+{r.Amount}Rep";
                 case "economics":      return $"${r.Amount}";
                 case "server_rewards": return $"{r.Amount}RP";
+                case "currency":       return _resolvedCurrency == "economics" ? $"${r.Amount}" : $"{r.Amount}RP";
                 case "command":        return "Cmd";
                 default:               return r.Type;
             }
@@ -4660,12 +5144,13 @@ namespace Oxide.Plugins
             {
                 case "item":         return $"{r.Shortname} x{r.Amount}";
                 case "blueprint":    return $"BP:{r.Shortname}";
-                case "tier_xp":      return $"+{r.Amount} XP";
-                case "reputation":   return $"+{r.Amount} Rep";
-                case "economics":    return $"${r.Amount}";
+                case "tier_xp":        return $"+{r.Amount} XP";
+                case "reputation":     return $"+{r.Amount} Rep";
+                case "economics":      return $"${r.Amount}";
                 case "server_rewards": return $"{r.Amount} RP";
-                case "command":      return "Custom";
-                default:             return r.Type;
+                case "currency":       return _resolvedCurrency == "economics" ? $"${r.Amount}" : $"{r.Amount} RP";
+                case "command":        return "Custom";
+                default:               return r.Type;
             }
         }
 

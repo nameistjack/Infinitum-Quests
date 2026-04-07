@@ -1,4 +1,4 @@
-[
+﻿[
     {
         "Id":  "rep_wolf_hunt",
         "Title":  "Wolf Hunt",
@@ -43,6 +43,13 @@
                             "Amount":  25,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -56,6 +63,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  10,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -105,6 +119,13 @@
                             "Amount":  35,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -118,6 +139,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  15,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -167,6 +195,13 @@
                             "Amount":  35,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -180,6 +215,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  15,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -229,6 +271,13 @@
                             "Amount":  30,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -242,6 +291,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  15,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -297,6 +353,13 @@
                             "Amount":  40,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -310,6 +373,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  15,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -359,6 +429,13 @@
                             "Amount":  60,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -372,6 +449,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  20,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -421,6 +505,13 @@
                             "Amount":  65,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -434,6 +525,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  20,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -483,6 +581,13 @@
                             "Amount":  65,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -496,6 +601,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  20,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -545,6 +657,13 @@
                             "Amount":  70,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -558,6 +677,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  25,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -607,6 +733,13 @@
                             "Amount":  120,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -620,6 +753,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  35,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -669,6 +809,13 @@
                             "Amount":  140,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -689,6 +836,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  35,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -745,6 +899,13 @@
                             "Amount":  180,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  900,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -758,6 +919,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  300,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -814,6 +982,13 @@
                             "Amount":  180,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  900,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -827,6 +1002,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  300,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -883,6 +1065,13 @@
                             "Amount":  280,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  1500,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -903,6 +1092,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  80,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  500,
                                "SkinId":  0,
                                "CustomName":  ""
                            }

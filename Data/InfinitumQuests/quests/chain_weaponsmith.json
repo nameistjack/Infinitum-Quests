@@ -1,7 +1,7 @@
-[
+﻿[
     {
         "Id":  "ws_01_bow",
-        "Title":  "The Weaponsmith — I: First Arms",
+        "Title":  "The Weaponsmith â€” I: First Arms",
         "Description":  "Every armourer starts somewhere. Craft basic bows to prove your hands know the work.",
         "Tier":  "Recruit",
         "Category":  "Craft",
@@ -37,6 +37,13 @@
                             "Amount":  30,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -45,13 +52,20 @@
                                "Amount":  10,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "ws_02_shotgun_pipe",
-        "Title":  "The Weaponsmith — II: Pipe Work",
-        "Description":  "A real armourer works with metal. Craft waterpipe shotguns — crude but effective.",
+        "Title":  "The Weaponsmith â€” II: Pipe Work",
+        "Description":  "A real armourer works with metal. Craft waterpipe shotguns â€” crude but effective.",
         "Tier":  "Recruit",
         "Category":  "Craft",
         "DifficultyStars":  1,
@@ -89,6 +103,13 @@
                             "Amount":  40,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -97,12 +118,19 @@
                                "Amount":  14,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "ws_03_double_barrel",
-        "Title":  "The Weaponsmith — III: Double Action",
+        "Title":  "The Weaponsmith â€” III: Double Action",
         "Description":  "Step up from pipe. A double-barrel is reliable, lethal, and a statement of intent.",
         "Tier":  "Recruit",
         "Category":  "Craft",
@@ -141,6 +169,13 @@
                             "Amount":  55,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -156,12 +191,19 @@
                                "Amount":  18,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "ws_04_pistol",
-        "Title":  "The Weaponsmith — IV: Sidearm",
+        "Title":  "The Weaponsmith â€” IV: Sidearm",
         "Description":  "Transition to semi-automatic work. Precision matters now.",
         "Tier":  "Operative",
         "Category":  "Craft",
@@ -207,6 +249,13 @@
                             "Amount":  75,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -222,12 +271,19 @@
                                "Amount":  25,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "ws_05_smg",
-        "Title":  "The Weaponsmith — V: Full Auto",
+        "Title":  "The Weaponsmith â€” V: Full Auto",
         "Description":  "The Thompson demands respect. Craft one and prove you\u0027ve earned the right to carry it.",
         "Tier":  "Operative",
         "Category":  "Craft",
@@ -273,6 +329,13 @@
                             "Amount":  110,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -288,12 +351,19 @@
                                "Amount":  36,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "ws_06_semiauto_rifle",
-        "Title":  "The Weaponsmith — VI: Designated Marksman",
+        "Title":  "The Weaponsmith â€” VI: Designated Marksman",
         "Description":  "Semi-auto rifles separate gunsmiths from armouries. Two for the network.",
         "Tier":  "Specialist",
         "Category":  "Craft",
@@ -346,6 +416,13 @@
                             "Amount":  170,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  900,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -361,12 +438,19 @@
                                "Amount":  55,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  300,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "ws_07_ak",
-        "Title":  "The Weaponsmith — VII: Master Armourer",
+        "Title":  "The Weaponsmith â€” VII: Master Armourer",
         "Description":  "The AK-47. The last word in craftsmanship on this island. Forge one and claim the title.",
         "Tier":  "Specialist",
         "Category":  "Craft",
@@ -461,6 +545,13 @@
                             "Amount":  220,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  1500,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -481,6 +572,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  70,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  500,
                                "SkinId":  0,
                                "CustomName":  ""
                            }

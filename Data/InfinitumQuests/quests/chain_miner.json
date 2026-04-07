@@ -1,7 +1,7 @@
-[
+﻿[
     {
         "Id":  "chain_stone_1",
-        "Title":  "Stonecutter I — First Strike",
+        "Title":  "Stonecutter I â€” First Strike",
         "Description":  "Start your career as a Network stonecutter. First load out.",
         "Tier":  "Recruit",
         "Category":  "Gather",
@@ -44,6 +44,13 @@
                             "Amount":  28,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -59,12 +66,19 @@
                                "Amount":  10,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "chain_stone_2",
-        "Title":  "Stonecutter II — Building Stock",
+        "Title":  "Stonecutter II â€” Building Stock",
         "Description":  "The bases won\u0027t build themselves. Keep the stone flowing.",
         "Tier":  "Recruit",
         "Category":  "Gather",
@@ -110,6 +124,13 @@
                             "Amount":  55,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -125,12 +146,19 @@
                                "Amount":  18,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "chain_stone_3",
-        "Title":  "Stonecutter III — Quarry Operations",
+        "Title":  "Stonecutter III â€” Quarry Operations",
         "Description":  "Run a full quarry shift. The fortifications need stone walls.",
         "Tier":  "Operative",
         "Category":  "Gather",
@@ -176,6 +204,13 @@
                             "Amount":  95,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -191,12 +226,19 @@
                                "Amount":  30,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "chain_stone_4",
-        "Title":  "Stonecutter IV — Mountain Work",
+        "Title":  "Stonecutter IV â€” Mountain Work",
         "Description":  "Mountain-scale output. The Network is building something enormous.",
         "Tier":  "Specialist",
         "Category":  "Gather",
@@ -242,6 +284,13 @@
                             "Amount":  190,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -264,12 +313,19 @@
                                "Amount":  55,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "chain_stone_5",
-        "Title":  "Stonecutter V — Fortress Foundation",
+        "Title":  "Stonecutter V â€” Fortress Foundation",
         "Description":  "A quarter of a million stone. You\u0027re building an empire, one node at a time.",
         "Tier":  "Elite",
         "Category":  "Gather",
@@ -315,6 +371,13 @@
                             "Amount":  320,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  900,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -337,12 +400,19 @@
                                "Amount":  95,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  300,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "chain_stone_6",
-        "Title":  "Stonecutter VI — The Monument",
+        "Title":  "Stonecutter VI â€” The Monument",
         "Description":  "Half a million stone. Your name is carved into the bedrock of this island.",
         "Tier":  "Legend",
         "Category":  "Gather",
@@ -388,6 +458,13 @@
                             "Amount":  480,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  1500,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -415,6 +492,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  150,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  500,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -456,7 +540,7 @@
     },
     {
         "Id":  "chain_metal_1",
-        "Title":  "Metalsmith I — First Ore",
+        "Title":  "Metalsmith I â€” First Ore",
         "Description":  "Start your career as a Network metalsmith. First ore load out.",
         "Tier":  "Recruit",
         "Category":  "Gather",
@@ -499,6 +583,13 @@
                             "Amount":  28,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -514,12 +605,19 @@
                                "Amount":  10,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "chain_metal_2",
-        "Title":  "Metalsmith II — Smelter Feed",
+        "Title":  "Metalsmith II â€” Smelter Feed",
         "Description":  "Keep the smelters running. The armory demands metal.",
         "Tier":  "Recruit",
         "Category":  "Gather",
@@ -565,6 +663,13 @@
                             "Amount":  55,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -580,12 +685,19 @@
                                "Amount":  18,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "chain_metal_3",
-        "Title":  "Metalsmith III — Armory Contracts",
+        "Title":  "Metalsmith III â€” Armory Contracts",
         "Description":  "Full armory production run. Every ton counts in this war.",
         "Tier":  "Operative",
         "Category":  "Gather",
@@ -631,6 +743,13 @@
                             "Amount":  90,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -646,12 +765,19 @@
                                "Amount":  30,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "chain_metal_4",
-        "Title":  "Metalsmith IV — Weapons Programme",
+        "Title":  "Metalsmith IV â€” Weapons Programme",
         "Description":  "The weapons programme needs your output. Don\u0027t let production stall.",
         "Tier":  "Specialist",
         "Category":  "Gather",
@@ -704,6 +830,13 @@
                             "Amount":  180,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -726,12 +859,19 @@
                                "Amount":  55,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "chain_metal_5",
-        "Title":  "Metalsmith V — Ironworks",
+        "Title":  "Metalsmith V â€” Ironworks",
         "Description":  "A hundred thousand tonnes of ore. The Network\u0027s ironworks live because of you.",
         "Tier":  "Elite",
         "Category":  "Gather",
@@ -784,6 +924,13 @@
                             "Amount":  300,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  900,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -806,12 +953,19 @@
                                "Amount":  90,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  300,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "chain_metal_6",
-        "Title":  "Metalsmith VI — The Foundry",
+        "Title":  "Metalsmith VI â€” The Foundry",
         "Description":  "A quarter of a million. The greatest metalsmith the Contractor Network has ever employed.",
         "Tier":  "Legend",
         "Category":  "Gather",
@@ -864,6 +1018,13 @@
                             "Amount":  450,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  1500,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -891,6 +1052,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  150,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  500,
                                "SkinId":  0,
                                "CustomName":  ""
                            }

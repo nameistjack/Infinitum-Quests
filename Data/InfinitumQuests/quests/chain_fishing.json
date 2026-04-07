@@ -1,7 +1,7 @@
-[
+﻿[
     {
         "Id":  "fish_01_trout",
-        "Title":  "The Angler — I: First Cast",
+        "Title":  "The Angler â€” I: First Cast",
         "Description":  "Every fisherman starts with a rod and patience. Catch your first batch of small trout.",
         "Tier":  "Recruit",
         "Category":  "Gathering",
@@ -37,6 +37,13 @@
                             "Amount":  20,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -45,12 +52,19 @@
                                "Amount":  7,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "fish_02_perch",
-        "Title":  "The Angler — II: Yellow Perch",
+        "Title":  "The Angler â€” II: Yellow Perch",
         "Description":  "Yellow perch are picky. Learn their waters.",
         "Tier":  "Recruit",
         "Category":  "Gathering",
@@ -89,6 +103,13 @@
                             "Amount":  25,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -97,12 +118,19 @@
                                "Amount":  8,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "fish_03_minnows",
-        "Title":  "The Angler — III: Bait Run",
+        "Title":  "The Angler â€” III: Bait Run",
         "Description":  "Minnows keep the rod busy. Catch a full batch.",
         "Tier":  "Recruit",
         "Category":  "Gathering",
@@ -141,6 +169,13 @@
                             "Amount":  28,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -149,12 +184,19 @@
                                "Amount":  10,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "fish_04_herring",
-        "Title":  "The Angler — IV: Open Water",
+        "Title":  "The Angler â€” IV: Open Water",
         "Description":  "Herring run in deeper spots. Time to explore the coastline.",
         "Tier":  "Operative",
         "Category":  "Gathering",
@@ -193,6 +235,13 @@
                             "Amount":  42,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -208,12 +257,19 @@
                                "Amount":  14,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "fish_05_anchovy",
-        "Title":  "The Angler — V: Small but Plenty",
+        "Title":  "The Angler â€” V: Small but Plenty",
         "Description":  "Anchovies are fast and plentiful. Requires patience with lighter tackle.",
         "Tier":  "Operative",
         "Category":  "Gathering",
@@ -252,6 +308,13 @@
                             "Amount":  48,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -267,12 +330,19 @@
                                "Amount":  16,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "fish_06_salmon",
-        "Title":  "The Angler — VI: The Fight",
+        "Title":  "The Angler â€” VI: The Fight",
         "Description":  "Salmon fight back. You\u0027ll feel every one of these on your arms.",
         "Tier":  "Operative",
         "Category":  "Gathering",
@@ -318,6 +388,13 @@
                             "Amount":  58,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -333,12 +410,19 @@
                                "Amount":  20,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "fish_07_roughy",
-        "Title":  "The Angler — VII: Deep Haul",
+        "Title":  "The Angler â€” VII: Deep Haul",
         "Description":  "Orange roughy live in the cold deep. Long casts, strong line.",
         "Tier":  "Specialist",
         "Category":  "Gathering",
@@ -384,6 +468,13 @@
                             "Amount":  78,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -399,12 +490,19 @@
                                "Amount":  26,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "fish_08_shark",
-        "Title":  "The Angler — VIII: Apex Catch",
+        "Title":  "The Angler â€” VIII: Apex Catch",
         "Description":  "The small shark is the final test. Land three and the Contractor Network marks you as Master Angler.",
         "Tier":  "Specialist",
         "Category":  "Gathering",
@@ -485,6 +583,13 @@
                             "Amount":  120,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  900,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -498,6 +603,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  40,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  300,
                                "SkinId":  0,
                                "CustomName":  ""
                            }

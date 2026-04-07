@@ -1,4 +1,4 @@
-[
+﻿[
     {
         "Id":  "buy_food_run",
         "Title":  "Ration Run",
@@ -36,6 +36,13 @@
                             "Amount":  25,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -51,13 +58,20 @@
                                "Amount":  10,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "buy_medkits_vendor",
         "Title":  "Medical Procurement",
-        "Description":  "Source medical syringes from the market — the clinic doesn\u0027t wait. 8-hour cooldown.",
+        "Description":  "Source medical syringes from the market â€” the clinic doesn\u0027t wait. 8-hour cooldown.",
         "Tier":  "Operative",
         "Category":  "Trade",
         "DifficultyStars":  2,
@@ -98,6 +112,13 @@
                             "Amount":  55,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -113,12 +134,19 @@
                                "Amount":  20,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "buy_pistol_ammo_vendor",
-        "Title":  "Ammo Procurement — Pistol",
+        "Title":  "Ammo Procurement â€” Pistol",
         "Description":  "Source pistol ammo from a vendor to keep sidearms loaded. 6-hour cooldown.",
         "Tier":  "Operative",
         "Category":  "Trade",
@@ -160,6 +188,13 @@
                             "Amount":  55,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -175,13 +210,20 @@
                                "Amount":  20,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "buy_autoturrets",
         "Title":  "Turret Procurement",
-        "Description":  "Procure an autoturret from the market — base defence is non-negotiable. 24-hour cooldown.",
+        "Description":  "Procure an autoturret from the market â€” base defence is non-negotiable. 24-hour cooldown.",
         "Tier":  "Specialist",
         "Category":  "Trade",
         "DifficultyStars":  3,
@@ -229,6 +271,13 @@
                             "Amount":  140,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -242,6 +291,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -298,6 +354,13 @@
                             "Amount":  250,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  900,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -318,6 +381,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  80,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  300,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -374,6 +444,13 @@
                             "Amount":  255,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  900,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -394,6 +471,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  80,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  300,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -450,6 +534,13 @@
                             "Amount":  380,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  1500,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -470,6 +561,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  120,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  500,
                                "SkinId":  0,
                                "CustomName":  ""
                            }

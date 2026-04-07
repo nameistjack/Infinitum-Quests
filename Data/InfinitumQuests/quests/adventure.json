@@ -1,8 +1,8 @@
-[
+﻿[
     {
         "Id":  "adv_monument_loot",
         "Title":  "Monument Scavenging",
-        "Description":  "Loot military crates from monument areas — the good stuff is behind the locked doors.",
+        "Description":  "Loot military crates from monument areas â€” the good stuff is behind the locked doors.",
         "Tier":  "Operative",
         "Category":  "Adventure",
         "DifficultyStars":  2,
@@ -43,6 +43,13 @@
                             "Amount":  75,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -56,6 +63,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  25,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -112,6 +126,13 @@
                             "Amount":  110,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -125,6 +146,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  35,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -174,6 +202,13 @@
                             "Amount":  120,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -189,12 +224,19 @@
                                "Amount":  40,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "adv_raid_easy",
-        "Title":  "Raid — Easy Clearance",
+        "Title":  "Raid â€” Easy Clearance",
         "Description":  "Complete 5 easy-difficulty raidable bases. Warm up those explosives.",
         "Tier":  "Operative",
         "Category":  "Adventure",
@@ -243,6 +285,13 @@
                             "Amount":  155,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -258,12 +307,19 @@
                                "Amount":  50,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "adv_raid_medium",
-        "Title":  "Raid — Medium Clearance",
+        "Title":  "Raid â€” Medium Clearance",
         "Description":  "Complete 5 medium-difficulty raidable bases. Expect resistance.",
         "Tier":  "Specialist",
         "Category":  "Adventure",
@@ -312,6 +368,13 @@
                             "Amount":  230,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  900,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -325,6 +388,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  70,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  300,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -381,6 +451,13 @@
                             "Amount":  170,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -396,12 +473,19 @@
                                "Amount":  55,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "adv_raid_hard",
-        "Title":  "Raid — Hard Clearance",
+        "Title":  "Raid â€” Hard Clearance",
         "Description":  "Complete 3 hard-difficulty raidable bases. Full loadout required. 24-hour cooldown.",
         "Tier":  "Elite",
         "Category":  "Adventure",
@@ -457,6 +541,13 @@
                             "Amount":  320,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  1500,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -479,13 +570,20 @@
                                "Amount":  100,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  500,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "adv_boss_hunt",
         "Title":  "Boss Elimination",
-        "Description":  "A high-value target has been spotted. Eliminate the boss NPC — reward is substantial. 72-hour cooldown.",
+        "Description":  "A high-value target has been spotted. Eliminate the boss NPC â€” reward is substantial. 72-hour cooldown.",
         "Tier":  "Elite",
         "Category":  "Adventure",
         "DifficultyStars":  5,
@@ -546,6 +644,13 @@
                             "Amount":  400,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  1500,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -572,6 +677,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  150,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  500,
                                "SkinId":  0,
                                "CustomName":  ""
                            }

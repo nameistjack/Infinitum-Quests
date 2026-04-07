@@ -1,7 +1,7 @@
-[
+﻿[
     {
         "Id":  "chain_wood_1",
-        "Title":  "Lumberjack I — First Cut",
+        "Title":  "Lumberjack I â€” First Cut",
         "Description":  "Start your journey as the Network\u0027s wood supplier. Chop your first batch of timber.",
         "Tier":  "Recruit",
         "Category":  "Gather",
@@ -44,6 +44,13 @@
                             "Amount":  30,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -59,12 +66,19 @@
                                "Amount":  10,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "chain_wood_2",
-        "Title":  "Lumberjack II — Steady Haul",
+        "Title":  "Lumberjack II â€” Steady Haul",
         "Description":  "The operation needs more. Deliver a steady haul of timber to the Network.",
         "Tier":  "Recruit",
         "Category":  "Gather",
@@ -110,6 +124,13 @@
                             "Amount":  60,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -125,13 +146,20 @@
                                "Amount":  20,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "chain_wood_3",
-        "Title":  "Lumberjack III — Bulk Delivery",
-        "Description":  "Serious output now — the construction teams are counting on you.",
+        "Title":  "Lumberjack III â€” Bulk Delivery",
+        "Description":  "Serious output now â€” the construction teams are counting on you.",
         "Tier":  "Operative",
         "Category":  "Gather",
         "DifficultyStars":  2,
@@ -176,6 +204,13 @@
                             "Amount":  100,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -191,13 +226,20 @@
                                "Amount":  30,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "chain_wood_4",
-        "Title":  "Lumberjack IV — Industrial Scale",
-        "Description":  "Industrial-scale timber production. The Network is expanding — keep up.",
+        "Title":  "Lumberjack IV â€” Industrial Scale",
+        "Description":  "Industrial-scale timber production. The Network is expanding â€” keep up.",
         "Tier":  "Specialist",
         "Category":  "Gather",
         "DifficultyStars":  3,
@@ -242,6 +284,13 @@
                             "Amount":  200,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -264,12 +313,19 @@
                                "Amount":  50,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "chain_wood_5",
-        "Title":  "Lumberjack V — Forest Domination",
+        "Title":  "Lumberjack V â€” Forest Domination",
         "Description":  "Half a million. You are the reason the forests fear the sound of an axe.",
         "Tier":  "Elite",
         "Category":  "Gather",
@@ -315,6 +371,13 @@
                             "Amount":  350,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  900,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -337,12 +400,19 @@
                                "Amount":  100,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  300,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "chain_wood_6",
-        "Title":  "Lumberjack VI — The Million",
+        "Title":  "Lumberjack VI â€” The Million",
         "Description":  "One million wood. A true legend of the forest. The Network will never forget this haul.",
         "Tier":  "Legend",
         "Category":  "Gather",
@@ -388,6 +458,13 @@
                             "Amount":  500,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  1500,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -415,6 +492,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  150,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  500,
                                "SkinId":  0,
                                "CustomName":  ""
                            }

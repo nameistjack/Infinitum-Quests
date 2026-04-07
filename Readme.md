@@ -1,6 +1,6 @@
 # Infinitum Quests
 
-**Version:** 1.8.1
+**Version:** 1.8.3
 **Author:** LemmyMaverick
 **License:** MIT
 **Game:** Rust (Oxide / uMod)
@@ -130,6 +130,7 @@ oxide.grant group admin   infinitumquests.admin
 | `Use ServerRewards plugin` | `false` | Enable ServerRewards RP reward type |
 | `Use SkillTree XP plugin` | `true` | Enable SkillTree XP rewards + level-up tracking |
 | `Use ImageLibrary for item icons` | `true` | Load custom kill icons via ImageLibrary |
+| `Ranks tab decoration image URL` | `""` | PNG character/soldier art displayed on the right side of the Ranks panel. Transparent background recommended. Fetched and cached by ImageLibrary. |
 | `Streak bonus percent per day (stacks)` | `10` | Each consecutive daily adds this % to rewards |
 | `Max streak bonus days (cap)` | `7` | Maximum days the streak bonus stacks |
 | `Leaderboard top N players` | `20` | How many players appear on the leaderboard |
@@ -412,6 +413,8 @@ The plugin automatically purges orphaned active quests (quests in progress that 
 
 | Version | Notes |
 |---------|-------|
+| 1.8.3 | **Ranks tab redesign:** Right panel split layout — left 62% shows player profile (Steam avatar, tier badge, stat blocks, tier progress bar, recent contracts), right 38% displays configurable character/soldier decoration art. Added `RanksDecoImageUrl` config field. Steam avatars fetched via Community XML on player connect and cached by ImageLibrary. New `DrawRankStatBlock` helper sized to fit the left column. Tier Progression view also constrained to left column for consistency. |
+| 1.8.2 | **Scroll view sidebar:** Replaced pagination with a smooth scroll view in all quest list tabs (Board, Active, Archives, Ranks). Removed page navigation bar. Added `AddScrollView` helper. **Progress update performance:** Changed `OpenUI` → `RefreshPanels` on objective advance so only the changed panels are redrawn. **Reward card icons:** Custom icons (RP, rep, XP) now match item card layout — icon in upper zone, amount label at bottom strip. |
 | 1.8.1 | Fixed compile error on older Oxide builds; Reverted incompatible CuiItemIconComponent; Implemented ImageLibrary bridge for async skinned reward icons; Optimized Bandit/Ranch offsets. |
 | 1.8.0 | **Wipe-Safe Spawn Refactor:** NPCs now independently fallback to static anchors (vending, recyclers, stablemasters) if no saved pos exists. Added support for skinned item rewards in the UI. Added Auto-Cleanup for orphan NPCs. |
 | 1.7.9 | HUD move mode, board search filter, UI state preserved across reloads |

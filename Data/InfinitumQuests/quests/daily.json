@@ -1,8 +1,8 @@
-[
+﻿[
     {
         "Id":  "daily_wild_culling",
         "Title":  "Wild Culling",
-        "Description":  "Daily cull — thin the local wildlife. Resets each day.",
+        "Description":  "Daily cull â€” thin the local wildlife. Resets each day.",
         "Tier":  "Recruit",
         "Category":  "Combat",
         "DifficultyStars":  1,
@@ -43,6 +43,13 @@
                             "Amount":  30,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -64,13 +71,20 @@
                                "Amount":  15,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "daily_timber_run",
         "Title":  "Timber Run",
-        "Description":  "Daily lumber quota — the Network always needs building materials. Resets each day.",
+        "Description":  "Daily lumber quota â€” the Network always needs building materials. Resets each day.",
         "Tier":  "Recruit",
         "Category":  "Gather",
         "DifficultyStars":  1,
@@ -111,6 +125,13 @@
                             "Amount":  25,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -132,13 +153,20 @@
                                "Amount":  15,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "daily_stone_quota",
         "Title":  "Stone Quota",
-        "Description":  "Daily mining quota — keep the quarry satisfied. Resets each day.",
+        "Description":  "Daily mining quota â€” keep the quarry satisfied. Resets each day.",
         "Tier":  "Recruit",
         "Category":  "Gather",
         "DifficultyStars":  1,
@@ -179,6 +207,13 @@
                             "Amount":  25,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -200,13 +235,20 @@
                                "Amount":  15,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "daily_field_medic",
         "Title":  "Field Medic",
-        "Description":  "Daily medical supply run — keep the team patched up. Resets each day.",
+        "Description":  "Daily medical supply run â€” keep the team patched up. Resets each day.",
         "Tier":  "Recruit",
         "Category":  "Craft",
         "DifficultyStars":  1,
@@ -253,6 +295,13 @@
                             "Amount":  30,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -274,13 +323,20 @@
                                "Amount":  15,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "daily_patrol_sweep",
         "Title":  "Patrol Sweep",
-        "Description":  "Daily duty — eliminate scientists from monument perimeters. Resets each day.",
+        "Description":  "Daily duty â€” eliminate scientists from monument perimeters. Resets each day.",
         "Tier":  "Operative",
         "Category":  "Combat",
         "DifficultyStars":  2,
@@ -321,6 +377,13 @@
                             "Amount":  60,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -342,13 +405,20 @@
                                "Amount":  25,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "daily_ore_extraction",
         "Title":  "Ore Extraction",
-        "Description":  "Daily ore quota — the smelters are hungry. Resets each day.",
+        "Description":  "Daily ore quota â€” the smelters are hungry. Resets each day.",
         "Tier":  "Operative",
         "Category":  "Gather",
         "DifficultyStars":  2,
@@ -389,6 +459,13 @@
                             "Amount":  55,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -410,13 +487,20 @@
                                "Amount":  25,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "daily_recycler_run",
         "Title":  "Recycler Run",
-        "Description":  "Daily recycling quota — break down surplus components for the cause. Resets each day.",
+        "Description":  "Daily recycling quota â€” break down surplus components for the cause. Resets each day.",
         "Tier":  "Operative",
         "Category":  "Gather",
         "DifficultyStars":  2,
@@ -457,6 +541,13 @@
                             "Amount":  50,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -478,13 +569,20 @@
                                "Amount":  25,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "daily_heavy_response",
         "Title":  "Heavy Response",
-        "Description":  "Daily priority target — neutralise heavy scientist units on sight. Resets each day.",
+        "Description":  "Daily priority target â€” neutralise heavy scientist units on sight. Resets each day.",
         "Tier":  "Specialist",
         "Category":  "Combat",
         "DifficultyStars":  3,
@@ -525,6 +623,13 @@
                             "Amount":  120,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -553,13 +658,20 @@
                                "Amount":  40,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "daily_crate_intercept",
         "Title":  "Crate Intercept",
-        "Description":  "Daily intercept — hack locked crates before the competition does. Resets each day.",
+        "Description":  "Daily intercept â€” hack locked crates before the competition does. Resets each day.",
         "Tier":  "Specialist",
         "Category":  "Adventure",
         "DifficultyStars":  3,
@@ -600,6 +712,13 @@
                             "Amount":  130,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -621,13 +740,20 @@
                                "Amount":  40,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "daily_armoured_response",
         "Title":  "Armoured Response",
-        "Description":  "Daily priority contract — destroy the Bradley APC before it causes more damage. Resets each day.",
+        "Description":  "Daily priority contract â€” destroy the Bradley APC before it causes more damage. Resets each day.",
         "Tier":  "Elite",
         "Category":  "Combat",
         "DifficultyStars":  4,
@@ -675,6 +801,13 @@
                             "Amount":  220,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  900,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -701,6 +834,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  75,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  300,
                                "SkinId":  0,
                                "CustomName":  ""
                            }

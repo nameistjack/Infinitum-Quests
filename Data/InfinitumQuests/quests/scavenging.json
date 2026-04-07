@@ -1,4 +1,4 @@
-[
+﻿[
     {
         "Id":  "scav_barrels_recruit",
         "Title":  "Barrel Run",
@@ -36,6 +36,13 @@
                             "Amount":  25,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -49,6 +56,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  10,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -91,6 +105,13 @@
                             "Amount":  35,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -106,13 +127,20 @@
                                "Amount":  12,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "scav_food_crates_recruit",
         "Title":  "Food Run",
-        "Description":  "Raid food boxes — useful, accessible, and everywhere. Stock up.",
+        "Description":  "Raid food boxes â€” useful, accessible, and everywhere. Stock up.",
         "Tier":  "Recruit",
         "Category":  "Scavenging",
         "DifficultyStars":  1,
@@ -146,6 +174,13 @@
                             "Amount":  30,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  150,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -161,13 +196,20 @@
                                "Amount":  10,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "scav_components_operative",
         "Title":  "Component Sweep",
-        "Description":  "Hit the component crates — tech parts and metals await. Requires blue-card access in most monuments.",
+        "Description":  "Hit the component crates â€” tech parts and metals await. Requires blue-card access in most monuments.",
         "Tier":  "Operative",
         "Category":  "Scavenging",
         "DifficultyStars":  2,
@@ -208,6 +250,13 @@
                             "Amount":  60,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  300,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -221,6 +270,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  20,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  100,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -270,6 +326,13 @@
                             "Amount":  75,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -283,6 +346,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  25,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -332,6 +402,13 @@
                             "Amount":  110,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -345,6 +422,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  35,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -401,6 +485,13 @@
                             "Amount":  160,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  900,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -414,6 +505,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  50,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  300,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -463,6 +561,13 @@
                             "Amount":  130,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  550,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -476,6 +581,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  40,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  175,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -532,6 +644,13 @@
                             "Amount":  230,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  900,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -545,6 +664,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  70,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  300,
                                "SkinId":  0,
                                "CustomName":  ""
                            }
@@ -601,6 +727,13 @@
                             "Amount":  230,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  900,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -616,13 +749,20 @@
                                "Amount":  70,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  300,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "scav_supply_drop_elite",
         "Title":  "Supply Intercept",
-        "Description":  "Be first to the supply drop and crack it open. No sharing — this contract is competitive.",
+        "Description":  "Be first to the supply drop and crack it open. No sharing â€” this contract is competitive.",
         "Tier":  "Elite",
         "Category":  "Scavenging",
         "DifficultyStars":  4,
@@ -670,6 +810,13 @@
                             "Amount":  260,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  900,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -685,13 +832,20 @@
                                "Amount":  80,
                                "SkinId":  0,
                                "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  300,
+                               "SkinId":  0,
+                               "CustomName":  ""
                            }
                        ]
     },
     {
         "Id":  "scav_heavy_turret_elite",
         "Title":  "Automated Threat Neutralization",
-        "Description":  "Full sweep — eliminate the turret network protecting a compound. Bring enough ammo.",
+        "Description":  "Full sweep â€” eliminate the turret network protecting a compound. Bring enough ammo.",
         "Tier":  "Elite",
         "Category":  "Scavenging",
         "DifficultyStars":  5,
@@ -752,6 +906,13 @@
                             "Amount":  300,
                             "SkinId":  0,
                             "CustomName":  ""
+                        },
+                        {
+                            "Type":  "currency",
+                            "Shortname":  "",
+                            "Amount":  1500,
+                            "SkinId":  0,
+                            "CustomName":  ""
                         }
                     ],
         "VipRewards":  [
@@ -772,6 +933,13 @@
                            {
                                "Type":  "reputation",
                                "Amount":  90,
+                               "SkinId":  0,
+                               "CustomName":  ""
+                           },
+                           {
+                               "Type":  "currency",
+                               "Shortname":  "",
+                               "Amount":  500,
                                "SkinId":  0,
                                "CustomName":  ""
                            }

@@ -1,10 +1,9 @@
 // ============================================================
 //  Infinitum Quests
 //  Author  : LemmyMaverick
-//  Version : 1.8.3
+//  Version : 1.9.0
 //  License : MIT
 //
-//  MIT License
 //  Copyright (c) 2026 LemmyMaverick
 //
 //  Permission is hereby granted, free of charge, to any person obtaining
@@ -25,8 +24,6 @@
 //  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 //  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-//  Developed with the assistance of Claude (Anthropic) — AI pair programming.
 // ============================================================
 
 using System;
@@ -46,7 +43,7 @@ using UnityEngine.UI;
 
 namespace Oxide.Plugins
 {
-    [Info("Infinitum Quests", "LemmyMaverick", "1.8.3")]
+    [Info("Infinitum Quests", "LemmyMaverick", "1.9.0")]
     [Description("Contractor-style quest system — tiered board, dynamic objectives, and progression.")]
     class InfinitumQuests : RustPlugin
     {
@@ -62,17 +59,11 @@ namespace Oxide.Plugins
         private const string PERM_ADMIN = "infinitumquests.admin";
         private const string PERM_VIP   = "infinitumquests.vip";
 
-        // Tier advancement is driven by TierXP earned from quest rewards (type "tier_xp").
-        // Thresholds: Recruit→Operative 500, →Specialist 1500, →Elite 3500, →Legend 7000
+        // XP thresholds per rank. Earned via tier_xp reward type.
         private static readonly int[]    TierThresholds = { 0, 500, 1500, 3500, 7000 };
         private static readonly string[] TierNames      = { "RECRUIT", "OPERATIVE", "SPECIALIST", "ELITE", "LEGEND" };
 
-        // Tier colors — each rank tells a story:
-        //   Recruit   → slate gray    (unproven, no rank)
-        //   Operative → field green   (cleared for duty)
-        //   Specialist→ precision blue(technical, skilled)
-        //   Elite     → amber gold    ( Infinitum brand — intentional)
-        //   Legend    → imperial violet(beyond the network)
+        // Rank accent colors
         private static readonly string[] TierColors = {
             "0.540 0.540 0.560 1",   // RECRUIT   — slate #898990
             "0.168 0.756 0.352 1",   // OPERATIVE — field green #2BC159
@@ -87,43 +78,39 @@ namespace Oxide.Plugins
             "0.118 0.068 0.012 1",   // ELITE
             "0.082 0.028 0.110 1",   // LEGEND
         };
-        // Row backgrounds for the tier progression panel — same hues, very subtle transparent tint
+        // Transparent rank tints for the tier progression rows
         private static readonly string[] TierRowBg = {
-            "0.068 0.068 0.072 0.18",  // RECRUIT   — subtle slate tint
-            "0.032 0.102 0.052 0.18",  // OPERATIVE — subtle green tint
-            "0.032 0.068 0.120 0.18",  // SPECIALIST— subtle blue tint
-            "0.118 0.068 0.012 0.18",  // ELITE     — subtle amber tint
-            "0.082 0.028 0.110 0.18",  // LEGEND    — subtle violet tint
+            "0.068 0.068 0.072 0.18",  // RECRUIT
+            "0.032 0.102 0.052 0.18",  // OPERATIVE
+            "0.032 0.068 0.120 0.18",  // SPECIALIST
+            "0.118 0.068 0.012 0.18",  // ELITE
+            "0.082 0.028 0.110 0.18",  // LEGEND
         };
         private static readonly int[]    TierSlots      = { 3, 4, 5, 6, 8 };
 
-        // ─── Infinitum Palette ────────────────────────────────────────────────
-        // Backgrounds — warm gunmetal hierarchy (slightly warm to avoid cold blue)
-        private const string C_BG0 = "0.038 0.036 0.042 0.82";  // deepest / scrim
-        private const string C_BG1 = "0.062 0.060 0.070 0.62";  // main panel (+ blur)
-        private const string C_BG2 = "0.082 0.080 0.092 0.72";  // header / footer strip
-        private const string C_BG3 = "0.098 0.096 0.112 0.66";  // left sidebar
-        private const string C_BG4 = "0.112 0.110 0.128 0.68";  // card row even
-        private const string C_BG5 = "0.124 0.122 0.142 0.70";  // card row odd
-        private const string C_SEL = "0.048 0.112 0.058 0.78";  // selected row bg
-        private const string C_DIV = "0.150 0.148 0.172 1";     // divider / separator (keep crisp)
+        // ─── UI Palette ───────────────────────────────────────────────────────
+        private const string C_BG0 = "0.038 0.036 0.042 0.82";  // scrim / deepest bg
+        private const string C_BG1 = "0.062 0.060 0.070 0.62";  // main panel
+        private const string C_BG2 = "0.082 0.080 0.092 0.72";  // header / footer
+        private const string C_BG3 = "0.098 0.096 0.112 0.66";  // sidebar
+        private const string C_BG4 = "0.112 0.110 0.128 0.68";  // row even
+        private const string C_BG5 = "0.124 0.122 0.142 0.70";  // row odd
+        private const string C_SEL = "0.048 0.112 0.058 0.78";  // selected row
+        private const string C_DIV = "0.150 0.148 0.172 1";     // divider
 
-        // Text
-        private const string C_TXT_HI = "0.940 0.940 0.956 1"; // near-white primary
-        private const string C_TXT_MD = "0.800 0.800 0.830 1"; // light-gray secondary
-        private const string C_TXT_DM = "0.520 0.520 0.560 1"; // dimmed / disabled
+        private const string C_TXT_HI = "0.940 0.940 0.956 1"; // primary text
+        private const string C_TXT_MD = "0.800 0.800 0.830 1"; // secondary text
+        private const string C_TXT_DM = "0.520 0.520 0.560 1"; // muted text
 
-        // Status
-        private const string C_OK     = "0.168 0.756 0.352 1"; // #2BC259  complete / positive
-        private const string C_OK_BG  = "0.030 0.140 0.060 1"; // #071F0E  success bg
-        private const string C_ERR    = "0.840 0.200 0.200 1"; // #D73333  locked / danger
-        private const string C_ERR_BG = "0.148 0.030 0.030 1"; // #260707  danger bg
-        private const string C_WRN    = "0.820 0.620 0.100 1"; // #D19E1A  cooldown / warning
-        private const string C_INF    = "0.168 0.548 0.840 1"; // #2B8CD7  in-progress info
+        private const string C_OK     = "0.168 0.756 0.352 1"; // complete
+        private const string C_OK_BG  = "0.030 0.140 0.060 1"; // complete bg
+        private const string C_ERR    = "0.840 0.200 0.200 1"; // locked / error
+        private const string C_ERR_BG = "0.148 0.030 0.030 1"; // error bg
+        private const string C_WRN    = "0.820 0.620 0.100 1"; // cooldown / warning
+        private const string C_INF    = "0.168 0.548 0.840 1"; // in-progress
 
-        // Button fills
-        private const string C_BTN    = "0.142 0.142 0.168 0.72"; // generic dark button
-        private const string C_BTN_HI = "0.175 0.175 0.205 0.78"; // button hover / raised
+        private const string C_BTN    = "0.142 0.142 0.168 0.72"; // button
+        private const string C_BTN_HI = "0.175 0.175 0.205 0.78"; // button raised
 
         private int RowsPerPageWin => config.RowsPerPageWindow;
         private int RowsPerPageFs  => config.RowsPerPageFullscreen;
@@ -145,8 +132,7 @@ namespace Oxide.Plugins
         private Dictionary<string, ContractorSavedPos>     _contractorPos     = new Dictionary<string, ContractorSavedPos>(StringComparer.OrdinalIgnoreCase);
         private bool  _dataDirty;   // true when player data has unsaved changes
 
-        // Fallback item-icon map used ONLY when no URL is configured for a kill target.
-        // Target keyword → native item shortname whose icon is shown instead.
+        // Item icon fallbacks for kill targets that have no custom URL configured.
         private static readonly Dictionary<string, string> _killIconFallback =
             new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
@@ -183,8 +169,7 @@ namespace Oxide.Plugins
             ["sam_site_turret_deployed"] = "autoturret",
         };
 
-        // Returns the ImageLibrary key used to store a kill icon for the given target.
-        // Keys are prefixed "iq_kill_" to avoid clashing with item shortnames in ImageLibrary.
+        // Prefixed to avoid collisions with item shortnames in ImageLibrary.
         private static string KillIconKey(string target) => $"iq_kill_{target.ToLower()}";
 
         private static Configuration config;
@@ -226,6 +211,9 @@ namespace Oxide.Plugins
 
             [JsonProperty("XP reward icon URL (transparent PNG — leave empty for text fallback)")]
             public string XpIconUrl { get; set; } = "https://i.imgur.com/4GtMJ6b.png";
+
+            [JsonProperty("Ranks stat block icon URL — Completions & Active slots (transparent PNG — leave empty to hide)")]
+            public string CompletionsIconUrl { get; set; } = "https://i.imgur.com/jeFEJV3.png";
 
             [JsonProperty("Ranks tab decoration image URL (character/soldier PNG with transparency — right side panel art — leave empty to hide)")]
             public string RanksDecoImageUrl { get; set; } = "https://i.imgur.com/CPEQERw.png";
@@ -325,7 +313,8 @@ namespace Oxide.Plugins
             [JsonProperty("NPC display name")]
             public string DisplayName { get; set; } = "Contractor";
 
-            [JsonProperty("Clothing item shortnames (leave empty to keep default scientist appearance)")]
+            [JsonProperty("Clothing item shortnames (leave empty to keep default scientist appearance)",
+                ObjectCreationHandling = ObjectCreationHandling.Replace)]
             public List<string> Clothing { get; set; } = new List<string>
                 { "hazmatsuit", "mask.bandana" };
 
@@ -427,6 +416,7 @@ namespace Oxide.Plugins
                 if (string.IsNullOrEmpty(config.RanksDecoImageUrl))
                 { config.RanksDecoImageUrl = "https://i.imgur.com/CPEQERw.png"; save = true; }
 
+
                 string ver = Version.ToString();
                 if (config.ConfigVersion != ver) { config.ConfigVersion = ver; save = true; }
             }
@@ -473,6 +463,13 @@ namespace Oxide.Plugins
             [JsonProperty("HeadshotOnly")]  public bool   HeadshotOnly  = false;  // kill: only headshot kills count
             [JsonProperty("TimeCondition")] public string TimeCondition = "";     // "night", "day", or "" for any
             [JsonProperty("Location")]      public string Location      = "";     // deliver: contractor location filter (e.g. "outpost", "bandit") — empty = any
+        }
+
+        private class StreakMilestoneDef
+        {
+            [JsonProperty("Day")]                          public int             Day     = 7;
+            [JsonProperty("Label (leave empty for auto)")] public string          Label   = "";
+            [JsonProperty("Rewards")]                      public List<RewardDef> Rewards = new List<RewardDef>();
         }
 
         private class RewardDef
@@ -551,6 +548,7 @@ namespace Oxide.Plugins
             public string Detail = "";
             public string Search = ""; // board search filter
             public ulong SelectedPlayer = 0;
+            public string RankSort   = "completions"; // "completions" | "reputation" | "streak"
             public string Mode   = "window"; // "window" | "fullscreen"
             public bool   PanelFlip = false; // alternates IQ_LA/IQ_LB so new panels render before old ones are destroyed
             // Admin panel state
@@ -613,24 +611,32 @@ namespace Oxide.Plugins
             PurgeOrphanedQuests();
         }
 
-        // Remove active/ready quests whose definition no longer exists (quest file deleted/renamed).
-        // Called after both player data and quest definitions are loaded.
+        // Cleans up active quests and cooldowns for quest IDs that no longer exist.
+        // Runs after definitions and player data are both loaded.
         private void PurgeOrphanedQuests()
         {
             if (_quests.Count == 0) return; // no definitions loaded yet — skip (called again after load)
             var knownIds = new HashSet<string>(_quests.Select(q => q.Id), StringComparer.OrdinalIgnoreCase);
             int total = 0;
+            int cooldownsPurged = 0;
             foreach (var data in _players.Values)
             {
                 int before = data.ActiveQuests.Count + data.ReadyToCollect.Count;
                 data.ActiveQuests.RemoveAll(aq => !knownIds.Contains(aq.Id));
                 data.ReadyToCollect.RemoveAll(aq => !knownIds.Contains(aq.Id));
                 total += before - (data.ActiveQuests.Count + data.ReadyToCollect.Count);
+
+                // Remove cooldowns for quests that no longer exist
+                var staleCd = data.Cooldowns.Keys.Where(k => !knownIds.Contains(k)).ToList();
+                foreach (var k in staleCd) { data.Cooldowns.Remove(k); cooldownsPurged++; }
             }
-            if (total > 0)
+            if (total > 0 || cooldownsPurged > 0)
             {
                 _dataDirty = true;
-                Puts($"[InfinitumQuests] Purged {total} orphaned active quest(s) with no matching definition.");
+                if (total > 0)
+                    Puts($"[InfinitumQuests] Purged {total} orphaned active quest(s) with no matching definition.");
+                if (cooldownsPurged > 0)
+                    Puts($"[InfinitumQuests] Pruned {cooldownsPurged} stale cooldown entries for deleted quests.");
             }
         }
 
@@ -666,7 +672,7 @@ namespace Oxide.Plugins
             var files = Directory.GetFiles(dir, "*.json");
             if (files.Length == 0)
             {
-                Puts("[InfinitumQuests] No quest files found — writing starter quests to data/InfinitumQuests/quests/");
+                Puts("[InfinitumQuests] No quest files found — writing default quests to data/InfinitumQuests/quests/");
                 WriteStarterQuests(dir);
                 files = Directory.GetFiles(dir, "*.json");
             }
@@ -697,126 +703,437 @@ namespace Oxide.Plugins
             PurgeOrphanedQuests(); // clean up any active quests whose definition no longer exists
         }
 
-        // Writes one example quest per major category so admins have a working starting point.
+        // Writes default quest files on first install, 2 per category. Only writes files that don't already exist.
         private void WriteStarterQuests(string dir)
         {
-            var starters = new Dictionary<string, string>
+            var defaults = new Dictionary<string, string>
             {
                 ["daily"] = @"[
   {
-    ""Id"": ""daily_gather_wood"",
-    ""Title"": ""Daily Lumber Run"",
-    ""Description"": ""Gather wood for the network. Resets every day."",
-    ""Tier"": ""Recruit"", ""Category"": ""Daily"", ""DifficultyStars"": 1,
+    ""Id"": ""daily_wild_culling"",
+    ""Title"": ""Wild Culling"",
+    ""Description"": ""Daily cull — thin the local wildlife. Resets each day."",
+    ""Tier"": ""Recruit"", ""Category"": ""Combat"", ""DifficultyStars"": 1,
     ""Daily"": true, ""Repeatable"": false,
-    ""Objectives"": [{ ""Type"": ""chop"", ""Target"": ""wood"", ""Count"": 500, ""Description"": ""Chop 500 wood"" }],
-    ""Rewards"": [{ ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 80 }, { ""Type"": ""tier_xp"", ""Amount"": 60 }, { ""Type"": ""reputation"", ""Amount"": 25 }],
-    ""VipRewards"": [{ ""Type"": ""reputation"", ""Amount"": 8 }]
-  }
-]",
-                ["gathering"] = @"[
-  {
-    ""Id"": ""gather_wood_recruit"",
-    ""Title"": ""Lumber Contract"",
-    ""Description"": ""The network needs wood. Chop and deliver."",
-    ""Tier"": ""Recruit"", ""Category"": ""Gathering"", ""DifficultyStars"": 1,
-    ""Repeatable"": true, ""CooldownSeconds"": 3600, ""VipCooldownSeconds"": 1800,
-    ""Objectives"": [{ ""Type"": ""chop"", ""Target"": ""wood"", ""Count"": 2000, ""Description"": ""Chop 2000 wood"" }],
-    ""Rewards"": [{ ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 120 }, { ""Type"": ""tier_xp"", ""Amount"": 80 }, { ""Type"": ""reputation"", ""Amount"": 35 }],
-    ""VipRewards"": [{ ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 40 }, { ""Type"": ""reputation"", ""Amount"": 12 }]
+    ""Objectives"": [{ ""Type"": ""kill"", ""Target"": ""animal"", ""Count"": 10, ""Description"": ""Kill any 10 animals"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""cloth"", ""Amount"": 75, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 75, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 30, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 150, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""healingtea"", ""Amount"": 1, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 50, ""SkinId"": 0, ""CustomName"": """" }
+    ]
   },
   {
-    ""Id"": ""mine_stone_recruit"",
-    ""Title"": ""Stone Run"",
-    ""Description"": ""Mine stone for construction projects."",
+    ""Id"": ""daily_gather_wood"",
+    ""Title"": ""Daily Lumber Run"",
+    ""Description"": ""Chop wood for the network. Resets each day."",
     ""Tier"": ""Recruit"", ""Category"": ""Gathering"", ""DifficultyStars"": 1,
-    ""Repeatable"": true, ""CooldownSeconds"": 3600, ""VipCooldownSeconds"": 1800,
-    ""Objectives"": [{ ""Type"": ""mine"", ""Target"": ""stones"", ""Count"": 2000, ""Description"": ""Mine 2000 stone"" }],
-    ""Rewards"": [{ ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 110 }, { ""Type"": ""tier_xp"", ""Amount"": 75 }, { ""Type"": ""reputation"", ""Amount"": 30 }],
-    ""VipRewards"": [{ ""Type"": ""reputation"", ""Amount"": 10 }]
+    ""Daily"": true, ""Repeatable"": false,
+    ""Objectives"": [{ ""Type"": ""chop"", ""Target"": ""wood"", ""Count"": 1000, ""Description"": ""Chop 1000 wood"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""wood"", ""Amount"": 500, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 60, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 25, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 100, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 8, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 35, ""SkinId"": 0, ""CustomName"": """" }
+    ]
   }
 ]",
                 ["combat"] = @"[
   {
-    ""Id"": ""kill_scientists_recruit"",
+    ""Id"": ""combat_patrol_clearance"",
     ""Title"": ""Patrol Clearance"",
     ""Description"": ""Eliminate roaming scientists near monuments."",
     ""Tier"": ""Recruit"", ""Category"": ""Combat"", ""DifficultyStars"": 2,
     ""Repeatable"": true, ""CooldownSeconds"": 7200, ""VipCooldownSeconds"": 3600,
     ""Objectives"": [{ ""Type"": ""kill"", ""Target"": ""scientist"", ""Count"": 5, ""Description"": ""Kill 5 scientists"" }],
-    ""Rewards"": [{ ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 150 }, { ""Type"": ""tier_xp"", ""Amount"": 100 }, { ""Type"": ""reputation"", ""Amount"": 40 }],
-    ""VipRewards"": [{ ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 50 }, { ""Type"": ""reputation"", ""Amount"": 14 }]
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 150, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 100, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 40, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 200, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 50, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 14, ""SkinId"": 0, ""CustomName"": """" }
+    ]
+  },
+  {
+    ""Id"": ""combat_bear_hunt"",
+    ""Title"": ""Bear Hunt"",
+    ""Description"": ""Hunt bears — the island's most dangerous predators."",
+    ""Tier"": ""Operative"", ""Category"": ""Combat"", ""DifficultyStars"": 3,
+    ""Repeatable"": true, ""CooldownSeconds"": 14400, ""VipCooldownSeconds"": 7200,
+    ""Objectives"": [{ ""Type"": ""kill"", ""Target"": ""bear"", ""Count"": 3, ""Description"": ""Kill 3 bears"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""leather"", ""Amount"": 100, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 150, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 60, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 300, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 20, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 100, ""SkinId"": 0, ""CustomName"": """" }
+    ]
   }
 ]",
                 ["scavenging"] = @"[
   {
-    ""Id"": ""loot_barrels_recruit"",
+    ""Id"": ""scav_barrel_run"",
     ""Title"": ""Barrel Run"",
     ""Description"": ""Smash open roadside barrels across the island."",
     ""Tier"": ""Recruit"", ""Category"": ""Scavenging"", ""DifficultyStars"": 1,
     ""Repeatable"": true, ""CooldownSeconds"": 3600, ""VipCooldownSeconds"": 1800,
-    ""Objectives"": [{ ""Type"": ""loot"", ""Target"": ""barrel"", ""Count"": 10, ""Description"": ""Destroy or loot 10 barrels"" }],
-    ""Rewards"": [{ ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 100 }, { ""Type"": ""tier_xp"", ""Amount"": 70 }, { ""Type"": ""reputation"", ""Amount"": 28 }],
-    ""VipRewards"": [{ ""Type"": ""reputation"", ""Amount"": 10 }]
+    ""Objectives"": [{ ""Type"": ""loot"", ""Target"": ""barrel"", ""Count"": 15, ""Description"": ""Destroy or loot 15 barrels"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 80, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 60, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 22, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 120, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 8, ""SkinId"": 0, ""CustomName"": """" }
+    ]
+  },
+  {
+    ""Id"": ""scav_military_crates"",
+    ""Title"": ""Monument Scavenging"",
+    ""Description"": ""Loot military crates from monument areas."",
+    ""Tier"": ""Operative"", ""Category"": ""Scavenging"", ""DifficultyStars"": 2,
+    ""Repeatable"": true, ""CooldownSeconds"": 14400, ""VipCooldownSeconds"": 7200,
+    ""Objectives"": [{ ""Type"": ""loot"", ""Target"": ""crate_normal"", ""Count"": 5, ""Description"": ""Loot 5 military crates"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""techparts"", ""Amount"": 2, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 180, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 75, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 400, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""techparts"", ""Amount"": 1, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 25, ""SkinId"": 0, ""CustomName"": """" }
+    ]
   }
 ]",
-                ["craft"] = @"[
+                ["repeatable"] = @"[
   {
-    ""Id"": ""craft_bow_recruit"",
-    ""Title"": ""First Arms"",
-    ""Description"": ""Craft bows to prove your workbench skills."",
-    ""Tier"": ""Recruit"", ""Category"": ""Craft"", ""DifficultyStars"": 1,
-    ""Repeatable"": true, ""CooldownSeconds"": 7200, ""VipCooldownSeconds"": 3600,
-    ""Objectives"": [{ ""Type"": ""craft"", ""Target"": ""bow.hunting"", ""Count"": 3, ""Description"": ""Craft 3 hunting bows"" }],
-    ""Rewards"": [{ ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 120 }, { ""Type"": ""tier_xp"", ""Amount"": 80 }, { ""Type"": ""reputation"", ""Amount"": 30 }],
-    ""VipRewards"": [{ ""Type"": ""reputation"", ""Amount"": 10 }]
+    ""Id"": ""rep_lumber_contract"",
+    ""Title"": ""Lumber Contract"",
+    ""Description"": ""The network needs wood. Chop and deliver."",
+    ""Tier"": ""Recruit"", ""Category"": ""Gathering"", ""DifficultyStars"": 1,
+    ""Repeatable"": true, ""CooldownSeconds"": 3600, ""VipCooldownSeconds"": 1800,
+    ""Objectives"": [{ ""Type"": ""chop"", ""Target"": ""wood"", ""Count"": 2000, ""Description"": ""Chop 2000 wood"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 100, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 80, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 30, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 150, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 10, ""SkinId"": 0, ""CustomName"": """" }
+    ]
+  },
+  {
+    ""Id"": ""rep_stone_run"",
+    ""Title"": ""Stone Run"",
+    ""Description"": ""Mine stone for construction projects."",
+    ""Tier"": ""Recruit"", ""Category"": ""Gathering"", ""DifficultyStars"": 1,
+    ""Repeatable"": true, ""CooldownSeconds"": 3600, ""VipCooldownSeconds"": 1800,
+    ""Objectives"": [{ ""Type"": ""mine"", ""Target"": ""stones"", ""Count"": 2000, ""Description"": ""Mine 2000 stone"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 90, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 75, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 28, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 130, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 9, ""SkinId"": 0, ""CustomName"": """" }
+    ]
   }
 ]",
                 ["adventure"] = @"[
   {
-    ""Id"": ""loot_military_crates"",
-    ""Title"": ""Monument Scavenging"",
-    ""Description"": ""Loot military crates from monument areas."",
+    ""Id"": ""adv_outpost_recon"",
+    ""Title"": ""Outpost Recon"",
+    ""Description"": ""Visit Outpost and gather intel by looting nearby crates."",
     ""Tier"": ""Operative"", ""Category"": ""Adventure"", ""DifficultyStars"": 2,
-    ""Repeatable"": true, ""CooldownSeconds"": 14400, ""VipCooldownSeconds"": 7200,
-    ""Objectives"": [{ ""Type"": ""loot"", ""Target"": ""crate_normal"", ""Count"": 5, ""Description"": ""Loot 5 military crates"" }],
-    ""Rewards"": [{ ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 220 }, { ""Type"": ""item"", ""Shortname"": ""techparts"", ""Amount"": 2 }, { ""Type"": ""tier_xp"", ""Amount"": 180 }, { ""Type"": ""reputation"", ""Amount"": 75 }],
-    ""VipRewards"": [{ ""Type"": ""item"", ""Shortname"": ""techparts"", ""Amount"": 1 }, { ""Type"": ""reputation"", ""Amount"": 25 }]
+    ""Repeatable"": true, ""CooldownSeconds"": 21600, ""VipCooldownSeconds"": 10800,
+    ""Objectives"": [{ ""Type"": ""loot"", ""Target"": ""crate_basic"", ""Count"": 8, ""Description"": ""Loot 8 basic crates"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 200, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 160, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 65, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 350, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 22, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 100, ""SkinId"": 0, ""CustomName"": """" }
+    ]
+  },
+  {
+    ""Id"": ""adv_dome_run"",
+    ""Title"": ""Dome Run"",
+    ""Description"": ""Scale the dome and claim the elite crate at the top."",
+    ""Tier"": ""Specialist"", ""Category"": ""Adventure"", ""DifficultyStars"": 3,
+    ""Repeatable"": true, ""CooldownSeconds"": 28800, ""VipCooldownSeconds"": 14400,
+    ""Objectives"": [{ ""Type"": ""loot"", ""Target"": ""crate_elite"", ""Count"": 1, ""Description"": ""Loot 1 elite crate"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 400, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 300, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 120, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 700, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 40, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 200, ""SkinId"": 0, ""CustomName"": """" }
+    ]
   }
 ]",
                 ["delivery"] = @"[
   {
-    ""Id"": ""deliver_wood_recruit"",
+    ""Id"": ""del_timber_delivery"",
     ""Title"": ""Timber Delivery"",
     ""Description"": ""Bring wood to the Outpost contractor."",
     ""Tier"": ""Recruit"", ""Category"": ""Delivery"", ""DifficultyStars"": 1,
     ""Repeatable"": true, ""CooldownSeconds"": 7200, ""VipCooldownSeconds"": 3600,
     ""Objectives"": [{ ""Type"": ""deliver"", ""Target"": ""wood"", ""Count"": 1000, ""Description"": ""Deliver 1000 wood to Outpost"", ""Location"": ""outpost"" }],
-    ""Rewards"": [{ ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 130 }, { ""Type"": ""tier_xp"", ""Amount"": 90 }, { ""Type"": ""reputation"", ""Amount"": 38 }],
-    ""VipRewards"": [{ ""Type"": ""reputation"", ""Amount"": 12 }]
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 130, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 90, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 38, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 180, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 12, ""SkinId"": 0, ""CustomName"": """" }
+    ]
+  },
+  {
+    ""Id"": ""del_metal_shipment"",
+    ""Title"": ""Metal Shipment"",
+    ""Description"": ""Deliver metal ore to the Bandit Camp contractor."",
+    ""Tier"": ""Operative"", ""Category"": ""Delivery"", ""DifficultyStars"": 2,
+    ""Repeatable"": true, ""CooldownSeconds"": 7200, ""VipCooldownSeconds"": 3600,
+    ""Objectives"": [{ ""Type"": ""deliver"", ""Target"": ""metal.ore"", ""Count"": 500, ""Description"": ""Deliver 500 metal ore to Bandit Camp"", ""Location"": ""bandit"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 200, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 140, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 55, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 280, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 18, ""SkinId"": 0, ""CustomName"": """" }
+    ]
   }
 ]",
                 ["buying"] = @"[
   {
-    ""Id"": ""buy_scrap_recruit"",
+    ""Id"": ""buy_scrap_contract"",
     ""Title"": ""Scrap Acquisition"",
     ""Description"": ""Purchase scrap from a vending machine to fulfil the contract."",
     ""Tier"": ""Recruit"", ""Category"": ""Buying"", ""DifficultyStars"": 1,
     ""Repeatable"": true, ""CooldownSeconds"": 7200, ""VipCooldownSeconds"": 3600,
     ""Objectives"": [{ ""Type"": ""purchase"", ""Target"": ""scrap"", ""Count"": 200, ""Description"": ""Buy 200 scrap from a vending machine"" }],
-    ""Rewards"": [{ ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 100 }, { ""Type"": ""tier_xp"", ""Amount"": 60 }, { ""Type"": ""reputation"", ""Amount"": 22 }],
-    ""VipRewards"": [{ ""Type"": ""reputation"", ""Amount"": 7 }]
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 80, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 50, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 18, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 100, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 6, ""SkinId"": 0, ""CustomName"": """" }
+    ]
+  },
+  {
+    ""Id"": ""buy_medical_supplies"",
+    ""Title"": ""Medical Supplies"",
+    ""Description"": ""Source medical syringes from vending machines across the map."",
+    ""Tier"": ""Operative"", ""Category"": ""Buying"", ""DifficultyStars"": 2,
+    ""Repeatable"": true, ""CooldownSeconds"": 14400, ""VipCooldownSeconds"": 7200,
+    ""Objectives"": [{ ""Type"": ""purchase"", ""Target"": ""syringe.medical"", ""Count"": 5, ""Description"": ""Buy 5 medical syringes"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 150, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 110, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 45, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 220, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 15, ""SkinId"": 0, ""CustomName"": """" }
+    ]
+  }
+]",
+                ["chain_fishing"] = @"[
+  {
+    ""Id"": ""fish_01_trout"",
+    ""Title"": ""The Angler — I: First Cast"",
+    ""Description"": ""Every fisherman starts with a rod and patience. Catch your first trout."",
+    ""Tier"": ""Recruit"", ""Category"": ""Gathering"", ""DifficultyStars"": 1,
+    ""Repeatable"": false,
+    ""ChainId"": ""chain_fishing"", ""ChainOrder"": 1, ""ChainTitle"": ""The Angler"",
+    ""Objectives"": [{ ""Type"": ""fish"", ""Target"": ""fish.troutsmall"", ""Count"": 5, ""Description"": ""Catch 5 small trout"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 60, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 50, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 20, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 150, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 7, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 50, ""SkinId"": 0, ""CustomName"": """" }
+    ]
+  },
+  {
+    ""Id"": ""fish_02_perch"",
+    ""Title"": ""The Angler — II: Yellow Perch"",
+    ""Description"": ""Yellow perch are picky. Learn their waters."",
+    ""Tier"": ""Recruit"", ""Category"": ""Gathering"", ""DifficultyStars"": 1,
+    ""Repeatable"": false,
+    ""ChainId"": ""chain_fishing"", ""ChainOrder"": 2, ""ChainTitle"": ""The Angler"",
+    ""RequiredQuestIds"": [""fish_01_trout""],
+    ""Objectives"": [{ ""Type"": ""fish"", ""Target"": ""fish.yellowperch"", ""Count"": 5, ""Description"": ""Catch 5 yellow perch"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 80, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 65, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 25, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 180, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 8, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 60, ""SkinId"": 0, ""CustomName"": """" }
+    ]
+  }
+]",
+                ["chain_lumberjack"] = @"[
+  {
+    ""Id"": ""lj_01_first_cut"",
+    ""Title"": ""The Lumberjack — I: First Cut"",
+    ""Description"": ""Every great woodsman starts the same way — one swing at a time."",
+    ""Tier"": ""Recruit"", ""Category"": ""Gathering"", ""DifficultyStars"": 1,
+    ""Repeatable"": false,
+    ""ChainId"": ""chain_lumberjack"", ""ChainOrder"": 1, ""ChainTitle"": ""The Lumberjack"",
+    ""Objectives"": [{ ""Type"": ""chop"", ""Target"": ""wood"", ""Count"": 1000, ""Description"": ""Chop 1000 wood"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 60, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 50, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 20, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 120, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 7, ""SkinId"": 0, ""CustomName"": """" }
+    ]
+  },
+  {
+    ""Id"": ""lj_02_timber_haul"",
+    ""Title"": ""The Lumberjack — II: Timber Haul"",
+    ""Description"": ""The camp needs more wood. Keep the axes swinging."",
+    ""Tier"": ""Recruit"", ""Category"": ""Gathering"", ""DifficultyStars"": 1,
+    ""Repeatable"": false,
+    ""ChainId"": ""chain_lumberjack"", ""ChainOrder"": 2, ""ChainTitle"": ""The Lumberjack"",
+    ""RequiredQuestIds"": [""lj_01_first_cut""],
+    ""Objectives"": [{ ""Type"": ""chop"", ""Target"": ""wood"", ""Count"": 3000, ""Description"": ""Chop 3000 wood"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 100, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 90, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 35, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 200, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 12, ""SkinId"": 0, ""CustomName"": """" }
+    ]
+  }
+]",
+                ["chain_miner"] = @"[
+  {
+    ""Id"": ""miner_01_stone_start"",
+    ""Title"": ""The Miner — I: Stone Starter"",
+    ""Description"": ""Every miner earns their calluses one rock at a time."",
+    ""Tier"": ""Recruit"", ""Category"": ""Gathering"", ""DifficultyStars"": 1,
+    ""Repeatable"": false,
+    ""ChainId"": ""chain_miner"", ""ChainOrder"": 1, ""ChainTitle"": ""The Miner"",
+    ""Objectives"": [{ ""Type"": ""mine"", ""Target"": ""stones"", ""Count"": 1000, ""Description"": ""Mine 1000 stone"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 60, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 50, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 20, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 120, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 7, ""SkinId"": 0, ""CustomName"": """" }
+    ]
+  },
+  {
+    ""Id"": ""miner_02_metal_vein"",
+    ""Title"": ""The Miner — II: Metal Vein"",
+    ""Description"": ""Metal ore keeps the forge burning. Mine your share."",
+    ""Tier"": ""Recruit"", ""Category"": ""Gathering"", ""DifficultyStars"": 2,
+    ""Repeatable"": false,
+    ""ChainId"": ""chain_miner"", ""ChainOrder"": 2, ""ChainTitle"": ""The Miner"",
+    ""RequiredQuestIds"": [""miner_01_stone_start""],
+    ""Objectives"": [{ ""Type"": ""mine"", ""Target"": ""metal.ore"", ""Count"": 500, ""Description"": ""Mine 500 metal ore"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""metal.fragments"", ""Amount"": 200, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 90, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 35, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 200, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 12, ""SkinId"": 0, ""CustomName"": """" }
+    ]
+  }
+]",
+                ["chain_weaponsmith"] = @"[
+  {
+    ""Id"": ""ws_01_first_blade"",
+    ""Title"": ""The Weaponsmith — I: First Blade"",
+    ""Description"": ""A weaponsmith's journey begins at the workbench. Craft your first blades."",
+    ""Tier"": ""Recruit"", ""Category"": ""Crafting"", ""DifficultyStars"": 1,
+    ""Repeatable"": false,
+    ""ChainId"": ""chain_weaponsmith"", ""ChainOrder"": 1, ""ChainTitle"": ""The Weaponsmith"",
+    ""Objectives"": [{ ""Type"": ""craft"", ""Target"": ""knife.bone"", ""Count"": 3, ""Description"": ""Craft 3 bone knives"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 60, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 50, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 20, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 120, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 7, ""SkinId"": 0, ""CustomName"": """" }
+    ]
+  },
+  {
+    ""Id"": ""ws_02_bow_production"",
+    ""Title"": ""The Weaponsmith — II: Bow Production"",
+    ""Description"": ""Range matters. Craft hunting bows to arm the team."",
+    ""Tier"": ""Recruit"", ""Category"": ""Crafting"", ""DifficultyStars"": 1,
+    ""Repeatable"": false,
+    ""ChainId"": ""chain_weaponsmith"", ""ChainOrder"": 2, ""ChainTitle"": ""The Weaponsmith"",
+    ""RequiredQuestIds"": [""ws_01_first_blade""],
+    ""Objectives"": [{ ""Type"": ""craft"", ""Target"": ""bow.hunting"", ""Count"": 3, ""Description"": ""Craft 3 hunting bows"" }],
+    ""Rewards"": [
+      { ""Type"": ""item"", ""Shortname"": ""scrap"", ""Amount"": 90, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""tier_xp"", ""Amount"": 80, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""reputation"", ""Amount"": 30, ""SkinId"": 0, ""CustomName"": """" },
+      { ""Type"": ""currency"", ""Shortname"": """", ""Amount"": 180, ""SkinId"": 0, ""CustomName"": """" }
+    ],
+    ""VipRewards"": [
+      { ""Type"": ""reputation"", ""Amount"": 10, ""SkinId"": 0, ""CustomName"": """" }
+    ]
   }
 ]"
             };
 
-            foreach (var kv in starters)
+            foreach (var kv in defaults)
             {
                 string path = Path.Combine(dir, $"{kv.Key}.json");
                 if (!File.Exists(path))
                     File.WriteAllText(path, kv.Value);
             }
-            Puts($"[InfinitumQuests] Wrote {starters.Count} starter quest files to {dir}");
+            Puts($"[InfinitumQuests] Wrote {defaults.Count} default quest files to {dir}");
         }
 
 
@@ -909,7 +1226,7 @@ namespace Oxide.Plugins
                 timer.Once(3f, SpawnContractorNpcs);
         }
 
-        // Called by ImageLibrary when it finishes its startup load
+        // ImageLibrary hook — fires when IL finishes loading its image cache on startup.
         private void OnImageLibraryReady()
         {
             if (config.UseImageLibrary)
@@ -920,7 +1237,7 @@ namespace Oxide.Plugins
         {
             if (ImageLibrary == null) return;
 
-            // ── 1. Reward item icons (native rustedit URL by shortname) ──────────
+            // Reward item icons
             var itemShortnames = new HashSet<string>();
             foreach (var q in _quests)
                 foreach (var r in q.Rewards)
@@ -941,8 +1258,7 @@ namespace Oxide.Plugins
                         if ((vr.Type.ToLower() == "item" || vr.Type.ToLower() == "blueprint") && vr.SkinId != 0 && !string.IsNullOrEmpty(vr.Shortname))
                             ImageLibrary.Call("AddImage", "", vr.Shortname, vr.SkinId);
 
-            // ── 2. Kill objective icons ───────────────────────────────────────────
-            // Collect every unique kill target used across all quests.
+            // Kill objective icons
             var killTargets = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var q in _quests)
                 foreach (var obj in q.Objectives)
@@ -957,40 +1273,35 @@ namespace Oxide.Plugins
                 string url;
                 if (config.KillIconUrls.TryGetValue(target, out url) && !string.IsNullOrEmpty(url))
                 {
-                    // Register the custom URL under our prefixed key.
                     ImageLibrary.Call("AddImage", url, key, (ulong)0);
                 }
                 else
                 {
-                    // No custom URL — fall back to the nearest item icon from rustedit.
                     string fallbackSn;
                     if (!_killIconFallback.TryGetValue(target, out fallbackSn))
-                        fallbackSn = target; // try the target itself as a shortname
+                        fallbackSn = target;
                     ImageLibrary.Call("AddImage",
                         $"https://www.rustedit.io/images/imagelibrary/{fallbackSn}.png",
                         key, (ulong)0);
                 }
             }
 
-            // ── 3. Streak indicator icon ─────────────────────────────────────────
+            // UI icons — streak, reward types, stat blocks, ranks deco art
             if (!string.IsNullOrEmpty(config.StreakIconUrl))
                 ImageLibrary.Call("AddImage", config.StreakIconUrl, "iq_streak_icon", (ulong)0);
-
-            // ── 4. Currency / XP / Rep reward icons ──────────────────────────────
             if (!string.IsNullOrEmpty(config.RpIconUrl))
                 ImageLibrary.Call("AddImage", config.RpIconUrl, "iq_rp_icon", (ulong)0);
             if (!string.IsNullOrEmpty(config.RepIconUrl))
                 ImageLibrary.Call("AddImage", config.RepIconUrl, "iq_rep_icon", (ulong)0);
             if (!string.IsNullOrEmpty(config.XpIconUrl))
                 ImageLibrary.Call("AddImage", config.XpIconUrl, "iq_xp_icon", (ulong)0);
-
-            // ── 5. Ranks decoration art (right-side character image) ─────────────
+            if (!string.IsNullOrEmpty(config.CompletionsIconUrl))
+                ImageLibrary.Call("AddImage", config.CompletionsIconUrl, "iq_completions_icon", (ulong)0);
             if (!string.IsNullOrEmpty(config.RanksDecoImageUrl))
                 ImageLibrary.Call("AddImage", config.RanksDecoImageUrl, "iq_ranks_deco", (ulong)0);
         }
 
-        // Fetches the player's Steam avatar via Community XML and registers it with ImageLibrary.
-        // Silently skips if ImageLibrary is absent, already cached, or the request fails.
+        // Grabs the player's Steam avatar and registers it with ImageLibrary. No-ops if already cached.
         private void FetchPlayerAvatar(ulong steamId)
         {
             if (!config.UseImageLibrary || ImageLibrary == null) return;
@@ -1003,6 +1314,7 @@ namespace Oxide.Plugins
                 (code, response) =>
                 {
                     if (code != 200 || string.IsNullOrEmpty(response)) return;
+                    if (ImageLibrary == null) return; // plugin unloaded during fetch
                     // Extract <avatarFull><![CDATA[URL]]></avatarFull>
                     const string open  = "<avatarFull><![CDATA[";
                     const string close = "]]></avatarFull>";
@@ -1018,8 +1330,7 @@ namespace Oxide.Plugins
                 this, Oxide.Core.Libraries.RequestMethod.GET);
         }
 
-        // Returns the Contractor NPC the player must deliver to.
-        // filter="" or "any" → random; otherwise matches NPC whose saved-pos key contains the filter.
+        // Picks the delivery NPC for the given location filter. Empty/any = random available NPC.
         private ScientistNPC AssignDeliveryNpc(string filter)
         {
             if (_contractorNpcs.Count == 0) return null;
@@ -1084,10 +1395,7 @@ namespace Oxide.Plugins
 
             var spawned = new HashSet<string>();
 
-            // ── Per-location logic: each spawn point independently checks for a
-            //    saved admin position first; if none exists it falls back to the
-            //    monument anchor system.  This is wipe-safe by default because a
-            //    fresh install (or cleared positions) will always use monument anchors.
+            // Each spawn point prefers a saved admin position; falls back to monument anchor.
             foreach (var sp in cfg.SpawnPoints)
             {
                 if (string.IsNullOrEmpty(sp.MonumentFilter)) continue;
@@ -1122,8 +1430,7 @@ namespace Oxide.Plugins
                     sp.Clothing != null && sp.Clothing.Count > 0 ? sp.Clothing : null);
             }
 
-            // ── Spawn any explicitly saved positions not covered by a SpawnPoint
-            //    (e.g. custom locations added with a unique filter name) ─────────
+            // Spawn any saved positions that weren't covered by a configured SpawnPoint
             foreach (var kv in _contractorPos)
             {
                 string filter = kv.Key.ToLower();
@@ -1137,7 +1444,7 @@ namespace Oxide.Plugins
             Puts($"[InfinitumQuests] Contractor spawn complete: {_contractorNpcs.Count} spawned.");
         }
 
-        // Returns the first monument whose display name or GameObject name contains the filter string.
+        // Finds a monument by partial name match against display name or GameObject name.
         private MonumentInfo FindMonument(string filterLow)
         {
             foreach (var m in TerrainMeta.Path.Monuments)
@@ -1149,8 +1456,7 @@ namespace Oxide.Plugins
             return null;
         }
 
-        // Resolves the world-space spawn position for a ContractorSpawnPoint relative to a monument.
-        // Searches for the nearest matching anchor entity within 60 m; falls back to monument centre.
+        // Finds a spawn position relative to a monument. Prefers anchor entities; falls back to monument centre.
         private Vector3 ResolveAnchorPosition(MonumentInfo monument, ContractorSpawnPoint sp)
         {
             var nearbyObjects = new List<BaseEntity>();
@@ -1379,7 +1685,6 @@ namespace Oxide.Plugins
 
         private void OnServerSave() => SavePlayerData();
 
-        // Called by Oxide when the server generates a new map (i.e. a wipe).
         private void OnNewSave()
         {
             if (!config.ContractorNpcs.AutoClearPositionsOnWipe) return;
@@ -1724,8 +2029,7 @@ namespace Oxide.Plugins
         }
 
         // Extracts a difficulty label from the RaidableBases infoJson payload.
-        // The JSON contains "difficulty" (int 0-4) or "difficultyName" (string).
-        // We prefer the name if present; otherwise map the int ourselves.
+        // Prefers "difficultyName" (string); falls back to mapping the "difficulty" int.
         private static string ParseRbDifficulty(string infoJson)
         {
             if (string.IsNullOrEmpty(infoJson)) return "any";
@@ -1747,9 +2051,8 @@ namespace Oxide.Plugins
             return "any";
         }
 
-        // Maps RaidableBases integer difficulty (0-4) to a consistent quest target string.
-        // Quest configs should use these values in the Target field: "easy", "medium", "hard", "expert", "nightmare".
-        // Use "any" (or leave Target blank) to accept all difficulties.
+        // Converts RaidableBases difficulty int to the target string used in quest configs.
+        // Valid targets: "easy", "medium", "hard", "expert", "nightmare" — or blank for any.
         private static string RbDifficultyName(int level)
         {
             switch (level)
@@ -1778,7 +2081,8 @@ namespace Oxide.Plugins
                 if (def == null) continue;
 
                 // Check expiry
-                if (!string.IsNullOrEmpty(aq.ExpiresAt) && DateTime.UtcNow > DateTime.Parse(aq.ExpiresAt))
+                DateTime _expAt;
+                if (!string.IsNullOrEmpty(aq.ExpiresAt) && DateTime.TryParse(aq.ExpiresAt, null, System.Globalization.DateTimeStyles.RoundtripKind, out _expAt) && DateTime.UtcNow > _expAt)
                 {
                     data.ActiveQuests.RemoveAt(qi);
                     SendReply(player, Msg("QuestExpired", player.UserIDString, def.Title));
@@ -1789,6 +2093,7 @@ namespace Oxide.Plugins
                 bool questChanged = false;
                 for (int oi = 0; oi < def.Objectives.Count; oi++)
                 {
+                    if (oi >= aq.Progress.Count) continue; // objective added to def after quest was accepted
                     var obj = def.Objectives[oi];
                     if (obj.Type != type) continue;
                     if (aq.Progress[oi] >= obj.Count) continue;
@@ -1838,7 +2143,7 @@ namespace Oxide.Plugins
             return h == t || h.Contains(t);
         }
 
-        // Validates per-objective modifiers: headshot requirement and time-of-day condition.
+        // Checks headshot-only and day/night conditions on an objective.
         private static bool MatchConditions(ObjectiveDef obj, bool headshot)
         {
             if (obj.HeadshotOnly && !headshot) return false;
@@ -1857,16 +2162,21 @@ namespace Oxide.Plugins
             if (def.ObjectiveLogic == "ANY")
             {
                 for (int i = 0; i < def.Objectives.Count; i++)
+                {
+                    if (i >= aq.Progress.Count) continue; // objective added after quest accepted
                     if (aq.Progress[i] >= def.Objectives[i].Count) return true;
+                }
                 return false;
             }
             for (int i = 0; i < def.Objectives.Count; i++)
+            {
+                if (i >= aq.Progress.Count) return false; // objective added after quest accepted — not complete
                 if (aq.Progress[i] < def.Objectives[i].Count) return false;
+            }
             return true;
         }
 
-        // Phase 1 — all objectives met: park in ReadyToCollect, notify player.
-        // Rewards are NOT delivered yet; the player must click "Collect Rewards" in the UI.
+        // Moves the quest to ReadyToCollect and pings the player. Rewards not delivered until they click Collect.
         private void OnQuestObjectivesMet(BasePlayer player, PlayerData data, int activeIdx)
         {
             var aq  = data.ActiveQuests[activeIdx];
@@ -1881,7 +2191,7 @@ namespace Oxide.Plugins
                 Effect.server.Run(config.ObjectivesSoundPrefab, player.transform.position);
         }
 
-        // Phase 2 — player clicks collect: deliver rewards, record completion, announce.
+        // Player clicked Collect — hand out rewards, record completion, fire announcements.
         private void CollectQuestRewards(BasePlayer player, string questId)
         {
             var data = GetOrCreate(player);
@@ -1927,7 +2237,7 @@ namespace Oxide.Plugins
                 data.Cooldowns[def.Id] = DateTime.UtcNow.AddSeconds(cdSecs).ToString("o");
             }
 
-            // ── Streak update BEFORE rewards so the bonus is reflected in AwardRewards ──
+            // Update streak before rewards so the bonus applies to this completion.
             if (def.Daily)
             {
                 EnsureDailyWindowFresh(data, player); // roll the 24-hour window if needed
@@ -1940,6 +2250,7 @@ namespace Oxide.Plugins
                         data.Streak++;
                         int bonus = Math.Min(data.Streak, config.MaxStreakDays) * config.StreakBonusPercent;
                         SendReply(player, Msg("StreakExtended", player.UserIDString, data.Streak, bonus));
+
                     }
                 }
             }
@@ -2002,12 +2313,13 @@ namespace Oxide.Plugins
             };
             for (int i = 0; i < def.Objectives.Count; i++) aq.Progress.Add(0);
 
-            // Assign a specific Contractor NPC for each deliver objective
+            // Assign a specific Contractor NPC for the first deliver objective
             foreach (var obj in def.Objectives)
             {
                 if (obj.Type?.ToLower() != "deliver") continue;
                 ScientistNPC target = AssignDeliveryNpc(obj.Location);  // Location = "outpost"/"bandit"/etc, empty = random
                 if (target != null) aq.DeliveryNpcId = target.net.ID.Value;
+                break; // only one delivery NPC tracked per quest
             }
 
             data.ActiveQuests.Add(aq);
@@ -2112,9 +2424,17 @@ namespace Oxide.Plugins
                     {
                         string target = r.Type == "currency" ? _resolvedCurrency : r.Type;
                         if (target == "economics" && Economics != null)
-                            Economics.Call("Deposit", player.UserIDString, (double)r.Amount);
+                        {
+                            var result = Economics.Call("Deposit", player.UserIDString, (double)r.Amount);
+                            if (result is bool b && !b)
+                                PrintWarning($"[IQ] Economics.Deposit failed for {player.displayName} (+{r.Amount})");
+                        }
                         else if (target == "server_rewards" && ServerRewards != null)
-                            ServerRewards.Call("AddPoints", player.userID, r.Amount);
+                        {
+                            var result = ServerRewards.Call("AddPoints", player.userID, r.Amount);
+                            if (result is bool b && !b)
+                                PrintWarning($"[IQ] ServerRewards.AddPoints failed for {player.displayName} (+{r.Amount})");
+                        }
                         break;
                     }
                     case "skill_xp":
@@ -2126,8 +2446,7 @@ namespace Oxide.Plugins
         }
 
         // ─────────────────────── Per-Player Daily Window ───────────────────────
-        // Rolling 24-hour window per player — no global UTC-midnight reset.
-        // Called on connect, quest completion, and the HUD refresh timer.
+        // Rolling 24-hour window, not tied to server midnight. Checked on connect, completion, and HUD tick.
         private void EnsureDailyWindowFresh(PlayerData data, BasePlayer player = null)
         {
             DateTime windowStart;
@@ -2239,17 +2558,21 @@ namespace Oxide.Plugins
         {
             remaining = "";
             if (!data.Cooldowns.TryGetValue(id, out string cdStr)) return false;
-            var expires = DateTime.Parse(cdStr);
+            DateTime expires;
+            if (!DateTime.TryParse(cdStr, null, System.Globalization.DateTimeStyles.RoundtripKind, out expires))
+            { data.Cooldowns.Remove(id); return false; } // corrupt entry — discard
             if (DateTime.UtcNow >= expires) { data.Cooldowns.Remove(id); return false; }
             remaining = FormatTime(expires - DateTime.UtcNow);
             return true;
         }
 
-        // Returns expiry as Unix ticks for sort comparison (0 if no cooldown record)
+        // Returns cooldown expiry as ticks for sorting. 0 if no record.
         private long GetCooldownExpiry(PlayerData data, string id)
         {
             if (!data.Cooldowns.TryGetValue(id, out string cdStr)) return 0;
-            return DateTime.Parse(cdStr).Ticks;
+            DateTime exp;
+            if (!DateTime.TryParse(cdStr, null, System.Globalization.DateTimeStyles.RoundtripKind, out exp)) return 0;
+            return exp.Ticks;
         }
 
         private QuestDefinition GetQuest(string id)
@@ -2468,7 +2791,7 @@ namespace Oxide.Plugins
         // ─────────────────────── CUI — Tier Progression (Ranks right panel) ──
         // Content is constrained to left 62% of the panel; right 38% is reserved for the
         // decoration image (soldier/character art).
-        private void DrawTierProgression(CuiElementContainer c, string parent, PlayerData data)
+        private void DrawTierProgression(CuiElementContainer c, string parent, PlayerData data, UiState state)
         {
             int curTier = GetTierIndex(data);
             int curXp   = data.TierXP;
@@ -2554,6 +2877,7 @@ namespace Oxide.Plugins
                 if (pct > 0f)
                     UIPanel(c, barId, "", TierColors[curTier], "0 0", $"{pct:F3} 1", 0, 0, 0, 0);
             }
+
         }
 
         // ─────────────────────── CUI — Left Sidebar ───────────────────────────
@@ -2593,6 +2917,7 @@ namespace Oxide.Plugins
             UIGlowLine(c, L, "0 1", "1 1", 0, -32, 0, -31);
 
             bool isBoard = state.Tab == "board";
+            bool isRanks = state.Tab == "ranks";
 
             // Category filter chips (board tab only, 24px row)
             var catSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -2712,8 +3037,40 @@ namespace Oxide.Plugins
                 UIPanel(c, L, "", C_DIV, "0 1", "1 1", 0, sbBot, 0, sbBot + 1);
             }
 
+            // Sort chips row for ranks tab (24px)
+            if (isRanks)
+            {
+                const float RCHIP_H  = 20f;
+                float rZoneTop = -32f;
+                float rZoneBot = -(32f + RCHIP_H + 4f);
+                UIPanel(c, L, "", "0.045 0.043 0.054 1", "0 1", "1 1", 0, rZoneBot, 0, rZoneTop);
+                UIPanel(c, L, "", C_DIV, "0 1", "1 1", 0, rZoneTop - 1f, 0, rZoneTop);
+
+                var sortOpts = new[] { ("COMPLETIONS", "completions"), ("REPUTATION", "reputation"), ("STREAK", "streak") };
+                float chipW = 83f; float chipGap = 3f; float chipLeft = 4f;
+                float rChipTop = rZoneTop - 2f;
+                for (int si = 0; si < sortOpts.Length; si++)
+                {
+                    var (lbl, key) = sortOpts[si];
+                    float cx = chipLeft + si * (chipW + chipGap);
+                    bool sortSel = state.RankSort == key;
+                    if (sortSel)
+                    {
+                        UIPanel(c, L, "", UIColor(config.ThemeColor, 0.88f), "0 1", "0 1", cx, rChipTop - RCHIP_H, cx + chipW, rChipTop);
+                        UILabel(c, L, C_BG0, lbl, 7, "0 1", "0 1", cx, rChipTop - RCHIP_H, cx + chipW, rChipTop, TextAnchor.MiddleCenter, true);
+                    }
+                    else
+                    {
+                        UIPanel(c, L, "", "0.085 0.083 0.100 0.95", "0 1", "0 1", cx, rChipTop - RCHIP_H, cx + chipW, rChipTop);
+                        UILabel(c, L, C_TXT_DM, lbl, 7, "0 1", "0 1", cx, rChipTop - RCHIP_H, cx + chipW, rChipTop, TextAnchor.MiddleCenter);
+                    }
+                    UIButton(c, L, "0 0 0 0", "0 0 0 0", "", 1, "0 1", "0 1",
+                        cx, rChipTop - RCHIP_H, cx + chipW, rChipTop, $"iq.ui ranksort {key}");
+                }
+            }
+
             // Compute list
-            float tabsH = 32f + catH + (isBoard ? 26f : 0f);
+            float tabsH = 32f + catH + (isBoard ? 26f : 0f) + (isRanks ? 24f : 0f);
             List<QuestDefinition> boardList = null;
             int itemCount;
             switch (state.Tab)
@@ -2819,9 +3176,7 @@ namespace Oxide.Plugins
             }
         }
 
-        // Creates a vertical scroll view inside parent, sized for rowCount rows.
-        // Returns the name of the scroll view (use as parent for row elements).
-        // Returns the name of the CONTENT panel — rows must be parented here, not to the scroll view element.
+        // Creates a vertical scroll view. Returns the content panel name — parent rows to this, not the scroll view itself.
         // viewportH: estimated height of the visible area. Content must be >= viewport to avoid
         // Unity ScrollRect positioning content at the bottom when it is shorter than the viewport.
         private string AddScrollView(CuiElementContainer c, string parent, int rowCount, float viewportH = 520f)
@@ -3064,7 +3419,12 @@ namespace Oxide.Plugins
         {
             // Build sorted leaderboard
             var board = new List<KeyValuePair<ulong, PlayerData>>(_players);
-            board.Sort((a, b) => b.Value.TotalCompletions().CompareTo(a.Value.TotalCompletions()));
+            switch (state.RankSort)
+            {
+                case "reputation": board.Sort((a, b) => b.Value.Reputation.CompareTo(a.Value.Reputation)); break;
+                case "streak":     board.Sort((a, b) => b.Value.Streak.CompareTo(a.Value.Streak)); break;
+                default:           board.Sort((a, b) => b.Value.TotalCompletions().CompareTo(a.Value.TotalCompletions())); break;
+            }
             int count = Math.Min(board.Count, config.LeaderboardSize);
 
             for (int i = 0; i < count; i++)
@@ -3080,6 +3440,15 @@ namespace Oxide.Plugins
 
                 string bg = sel ? C_SEL : me ? "0.055 0.085 0.055 1" : i % 2 == 0 ? C_BG4 : C_BG5;
                 UIPanel(c, parent, "", bg, "0 1", "1 1", 0, bot, 0, top);
+
+                // Top-3 metallic tint overlay (gold / silver / bronze)
+                if (!sel && !me)
+                {
+                    if      (i == 0) UIPanel(c, parent, "", "0.50 0.38 0.02 0.16", "0 1", "1 1", 0, bot, 0, top);
+                    else if (i == 1) UIPanel(c, parent, "", "0.34 0.34 0.40 0.12", "0 1", "1 1", 0, bot, 0, top);
+                    else if (i == 2) UIPanel(c, parent, "", "0.36 0.20 0.06 0.11", "0 1", "1 1", 0, bot, 0, top);
+                }
+
                 UIPanel(c, parent, "", TierColors[t], "0 1", "0 1", 0, bot, 3, top);
                 if (sel) UIPanel(c, parent, "", UIColor(config.ThemeColor, 0.95f), "1 1", "1 1", -3, bot, 0, top);
 
@@ -3087,15 +3456,26 @@ namespace Oxide.Plugins
                 string rankColor = i == 0 ? TierColors[3] : i == 1 ? C_TXT_MD : i == 2 ? C_WRN : C_TXT_DM;
                 UILabel(c, parent, rankColor, $"#{i + 1}", 9, "0 1", "0 1", 5, bot + 13, 30, top - 2, TextAnchor.MiddleLeft, i < 3);
 
+                // Mini avatar (18×18) when cached
+                float nameOffX = 32f;
+                string rowAvatar = GetImage($"iq_avatar_{kv.Key}", 0);
+                if (rowAvatar != null)
+                {
+                    UIPanel(c, parent, "", TierColors[t], "0 1", "0 1", 32, bot + 5, 51, top - 5);
+                    UIImage(c, parent, rowAvatar, "0 1", "0 1", 33, bot + 6, 50, top - 6);
+                    nameOffX = 55f;
+                }
+
                 // Name
                 string nameColor = me ? C_OK : (sel ? C_TXT_HI : C_TXT_MD);
-                string dname = pd.DisplayName.Length > 18 ? pd.DisplayName.Substring(0, 16) + ".." : pd.DisplayName;
-                UILabel(c, parent, nameColor, dname, 10, "0 1", "1 1", 32, bot + 14, -5, top - 2, TextAnchor.MiddleLeft, sel || me);
+                int maxChars = rowAvatar != null ? 15 : 18;
+                string dname = pd.DisplayName.Length > maxChars ? pd.DisplayName.Substring(0, maxChars - 2) + ".." : pd.DisplayName;
+                UILabel(c, parent, nameColor, dname, 10, "0 1", "1 1", nameOffX, bot + 14, -5, top - 2, TextAnchor.MiddleLeft, sel || me);
 
-                // Stats
+                // Stats sub-line
                 string meta = $"{TierNames[t]}  ·  {pd.TotalCompletions()} done  ·  {pd.Reputation:N0} rep";
                 UILabel(c, parent, sel ? UIColor(config.ThemeColor, 0.85f) : C_TXT_DM, meta, 8,
-                    "0 1", "1 1", 32, bot + 2, -5, bot + 16, TextAnchor.MiddleLeft);
+                    "0 1", "1 1", nameOffX, bot + 2, -5, bot + 16, TextAnchor.MiddleLeft);
 
                 // Click target
                 UIButton(c, parent, "0 0 0 0", "0 0 0 0", "", 1, "0 1", "1 1", 0, bot, 0, top,
@@ -3115,7 +3495,7 @@ namespace Oxide.Plugins
                 if (state.SelectedPlayer != 0 && _players.TryGetValue(state.SelectedPlayer, out var rp))
                     DrawRankProfile(c, R, rp, state.SelectedPlayer == player.userID, state.SelectedPlayer);
                 else
-                    DrawTierProgression(c, R, data);
+                    DrawTierProgression(c, R, data, state);
                 return;
             }
 
@@ -3695,12 +4075,29 @@ namespace Oxide.Plugins
                 UILabel(c, R, C_OK, "YOU", 7, "0 1", "0 1", badgeX + 100, -80, badgeX + 134, -56, TextAnchor.MiddleCenter, true);
             }
 
-            // ── Stats grid (4 blocks, 118px each, 6px gap, starting at x=14) ────
+            // Specialization — most completed quest category
+            var specGroup = pd.Completed
+                .Select(r => GetQuest(r.Id)?.Category)
+                .Where(cat => !string.IsNullOrEmpty(cat))
+                .GroupBy(cat => cat, StringComparer.OrdinalIgnoreCase)
+                .OrderByDescending(g => g.Count())
+                .FirstOrDefault();
+            if (specGroup != null)
+            {
+                float specOffX = badgeX + (isMe ? 140f : 102f);
+                UILabel(c, R, UIColor(config.ThemeColor, 0.65f), $"✦  {specGroup.Key.ToUpper()} SPECIALIST",
+                    8, "0 1", RMAX, specOffX, -80, 0, -56, TextAnchor.MiddleLeft);
+            }
+
+            // ── Stats grid (4 blocks, 118px each, 8px gap, starting at x=14) ────
+            string pngDone   = GetImage("iq_completions_icon", 0);
+            string pngRep    = GetImage("iq_rep_icon",         0);
+            string pngStreak = GetImage("iq_streak_icon",      0);
             float sy = -100f;
-            DrawRankStatBlock(c, R, "COMPLETIONS", pd.TotalCompletions().ToString(), 14,  sy);
-            DrawRankStatBlock(c, R, "REPUTATION",  pd.Reputation.ToString("N0"),     140, sy);
-            DrawRankStatBlock(c, R, "STREAK",      $"{pd.Streak}d",                  266, sy);
-            DrawRankStatBlock(c, R, "ACTIVE",      pd.ActiveQuests.Count.ToString(), 392, sy);
+            DrawRankStatBlock(c, R, "COMPLETIONS", pd.TotalCompletions().ToString(), 14,  sy, pngDone);
+            DrawRankStatBlock(c, R, "REPUTATION",  pd.Reputation.ToString("N0"),     140, sy, pngRep);
+            DrawRankStatBlock(c, R, "STREAK",      $"{pd.Streak}d",                  266, sy, pngStreak);
+            DrawRankStatBlock(c, R, "ACTIVE",      pd.ActiveQuests.Count.ToString(), 392, sy, pngDone);
 
             // ── Tier progress bar ────────────────────────────────────────────────
             float ry2 = sy - 60f;
@@ -3752,15 +4149,32 @@ namespace Oxide.Plugins
                     "0 1", RMAX, 14, recY - 40, 0, recY - 18, TextAnchor.MiddleLeft);
         }
 
-        // Smaller stat block sized to fit 4 blocks in the 62%-wide left column (~510px usable).
-        // Each block: 118px wide with 8px gap → 4 × 118 + 3 × 8 = 496px, starting at x=14.
-        private void DrawRankStatBlock(CuiElementContainer c, string parent, string label, string value, float x, float y)
+        // Rank stat block — left icon zone (38px) + right value/label text.
+        // 4 blocks at 118px each with 8px gaps fit in the 62%-wide left column (~510px usable).
+        private void DrawRankStatBlock(CuiElementContainer c, string parent, string label, string value, float x, float y, string png = null)
         {
             const float w = 118f;
-            UIPanel(c, parent, "", C_BG3, "0 1", "0 1", x, y - 46, x + w, y);
-            UIPanel(c, parent, "", C_DIV, "0 1", "0 1", x, y - 46, x + w, y - 44);
-            UILabel(c, parent, C_TXT_HI, value, 17, "0 1", "0 1", x + 4, y - 34, x + w - 4, y - 2, TextAnchor.MiddleCenter, true);
-            UILabel(c, parent, C_TXT_DM, label, 7, "0 1", "0 1", x + 4, y - 46, x + w - 4, y - 34, TextAnchor.MiddleCenter);
+            const float h = 46f;
+            // Background + top accent line
+            UIPanel(c, parent, "", C_BG3, "0 1", "0 1", x, y - h, x + w, y);
+            UIPanel(c, parent, "", UIColor(config.ThemeColor, 0.55f), "0 1", "0 1", x, y - h, x + w, y - h + 1f);
+
+            if (png != null)
+            {
+                // Icon zone: semi-dark square on the left
+                string iconZone = $"IQ_RSBI{(int)x}";
+                UIPanel(c, parent, iconZone, "0.12 0.11 0.15 0.95", "0 1", "0 1", x + 4, y - h + 4, x + 38, y - 4);
+                UIImage(c, iconZone, png, "0.5 0.5", "0.5 0.5", -14, -14, 14, 14);
+                // Value (right of icon, upper half)
+                UILabel(c, parent, C_TXT_HI, value, 13, "0 1", "0 1", x + 42, y - 26, x + w - 4, y - 2, TextAnchor.MiddleLeft, true);
+                // Label (right of icon, lower half)
+                UILabel(c, parent, C_TXT_DM, label, 7, "0 1", "0 1", x + 42, y - h + 2, x + w - 4, y - 26, TextAnchor.MiddleLeft);
+            }
+            else
+            {
+                UILabel(c, parent, C_TXT_HI, value, 17, "0 1", "0 1", x + 4, y - 34, x + w - 4, y - 2, TextAnchor.MiddleCenter, true);
+                UILabel(c, parent, C_TXT_DM, label, 7, "0 1", "0 1", x + 4, y - h, x + w - 4, y - 34, TextAnchor.MiddleCenter);
+            }
         }
 
         private void DrawStatBlock(CuiElementContainer c, string parent, string label, string value, float x, float y)
@@ -4373,6 +4787,14 @@ namespace Oxide.Plugins
                     if (!_ui.TryGetValue(player.userID, out var rs)) return;
                     rs.SelectedPlayer = rid;
                     rs.Tab = "ranks";
+                    RefreshPanels(player);
+                    break;
+                }
+                case "ranksort":
+                {
+                    if (!_ui.TryGetValue(player.userID, out var rss)) return;
+                    rss.RankSort = arg.GetString(1, "completions");
+                    rss.SelectedPlayer = 0;
                     RefreshPanels(player);
                     break;
                 }
@@ -5171,7 +5593,14 @@ namespace Oxide.Plugins
         private void PostDiscord(string message)
         {
             if (string.IsNullOrEmpty(config.DiscordWebhook)) return;
-            string payload = $"{{\"content\":\"{message.Replace("\"", "\\\"").Replace("*", "").Replace("<", "").Replace(">", "")}\"}}";
+            // Sanitize: escape backslashes first, then quotes, then strip control chars
+            string safe = message
+                .Replace("\\", "\\\\")
+                .Replace("\"", "\\\"")
+                .Replace("\n", " ")
+                .Replace("\r", "")
+                .Replace("\t", " ");
+            string payload = $"{{\"content\":\"{safe}\"}}";
             webrequest.Enqueue(config.DiscordWebhook, payload, (code, resp) => { }, this,
                 Oxide.Core.Libraries.RequestMethod.POST,
                 new Dictionary<string, string> { ["Content-Type"] = "application/json" });
@@ -5185,8 +5614,7 @@ namespace Oxide.Plugins
             return (string)ImageLibrary.Call("GetImage", shortname, skinId);
         }
 
-        // Returns the ImageLibrary icon for a kill objective target, or null if unavailable.
-        // Always looks up the "iq_kill_<target>" key — PrefetchQuestImages registers all of them
+        // Returns the cached ImageLibrary icon for a kill target, or null if not available.
         // (either from a custom URL in config, or the item-icon fallback).
         private string GetKillObjectiveIcon(ObjectiveDef obj)
         {
@@ -5196,8 +5624,7 @@ namespace Oxide.Plugins
             return GetImage(KillIconKey(target), 0);
         }
 
-        // Returns the native Rust item ID for non-kill objective types, or 0 if unresolvable.
-        // Uses ItemManager directly — no external plugin dependency.
+        // Returns the item ID for non-kill objective icons. Falls back to 0 if the shortname doesn't resolve.
         private static int GetObjectiveIconItemId(ObjectiveDef obj)
         {
             if (obj == null) return 0;

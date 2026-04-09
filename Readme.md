@@ -1,29 +1,71 @@
 # Infinitum Quests
 
-**Version:** 1.8.3
-**Author:** LemmyMaverick
-**License:** MIT
+**Version:** 1.9.0  
+**Author:** LemmyMaverick  
+**License:** MIT  
 **Game:** Rust (Oxide / uMod)
 
-A contractor-style quest system with a tiered progression board, dynamic multi-objective contracts, daily streaks, chain quests, in-world Contractor NPCs, and a fully custom CUI.
+A contractor-style quest system with tiered rank progression, dynamic multi-objective contracts, daily streaks, chain quests, in-world Contractor NPCs, a fully custom CUI, and a live leaderboard.
+
+---
+
+## Screenshots
+
+### Quest Board — Detail View
+![Quest Board Detail](img/board_quest_detail.png)
+*Scavenging quest with item, XP, rep and RP rewards shown as icon cards. VIP exclusive rewards shown below.*
+
+### Quest Board — Combat Filter
+![Quest Board Combat](img/board_combat_filter.png)
+*Board filtered to Combat. Kill objective icons pulled from ImageLibrary. Custom icons per target type.*
+
+### Quest Board — Bradley Quest
+![Bradley Quest](img/board_bradley_quest.png)
+*Specialist-tier repeatable with a `+2 more` reward overflow indicator.*
+
+### Archives — Completed Quest
+![Archives](img/archives_completed_quest.png)
+*Completed daily quest in the Archives tab with completion timestamp.*
+
+### Ranks — Player Profile
+![Ranks Profile](img/ranks_player_profile.png)
+*Ranks tab: Steam avatar, tier badge, specialization label, stat blocks (completions, reputation, streak, active), recent contracts list, and decoration art.*
+
+### Ranks — Tier Progression
+![Tier Progression](img/ranks_tier_progression.png)
+*Tier Progression sub-view showing all five ranks, XP milestones, slot counts, and the active XP progress bar.*
+
+### Contractor NPC — World
+![Contractor NPC World](img/contractor_npc_world.png)
+*Contractor NPC in the world with the InfinitumHealthBars health bar shown above.*
+
+### Contractor NPC — Delivery Interaction
+![Contractor NPC Delivery](img/contractor_npc_delivery_ui.png)
+*Delivery drop-off UI shown when approaching the Contractor NPC with active delivery contracts.*
+
+### Contractor NPC — Outpost Spawn
+![Contractor NPC Outpost](img/contractor_npc_outpost.png)
+*Contractor NPC at Outpost monument spawn point.*
 
 ---
 
 ## Features
 
-- **Tiered rank progression** — five contractor ranks (Recruit → Legend) each unlocking more quest slots and higher-tier contracts
+- **Tiered rank progression** — five contractor ranks (Recruit → Legend), each unlocking more active quest slots
 - **Quest board UI** — filterable by tier, category, and free-text search; window or fullscreen mode
-- **All major objective types** — kills, gathering, crafting, looting, fishing, repairing, recycling, delivering, and external event completions
-- **Daily quests** — reset at midnight UTC with configurable streak bonuses (up to +70% at 7-day streak)
-- **Chain quests** — sequential multi-quest storylines with bonus rewards on chain completion
-- **VIP rewards** — optional extra reward pool for players with the VIP permission
-- **Contractor NPCs** — in-world scientists at Outpost, Bandit, Fishing Villages, and Barn; interact to open the board
+- **Rich objective types** — kills, gathering, crafting, looting, fishing, repairing, recycling, delivering, purchasing, and external event completions
+- **Reward cards** — item icons, XP, reputation, and RP displayed as icon cards in the detail panel; VIP rewards shown separately
+- **Daily quests** — rolling 24-hour window with configurable streak bonuses
+- **Chain quests** — sequential multi-quest storylines with optional chain-completion bonus rewards
+- **VIP rewards** — extra reward pool for players with the VIP permission
+- **Contractor NPCs** — in-world scientists at Outpost, Bandit, Fishing Villages, and Barn; interact to open the board or drop off delivery contracts
 - **HUD** — draggable mini overlay showing active contract progress; toggleable per player
 - **Toast notifications** — on-screen pop-ups when objectives advance
+- **Ranks leaderboard** — sortable by completions, reputation, or streak; top-3 gold/silver/bronze tinting; per-row Steam avatars; specialization label
+- **Tier Progression view** — all five ranks, XP thresholds, slot counts, and a live progress bar
 - **Discord webhook** — broadcasts completions to a Discord channel
-- **Leaderboard** — top N players by total completions
 - **Admin panel** — in-game UI for viewing stats and managing player quest data
-- **ImageLibrary support** — custom icons for kill objectives
+- **ImageLibrary support** — custom PNG icons for kill objectives and reward types
 - **External integrations** — Convoy, Harbor, Air Event, Junkyard, Supermarket, GasStation, ArcticBase, ArmoredTrain, BossMonster, RaidableBases, DungeonEvents, VirtualQuarries, InfinitumBradleyDrops, ZombieHunter
 
 ---
@@ -33,13 +75,13 @@ A contractor-style quest system with a tiered progression board, dynamic multi-o
 | Plugin | Required | Purpose |
 |--------|----------|---------|
 | **Oxide / uMod** | Yes | Plugin framework |
-| **ImageLibrary** | Optional | Custom kill objective icons |
+| **ImageLibrary** | Optional | Custom icons for kill objectives and reward cards |
 | **Economics** | Optional | Economics currency rewards |
 | **ServerRewards** | Optional | RP currency rewards |
 | **SkillTree** | Optional | Skill XP rewards + level-up objective tracking |
 | **ZombieHunter** | Optional | Zombie kill objective tracking |
 
-All optional plugins can be enabled/disabled individually in the config.
+All optional plugins are auto-detected at runtime. If absent, their reward types are silently skipped.
 
 ---
 
@@ -51,32 +93,32 @@ All optional plugins can be enabled/disabled individually in the config.
 2. Start or reload the server (`oxide.reload InfinitumQuests`)
 3. The plugin auto-generates:
    - `oxide/config/InfinitumQuests.json` — main config
-   - `oxide/data/InfinitumQuests/quests/` — starter quest files (one per category)
+   - `oxide/data/InfinitumQuests/quests/` — default quest files (2 quests per category)
    - `oxide/data/InfinitumQuests/players.json` — player progress (empty)
 4. Grant permissions (see below)
 5. Edit the config and quest files to suit your server
-6. Run `oxide.reload InfinitumQuests` after editing quest files, or use `/quest admin` → Reload
+6. Run `oxide.reload InfinitumQuests` after editing quest files
 
 ### Migrating / Copying an Existing Setup
 
-If you are moving the plugin to a new server, or restoring after a wipe, copy these data files:
+Copy these files — they survive every wipe:
 
 ```
-oxide/data/InfinitumQuests/quests/           ← ALL your quest JSON files (keep through every wipe)
-oxide/data/InfinitumQuests/contractor_positions.json  ← Saved NPC positions (keep through every wipe)
-oxide/config/InfinitumQuests.json            ← Your config (keep through every wipe)
+oxide/config/InfinitumQuests.json
+oxide/data/InfinitumQuests/quests/
+oxide/data/InfinitumQuests/contractor_positions.json
 ```
 
-Only copy this if you are migrating player progress (do NOT copy on a fresh wipe):
+Only copy this when migrating player progress (do **not** copy on a fresh wipe):
 ```
-oxide/data/InfinitumQuests/players.json      ← Player ranks, completions, cooldowns
+oxide/data/InfinitumQuests/players.json
 ```
+
+After copying, reload the plugin — orphaned active quests (definitions removed since last run) are purged automatically.
 
 ### Wipe-Safe NPC Spawning
-Starting in version 1.8.0, NPC positions are managed per-location. If no saved position exists for a monument in `contractor_positions.json`, the plugin will automatically fallback to a **Static Anchor** (Recycler, Vending Machine, or stable Monument NPC). This ensures your NPCs always spawn correctly on a fresh map without manual setup.
 
-
-After copying, reload the plugin — it will detect and purge any orphaned active quests automatically.
+NPC positions are saved per-monument in `contractor_positions.json`. If no saved position exists for a monument, the plugin falls back to a **static anchor** (recycler, vending machine, or stablemaster). NPCs always spawn correctly on a fresh map with no manual setup required.
 
 ---
 
@@ -84,9 +126,9 @@ After copying, reload the plugin — it will detect and purge any orphaned activ
 
 | Permission | Description |
 |-----------|-------------|
-| `infinitumquests.use` | Access the quest board. Grant to the default group. |
-| `infinitumquests.admin` | Open the admin panel and run admin subcommands. |
-| `infinitumquests.vip` | Receive VIP bonus rewards on contract completion. |
+| `infinitumquests.use` | Access the quest board |
+| `infinitumquests.admin` | Open the admin panel and run admin subcommands |
+| `infinitumquests.vip` | Receive VIP bonus rewards on contract completion |
 
 ```
 oxide.grant group default infinitumquests.use
@@ -116,25 +158,30 @@ oxide.grant group admin   infinitumquests.admin
 
 ---
 
-## Configuration (`oxide/config/InfinitumQuests.json`)
+## Configuration
+
+Key settings in `oxide/config/InfinitumQuests.json`:
 
 | Key | Default | Description |
 |-----|---------|-------------|
 | `Commands to open quest board` | `["quest","quests","q"]` | Chat commands that open the board |
 | `HUD enabled` | `true` | Enable the mini HUD overlay |
 | `Announce completions to server` | `true` | Broadcast completions in global chat |
-| `Tier XP persists through wipe` | `true` | Whether contractor rank carries over on wipe |
-| `UI accent color (hex, no #)` | `E8912B` | Theme color for the board header and badges |
-| `Discord webhook URL` | `""` | Paste your Discord webhook to enable broadcasts |
-| `Use Economics plugin` | `false` | Enable Economics reward type |
-| `Use ServerRewards plugin` | `false` | Enable ServerRewards RP reward type |
-| `Use SkillTree XP plugin` | `true` | Enable SkillTree XP rewards + level-up tracking |
-| `Use ImageLibrary for item icons` | `true` | Load custom kill icons via ImageLibrary |
-| `Ranks tab decoration image URL` | `""` | PNG character/soldier art displayed on the right side of the Ranks panel. Transparent background recommended. Fetched and cached by ImageLibrary. |
-| `Streak bonus percent per day (stacks)` | `10` | Each consecutive daily adds this % to rewards |
-| `Max streak bonus days (cap)` | `7` | Maximum days the streak bonus stacks |
-| `Leaderboard top N players` | `20` | How many players appear on the leaderboard |
-| `Chain completion announcement` | `true` | Broadcast to server when a chain is finished |
+| `Tier XP persists through wipe` | `true` | Contractor rank carries over on wipe |
+| `UI accent color (hex, no #)` | `E8912B` | Theme color for header and badges |
+| `Streak indicator icon URL` | `""` | PNG icon shown on the streak stat block |
+| `RP / currency reward icon URL` | `""` | PNG icon for currency reward cards |
+| `Reputation reward icon URL` | `""` | PNG icon for reputation reward cards |
+| `XP reward icon URL` | `""` | PNG icon for XP reward cards |
+| `Ranks stat block icon URL — Completions & Active` | `""` | PNG icon for completions/active stat blocks |
+| `Ranks tab decoration image URL` | `""` | Full-height character/soldier art on the right side of the Ranks panel. Transparent PNG. |
+| `Discord webhook URL` | `""` | Paste your Discord webhook to enable broadcast |
+| `Currency plugin` | `auto` | `auto` / `economics` / `server_rewards` / `none` |
+| `Use SkillTree XP plugin` | `true` | Enable SkillTree XP rewards |
+| `Use ImageLibrary for item icons` | `true` | Load icons via ImageLibrary |
+| `Streak bonus percent per day` | `10` | Each consecutive daily adds this % to rewards |
+| `Max streak bonus days (cap)` | `7` | Maximum days the streak bonus stacks (max +70%) |
+| `Leaderboard top N players` | `20` | Players shown on the leaderboard |
 | `Show objective progress toasts` | `true` | On-screen pop-up when an objective advances |
 | `Toast display duration (seconds)` | `3.5` | How long each toast is visible |
 | `Play sound when objectives are complete` | `true` | Audio cue when all objectives are done |
@@ -142,89 +189,106 @@ oxide.grant group admin   infinitumquests.admin
 
 ### Contractor NPC Settings
 
-Contractor NPCs spawn automatically at monuments. Each spawn point uses an anchor entity within the monument (e.g. the recycler at Outpost) to determine the exact position. Positions can be overridden using the admin panel's **Set Position** tool.
-
 | Key | Description |
 |-----|-------------|
 | `Enabled` | Spawn Contractor NPCs at configured monuments |
 | `NPC display name` | Name shown above the NPC |
-| `Clothing item shortnames` | Items dressed on the NPC (default: hazmat + bandana) |
-| `Gesture` | Periodic gesture: `wave`, `thumbsup`, `shrug`, `clap`, `point`, `victory`, or `""` to disable |
+| `Clothing item shortnames` | Items dressed on the NPC |
+| `Gesture` | Periodic gesture: `wave`, `thumbsup`, `shrug`, `clap`, `point`, `victory`, or `""` |
 | `Gesture interval in seconds` | How often the gesture plays |
-| `Greeting sound effect path` | Sound played to the player who interacts |
-| `Monument spawn points` | Array of monument filter + anchor entity pairs |
+| `Greeting sound effect path` | Sound played to the interacting player |
+| `Monument spawn points` | Array of `{ monument filter, anchor entity }` pairs |
 
-| Monument filter | Anchor | Notes |
-|----------------|--------|-------|
-| `outpost` | `recycler` | Standard fallback |
-| `compound` | `recycler` | Standard fallback |
-| `bandit` | `cardtable` | Spawns in gambling room |
-| `fishing` | `vending` | Spawns on the shop pier |
-| `barn` | `stablemaster` | Spawns beside horse vendor |
-| `ranch` | `stablemaster` | Spawns beside horse vendor |
+Default spawn points:
 
-**Manual Override:** You can still set a precise position manually using `/iq.contractor setpos <filter>`. This position is saved to `oxide/data/InfinitumQuests/contractor_positions.json` and will persist until the next map wipe (or until cleared manually).
+| Monument filter | Anchor entity |
+|----------------|--------------|
+| `outpost` | `recycler` |
+| `bandit` | `cardtable` |
+| `fishing` | `vending` |
+| `barn` | `stablemaster` |
+| `ranch` | `stablemaster` |
+
+To override a position manually: `/iq.contractor setpos <filter>` — saves to `contractor_positions.json`.
 
 ---
 
 ## Quest Files
 
-Quest definitions are JSON files in `oxide/data/InfinitumQuests/quests/`. Each file contains an array of quest objects. You can have as many files as you like — all are loaded on startup and on reload.
+Quest definitions live in `oxide/data/InfinitumQuests/quests/`. Each file is a JSON array of quest objects. All files in the folder are loaded on startup and on reload. You can create as many files as you like — the filename is just for organisation.
 
-### Quest Object Schema
+### Default Files
+
+On first install the plugin writes these files (2 quests each):
+
+| File | Category |
+|------|----------|
+| `daily.json` | Daily quests (reset each day) |
+| `combat.json` | Kill objectives |
+| `scavenging.json` | Loot containers |
+| `repeatable.json` | Gathering repeatables |
+| `adventure.json` | Monument / exploration |
+| `delivery.json` | Deliver items to Contractor NPC |
+| `buying.json` | Purchase from vending machines |
+| `chain_fishing.json` | Fishing chain storyline |
+| `chain_lumberjack.json` | Lumberjack chain storyline |
+| `chain_miner.json` | Miner chain storyline |
+| `chain_weaponsmith.json` | Weaponsmith chain storyline |
+
+### Quest Schema
 
 ```jsonc
 {
-  "Id":               "unique_quest_id",          // Required. Must be globally unique.
-  "Title":            "Contract Title",
-  "Description":      "Flavor text shown in the detail panel.",
-  "Tier":             "Recruit",                  // Recruit | Operative | Specialist | Elite | Legend
-  "Category":         "Gathering",                // Any string — used for board filter tabs
-  "DifficultyStars":  1,                          // 1–5 stars shown in the board
-  "Repeatable":       false,                      // Can be taken again after cooldown?
-  "CooldownSeconds":  3600,                       // Cooldown before the quest can be repeated (0 = none)
-  "VipCooldownSeconds": 1800,                     // Shorter cooldown for VIP players (0 = same as above)
-  "TimeLimitMinutes": 60,                         // Time limit in minutes (0 = no limit)
-  "Permission":       "",                         // Optional extra permission required to accept
-  "ObjectiveLogic":   "ALL",                      // ALL = all objectives must complete | ANY = any one is enough
-  "Daily":            false,                      // Resets daily at midnight UTC
-  "Weekly":           false,                      // Resets weekly
-  "ChainId":          "",                         // Group multiple quests into a chain with the same ChainId
-  "ChainOrder":       0,                          // Position in the chain (0 = first, 1 = second, etc.)
-  "ChainTitle":       "",                         // Display name shown for the overall chain
-  "RequiredQuestIds": [],                         // Prerequisite quest IDs that must be completed first
-  "Objectives":       [ /* see below */ ],
-  "Rewards":          [ /* see below */ ],
-  "VipRewards":       [ /* extra rewards for VIP players */ ],
-  "ChainBonusRewards":[ /* awarded once when the full chain is complete */ ]
+  "Id":                "unique_quest_id",       // Required. Must be globally unique.
+  "Title":             "Contract Title",
+  "Description":       "Flavor text shown in the detail panel.",
+  "Tier":              "Recruit",               // Recruit | Operative | Specialist | Elite | Legend
+  "Category":          "Combat",                // Any string — used for board filter tabs
+  "DifficultyStars":   2,                       // 1–5 stars shown in the sidebar
+  "Repeatable":        true,
+  "CooldownSeconds":   7200,                    // 0 = no cooldown
+  "VipCooldownSeconds":3600,                    // Shorter cooldown for VIP players
+  "TimeLimitMinutes":  0,                       // 0 = no time limit
+  "Permission":        "",                      // Extra permission required to accept (optional)
+  "ObjectiveLogic":    "ALL",                   // ALL = all must complete | ANY = any one is enough
+  "Daily":             false,                   // Resets on the player's rolling 24-hour window
+  "ChainId":           "",                      // Group quests into a chain
+  "ChainOrder":        1,                       // Position in the chain (starts at 1)
+  "ChainTitle":        "",                      // Display name for the chain
+  "RequiredQuestIds":  [],                      // Prerequisite quest IDs
+  "Objectives":        [ /* see below */ ],
+  "Rewards":           [ /* see below */ ],
+  "VipRewards":        [ /* extra for VIP players */ ],
+  "ChainBonusRewards": [ /* awarded when the full chain completes */ ]
 }
 ```
 
 ### Objective Types
 
-| Type | Description | Target field | Notes |
-|------|-------------|-------------|-------|
-| `kill` | Kill an entity | Entity keyword (see list below) | Supports `HeadshotOnly`, `TimeCondition` |
-| `chop` | Gather wood by chopping | `wood` | |
-| `mine` | Mine a resource node | `stones`, `metal.ore`, `sulfur.ore`, etc. | |
-| `gather` | Collect any resource | Item shortname | |
-| `craft` | Craft an item | Item shortname | |
-| `loot` | Loot a container | Container prefab keyword (`barrel`, `crate_normal`, etc.) | |
-| `recycle` | Recycle items | Item shortname | |
-| `fish` | Catch fish | Fish item shortname or `fish` | |
-| `pickup` | Pick up a dropped item | Item shortname | |
-| `harvest` | Harvest a plant | Plant/food shortname | |
-| `repair` | Repair an entity | Item shortname or `building` | |
-| `deliver` | Deliver items to a Contractor NPC | Item shortname | `Location` filters to a specific monument |
-| `event_win` | Complete a server event | `convoy`, `harbor`, `air`, `junkyard`, `supermarket`, `gasstation`, `arcticbase`, `armoredtrain`, or `""` for any |  |
-| `boss_kill` | Kill a BossMonster entity | Boss prefab name or `""` for any | Requires BossMonster plugin |
-| `raidable_base` | Complete a Raidable Base | Difficulty: `0`–`4` or `""` for any | Requires RaidableBases plugin |
-| `dungeon_win` | Complete a Dungeon Event | Dungeon map name or `""` for any | Requires DungeonEvents plugin |
-| `quarry_upgrade` | Upgrade a Virtual Quarry | Quarry profile name or `""` | Requires VirtualQuarries plugin |
-| `quarry_place` | Place a Virtual Quarry | Quarry profile name or `""` | Requires VirtualQuarries plugin |
-| `skilltree_level` | Reach a SkillTree level | Target level number as string (e.g. `"25"`) | Requires SkillTree plugin |
-| `bradley_tier` | Destroy a tiered Bradley | Bradley tier profile name or `""` for any | Requires InfinitumBradleyDrops |
-| `zombie` | Kill a ZombieHunter zombie | `zombie` or `zombie_hunter` | Requires ZombieHunter plugin |
+| Type | Target field | Notes |
+|------|-------------|-------|
+| `kill` | Entity keyword (e.g. `scientist`, `bear`, `bradley`) | Supports `HeadshotOnly`, `TimeCondition` |
+| `chop` | `wood` | |
+| `mine` | `stones`, `metal.ore`, `sulfur.ore`, etc. | |
+| `gather` | Item shortname | |
+| `craft` | Item shortname | |
+| `loot` | Container keyword (`barrel`, `crate_normal`, `crate_elite`, etc.) | |
+| `recycle` | Item shortname | |
+| `fish` | Fish item shortname or `fish` for any | |
+| `pickup` | Item shortname | |
+| `harvest` | Plant / food shortname | |
+| `repair` | Item shortname or `building` | |
+| `deliver` | Item shortname | `Location` filters to a specific monument NPC |
+| `purchase` | Item shortname | Vending machine purchases |
+| `event_win` | `convoy`, `harbor`, `air`, `junkyard`, `supermarket`, `gasstation`, `arcticbase`, `armoredtrain`, or `""` for any | |
+| `boss_kill` | Boss prefab name or `""` | Requires BossMonster |
+| `raidable_base` | Difficulty `0`–`4` or `""` | Requires RaidableBases |
+| `dungeon_win` | Map name or `""` | Requires DungeonEvents |
+| `quarry_upgrade` | Profile name or `""` | Requires VirtualQuarries |
+| `quarry_place` | Profile name or `""` | Requires VirtualQuarries |
+| `skilltree_level` | Target level as string, e.g. `"25"` | Requires SkillTree |
+| `bradley_tier` | Tier profile name or `""` | Requires InfinitumBradleyDrops |
+| `zombie` | `zombie` or `zombie_hunter` | Requires ZombieHunter |
 
 **Objective schema:**
 ```jsonc
@@ -232,50 +296,49 @@ Quest definitions are JSON files in `oxide/data/InfinitumQuests/quests/`. Each f
   "Type":          "kill",
   "Target":        "scientist",
   "Count":         10,
-  "Description":   "Kill 10 scientists",
-  "HeadshotOnly":  false,       // kill only: count headshots only
-  "TimeCondition": "",          // "day", "night", or "" for any time
-  "Location":      ""           // deliver only: monument filter, e.g. "outpost"
+  "Description":   "Kill 10 scientists",   // shown in the detail panel
+  "HeadshotOnly":  false,                  // kill only
+  "TimeCondition": "",                     // "day", "night", or "" for any
+  "Location":      ""                      // deliver only: monument filter e.g. "outpost"
 }
 ```
 
 **Common kill targets:**
 
-| Target keyword | Matches |
-|---------------|---------|
+| Keyword | Matches |
+|---------|---------|
 | `scientist` | Standard scientists |
 | `heavyscientist` | Heavy scientists |
 | `tunneldweller` | Tunnel dwellers |
 | `underwaterdweller` | Underwater dwellers |
-| `npc` | Any NPC / scientist |
+| `npc` | Any NPC |
 | `wolf` | Wolves |
 | `bear` | Bears |
 | `boar` | Boars |
 | `stag` | Stags / deer |
 | `chicken` | Chickens |
-| `horse` | Horses |
 | `croc` | Crocodiles |
 | `panther` | Panthers |
 | `tiger` | Tigers |
 | `animal` | Any animal |
-| `bradley` / `bradleyapc` | Bradley APC |
-| `heli` / `patrolheli` | Patrol helicopter |
+| `bradley` | Bradley APC |
+| `heli` | Patrol helicopter |
 | `attack_heli` | Attack helicopter |
 | `ch47` | Chinook CH47 |
-| `player` | Human players (PvP servers) |
 
 ### Reward Types
 
-| Type | Fields | Description |
-|------|--------|-------------|
+| Type | Required fields | Description |
+|------|----------------|-------------|
 | `item` | `Shortname`, `Amount`, `SkinId`, `CustomName` | Give a physical item |
 | `blueprint` | `Shortname`, `Amount` | Give an item as a learned blueprint |
 | `tier_xp` | `Amount` | Award Contractor rank XP |
-| `reputation` | `Amount` | Award Reputation points (tracked internally) |
-| `economics` | `Amount` | Award Economics currency |
-| `server_rewards` | `Amount` | Award ServerRewards RP |
+| `reputation` | `Amount` | Award Reputation points |
+| `currency` | `Amount` | Award currency via the auto-detected plugin (Economics or ServerRewards) |
+| `economics` | `Amount` | Force Economics currency |
+| `server_rewards` | `Amount` | Force ServerRewards RP |
 | `skill_xp` | `Amount` | Award SkillTree XP |
-| `command` | `Command` | Run a server console command. Use `{steamid}` as a placeholder for the player's Steam ID. |
+| `command` | `Command` | Run a server console command. Use `%STEAMID%` as placeholder. |
 
 **Reward schema:**
 ```jsonc
@@ -292,7 +355,7 @@ Quest definitions are JSON files in `oxide/data/InfinitumQuests/quests/`. Each f
 
 ## Contractor Rank System
 
-Contractor XP is earned from `tier_xp` rewards. Ranks unlock more active quest slots.
+Rank XP is earned from `tier_xp` rewards. Each rank unlocks more active quest slots.
 
 | Rank | XP Required | Quest Slots |
 |------|------------|-------------|
@@ -302,7 +365,7 @@ Contractor XP is earned from `tier_xp` rewards. Ranks unlock more active quest s
 | ELITE | 3,500 | 6 |
 | LEGEND | 7,000 | 8 |
 
-Rank XP can be configured to persist through wipes (`"Tier XP persists through wipe": true`).
+Rank XP persists through wipes when `"Tier XP persists through wipe": true`.
 
 ---
 
@@ -310,9 +373,50 @@ Rank XP can be configured to persist through wipes (`"Tier XP persists through w
 
 Each day a player completes at least one daily quest, their streak increments. Streak bonuses apply as a percentage increase to all rewards on that day's completions.
 
-- Default: +10% per streak day, capped at 7 days (+70% maximum)
+- Default: **+10% per streak day**, capped at **7 days** (+70% maximum bonus)
 - Streak resets if no daily is completed on a given day
 - Configurable via `Streak bonus percent per day` and `Max streak bonus days`
+
+---
+
+## Ranks Tab
+
+The Ranks tab has three sub-views toggled by sort chips at the top:
+
+| Chip | Sort order |
+|------|-----------|
+| **Completions** | Total quests completed (default) |
+| **Reputation** | Total reputation earned |
+| **Streak** | Current daily streak |
+
+Each leaderboard row shows: rank position, Steam avatar, player name, tier badge, completions, and reputation. Top 3 rows are tinted gold / silver / bronze. Selecting a row opens their full profile on the right panel.
+
+**Right panel — Player Profile** shows:
+- Steam avatar + display name
+- Tier badge + specialization label (most-completed category)
+- Stat blocks: Completions, Reputation, Streak, Active quests
+- Tier progression bar with current XP
+- Recent contracts list
+
+**Right panel — Tier Progression** shows all five ranks with XP thresholds, slot counts, and a live progress bar.
+
+---
+
+## Wipe Handling
+
+### Keep through every wipe
+```
+oxide/config/InfinitumQuests.json
+oxide/data/InfinitumQuests/quests/
+oxide/data/InfinitumQuests/contractor_positions.json
+```
+
+### Wipe on full (monthly) wipe
+```
+oxide/data/InfinitumQuests/players.json
+```
+
+The plugin automatically purges orphaned active quests on every load — safe to add, edit, or remove quest files at any time.
 
 ---
 
@@ -321,70 +425,70 @@ Each day a player completes at least one daily quest, their streak increments. S
 ```json
 [
   {
-    "Id": "kill_scientists_operative",
-    "Title": "Clear the Monuments",
-    "Description": "Scientists have been sighted. The network needs them cleared.",
-    "Tier": "Operative",
+    "Id": "combat_patrol_clearance",
+    "Title": "Patrol Clearance",
+    "Description": "Eliminate roaming scientists near monuments.",
+    "Tier": "Recruit",
     "Category": "Combat",
     "DifficultyStars": 2,
     "Repeatable": true,
     "CooldownSeconds": 7200,
     "VipCooldownSeconds": 3600,
-    "TimeLimitMinutes": 0,
-    "ObjectiveLogic": "ALL",
-    "Objectives": [
-      {
-        "Type": "kill",
-        "Target": "scientist",
-        "Count": 15,
-        "Description": "Kill 15 scientists"
-      }
-    ],
-    "Rewards": [
-      { "Type": "item",      "Shortname": "scrap",    "Amount": 300 },
-      { "Type": "tier_xp",  "Amount": 150 },
-      { "Type": "reputation","Amount": 50 }
-    ],
-    "VipRewards": [
-      { "Type": "item", "Shortname": "scrap", "Amount": 100 }
-    ]
-  },
-  {
-    "Id": "chain_story_1",
-    "Title": "Into the Network — Part 1",
-    "Description": "Prove yourself by gathering the basics.",
-    "Tier": "Recruit",
-    "Category": "Story",
-    "DifficultyStars": 1,
-    "ChainId": "story_intro",
-    "ChainOrder": 0,
-    "ChainTitle": "Into the Network",
-    "Objectives": [
-      { "Type": "chop", "Target": "wood", "Count": 1000, "Description": "Chop 1000 wood" }
-    ],
-    "Rewards": [
-      { "Type": "tier_xp", "Amount": 80 }
-    ]
-  },
-  {
-    "Id": "chain_story_2",
-    "Title": "Into the Network — Part 2",
-    "Description": "The network needs your combat skills too.",
-    "Tier": "Recruit",
-    "Category": "Story",
-    "DifficultyStars": 2,
-    "ChainId": "story_intro",
-    "ChainOrder": 1,
-    "ChainTitle": "Into the Network",
-    "RequiredQuestIds": ["chain_story_1"],
     "Objectives": [
       { "Type": "kill", "Target": "scientist", "Count": 5, "Description": "Kill 5 scientists" }
     ],
     "Rewards": [
-      { "Type": "tier_xp", "Amount": 120 }
+      { "Type": "item",         "Shortname": "scrap", "Amount": 150, "SkinId": 0, "CustomName": "" },
+      { "Type": "tier_xp",      "Amount": 100, "SkinId": 0, "CustomName": "" },
+      { "Type": "reputation",   "Amount": 40,  "SkinId": 0, "CustomName": "" },
+      { "Type": "currency",     "Amount": 200, "SkinId": 0, "CustomName": "" }
+    ],
+    "VipRewards": [
+      { "Type": "reputation",   "Amount": 14, "SkinId": 0, "CustomName": "" }
+    ]
+  },
+  {
+    "Id": "fish_01_trout",
+    "Title": "The Angler — I: First Cast",
+    "Description": "Every fisherman starts with a rod and patience.",
+    "Tier": "Recruit",
+    "Category": "Gathering",
+    "DifficultyStars": 1,
+    "Repeatable": false,
+    "ChainId": "chain_fishing",
+    "ChainOrder": 1,
+    "ChainTitle": "The Angler",
+    "Objectives": [
+      { "Type": "fish", "Target": "fish.troutsmall", "Count": 5, "Description": "Catch 5 small trout" }
+    ],
+    "Rewards": [
+      { "Type": "tier_xp",    "Amount": 50,  "SkinId": 0, "CustomName": "" },
+      { "Type": "reputation", "Amount": 20,  "SkinId": 0, "CustomName": "" },
+      { "Type": "currency",   "Amount": 150, "SkinId": 0, "CustomName": "" }
+    ]
+  },
+  {
+    "Id": "fish_02_perch",
+    "Title": "The Angler — II: Yellow Perch",
+    "Description": "Yellow perch are picky. Learn their waters.",
+    "Tier": "Recruit",
+    "Category": "Gathering",
+    "DifficultyStars": 1,
+    "Repeatable": false,
+    "ChainId": "chain_fishing",
+    "ChainOrder": 2,
+    "ChainTitle": "The Angler",
+    "RequiredQuestIds": ["fish_01_trout"],
+    "Objectives": [
+      { "Type": "fish", "Target": "fish.yellowperch", "Count": 5, "Description": "Catch 5 yellow perch" }
+    ],
+    "Rewards": [
+      { "Type": "tier_xp",    "Amount": 65,  "SkinId": 0, "CustomName": "" },
+      { "Type": "reputation", "Amount": 25,  "SkinId": 0, "CustomName": "" },
+      { "Type": "currency",   "Amount": 180, "SkinId": 0, "CustomName": "" }
     ],
     "ChainBonusRewards": [
-      { "Type": "item", "Shortname": "supply.signal", "Amount": 1 }
+      { "Type": "item", "Shortname": "fish.troutsmall", "Amount": 10, "SkinId": 0, "CustomName": "" }
     ]
   }
 ]
@@ -392,34 +496,18 @@ Each day a player completes at least one daily quest, their streak increments. S
 
 ---
 
-## Wipe Handling
-
-### Keep through every wipe
-- `oxide/config/InfinitumQuests.json`
-- `oxide/data/InfinitumQuests/quests/*.json`
-- `oxide/data/InfinitumQuests/contractor_positions.json`
-
-### Wipe monthly (full wipe)
-- `oxide/data/InfinitumQuests/players.json`
-
-### Wipe weekly (optional — resets progress but keeps ranks)
-- Not recommended unless you want to clear cooldowns; rank XP is in `players.json`
-
-The plugin automatically purges orphaned active quests (quests in progress that no longer have a definition) on every load, so it is safe to add or remove quest files between wipes.
-
----
-
 ## Changelog
 
 | Version | Notes |
 |---------|-------|
-| 1.8.3 | **Ranks tab redesign:** Right panel split layout — left 62% shows player profile (Steam avatar, tier badge, stat blocks, tier progress bar, recent contracts), right 38% displays configurable character/soldier decoration art. Added `RanksDecoImageUrl` config field. Steam avatars fetched via Community XML on player connect and cached by ImageLibrary. New `DrawRankStatBlock` helper sized to fit the left column. Tier Progression view also constrained to left column for consistency. |
-| 1.8.2 | **Scroll view sidebar:** Replaced pagination with a smooth scroll view in all quest list tabs (Board, Active, Archives, Ranks). Removed page navigation bar. Added `AddScrollView` helper. **Progress update performance:** Changed `OpenUI` → `RefreshPanels` on objective advance so only the changed panels are redrawn. **Reward card icons:** Custom icons (RP, rep, XP) now match item card layout — icon in upper zone, amount label at bottom strip. |
-| 1.8.1 | Fixed compile error on older Oxide builds; Reverted incompatible CuiItemIconComponent; Implemented ImageLibrary bridge for async skinned reward icons; Optimized Bandit/Ranch offsets. |
-| 1.8.0 | **Wipe-Safe Spawn Refactor:** NPCs now independently fallback to static anchors (vending, recyclers, stablemasters) if no saved pos exists. Added support for skinned item rewards in the UI. Added Auto-Cleanup for orphan NPCs. |
-| 1.7.9 | HUD move mode, board search filter, UI state preserved across reloads |
-| 1.6.5 | Chain quests, VIP rewards, streak bonuses |
-| 1.5.x | Contractor NPC system, monument spawn anchors |
+| 1.9.0 | **Stability hardening:** Progress array bounds guarded against quest definition changes mid-session. All `DateTime.Parse` calls replaced with `TryParse` — corrupt data entries discarded gracefully. External plugin reward calls (`Economics`, `ServerRewards`) now log a warning on failure. `PurgeOrphanedQuests` also prunes stale cooldown entries for deleted quests. Discord webhook JSON sanitized against newlines and special characters. FetchPlayerAvatar callback guards against ImageLibrary unload mid-fetch. **Default quests rewritten** — 2 per file, all 11 categories, matching full reward format. |
+| 1.8.3 | **Ranks tab redesign:** Split layout — left 62% player profile (avatar, tier badge, specialization label, stat blocks, tier progress bar, recent contracts), right 38% configurable decoration art. Sort chips (Completions / Reputation / Streak), top-3 metallic tinting, per-row avatars. Steam avatars fetched via Community XML and cached by ImageLibrary. |
+| 1.8.2 | Scroll view sidebar replacing pagination. `RefreshPanels` partial redraws on objective advance. Reward card icons with PNG support via ImageLibrary. |
+| 1.8.1 | Fixed compile error on older Oxide builds. ImageLibrary bridge for async skinned reward icons. |
+| 1.8.0 | Wipe-safe NPC spawn refactor — static anchor fallbacks. Skinned item reward UI. Auto-cleanup of orphan NPCs. |
+| 1.7.9 | HUD move mode. Board search filter. UI state preserved across reloads. |
+| 1.6.5 | Chain quests. VIP rewards. Streak bonuses. |
+| 1.5.x | Contractor NPC system. Monument spawn anchors. |
 | 1.4.x | External event integrations (Convoy, RaidableBases, DungeonEvents, etc.) |
-| 1.3.x | Admin panel, leaderboard, Discord webhook |
-| 1.0.0 | Initial release |
+| 1.3.x | Admin panel. Leaderboard. Discord webhook. |
+| 1.0.0 | Initial release. |

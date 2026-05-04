@@ -1,7 +1,7 @@
 // ============================================================
 //  Infinitum Quests
 //  Author  : LemmyMaverick
-//  Version : 1.9.0
+//  Version : 1.9.1
 //  License : MIT
 //
 //  Copyright (c) 2026 LemmyMaverick
@@ -43,7 +43,7 @@ using UnityEngine.UI;
 
 namespace Oxide.Plugins
 {
-    [Info("Infinitum Quests", "LemmyMaverick", "1.9.0")]
+    [Info("Infinitum Quests", "LemmyMaverick", "1.9.1")]
     [Description("Contractor-style quest system — tiered board, dynamic objectives, and progression.")]
     class InfinitumQuests : RustPlugin
     {
@@ -2883,16 +2883,9 @@ namespace Oxide.Plugins
         // ─────────────────────── CUI — Left Sidebar ───────────────────────────
         private void DrawLeftSidebar(CuiElementContainer c, string L, BasePlayer player, UiState state, PlayerData data)
         {
-            // Default to first category when none is selected — no "ALL" chip means board must always be filtered
-            if (state.Tab == "board" && string.IsNullOrEmpty(state.Cat))
-            {
-                var firstCat = _quests
-                    .Select(q => q.Category)
-                    .Where(cat => !string.IsNullOrEmpty(cat))
-                    .OrderBy(cat => cat, StringComparer.OrdinalIgnoreCase)
-                    .FirstOrDefault();
-                if (firstCat != null) state.Cat = firstCat;
-            }
+            // Default to Recruit tier when board opens with no tier selected
+            if (state.Tab == "board" && string.IsNullOrEmpty(state.Tier))
+                state.Tier = TierNames[0];
 
             // Pre-compute filtered board list once — reused for badges AND the list render below
             var cachedBoardList = FilteredQuests(player, state);
@@ -2919,77 +2912,45 @@ namespace Oxide.Plugins
             bool isBoard = state.Tab == "board";
             bool isRanks = state.Tab == "ranks";
 
-            // Category filter chips (board tab only, 24px row)
-            var catSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            if (isBoard)
-                foreach (var q in _quests)
-                    if (!string.IsNullOrEmpty(q.Category)) catSet.Add(q.Category);
-
-            bool showCatRow = isBoard && catSet.Count > 1;
+            // Tier filter chips (board tab only, single row of 5 fixed tiers)
+            const float CHIP_MARGIN = 4f;
+            const float CHIP_GAP    = 3f;
+            const float CHIP_H      = 17f;
+            const float USABLE_W    = 252f;
             float catH = 0f;
-            if (showCatRow)
+            if (isBoard)
             {
-                var cats = new List<string>(catSet);
-                cats.Sort();
-                int catCount = cats.Count;
-
-                // Decide rows: if all chips fit at ≥46px wide use 1 row, otherwise 2 rows
-                const float CHIP_MARGIN = 4f;
-                const float CHIP_GAP    = 3f;
-                const float CHIP_H      = 17f;
-                const float USABLE_W    = 252f; // sidebar 260px - 4px each side
-                int maxInOneRow = Mathf.Max(1, (int)((USABLE_W + CHIP_GAP) / (46f + CHIP_GAP)));
-                bool twoRows    = catCount > maxInOneRow;
-                int  r1Count    = twoRows ? (catCount + 1) / 2 : catCount;
-                int  r2Count    = catCount - r1Count;
-                float r1W = (USABLE_W - CHIP_GAP * (r1Count - 1)) / r1Count;
-                float r2W = r2Count > 0 ? (USABLE_W - CHIP_GAP * (r2Count - 1)) / r2Count : 0;
-                catH = twoRows ? (CHIP_H * 2 + CHIP_GAP + 8f) : (CHIP_H + 8f);
+                int   tierCount = TierNames.Length;
+                float chipW     = (USABLE_W - CHIP_GAP * (tierCount - 1)) / tierCount;
+                catH = CHIP_H + 8f;
 
                 float zoneTop = -32f;
                 float zoneBot = -(32f + catH);
                 UIPanel(c, L, "", "0.045 0.043 0.054 1", "0 1", "1 1", 0, zoneBot, 0, zoneTop);
-                UIPanel(c, L, "", C_DIV, "0 1", "1 1", 0, zoneTop - 1f, 0, zoneTop); // separator
+                UIPanel(c, L, "", C_DIV, "0 1", "1 1", 0, zoneTop - 1f, 0, zoneTop);
 
-                // Helper: draw one chip
-                Action<string, float, float, float> drawChip = (cat, cx, cy_top, chipW) =>
+                float rowTop = zoneTop - 4f;
+                float cx = CHIP_MARGIN;
+                for (int i = 0; i < tierCount; i++)
                 {
-                    string label = cat.ToUpper();
-                    bool sel = string.Equals(state.Cat, cat, StringComparison.OrdinalIgnoreCase);
-                    string cmd = sel ? "iq.ui filter cat " : $"iq.ui filter cat {cat}";
-                    float cy_bot = cy_top - CHIP_H;
+                    string tier   = TierNames[i];
+                    bool   sel    = string.Equals(state.Tier, tier, StringComparison.OrdinalIgnoreCase);
+                    string cmd    = $"iq.ui filter tier {tier}";
+                    float  cy_bot = rowTop - CHIP_H;
                     if (sel)
                     {
-                        UIPanel(c, L,  "", UIColor(config.ThemeColor, 0.88f), "0 1", "0 1", cx, cy_bot, cx + chipW, cy_top);
-                        UILabel(c, L,  C_BG0, label, 7, "0 1", "0 1", cx, cy_bot, cx + chipW, cy_top, TextAnchor.MiddleCenter, true);
-                        UIButton(c, L, "0 0 0 0", "0 0 0 0", "", 1, "0 1", "0 1", cx, cy_bot, cx + chipW, cy_top, cmd);
+                        UIPanel(c, L,  "", TierBg[i],     "0 1", "0 1", cx, cy_bot, cx + chipW, rowTop);
+                        UIPanel(c, L,  "", TierColors[i], "0 1", "0 1", cx, rowTop - 2f, cx + chipW, rowTop);
+                        UILabel(c, L,  TierColors[i], tier, 6, "0 1", "0 1", cx, cy_bot, cx + chipW, rowTop, TextAnchor.MiddleCenter, true);
+                        UIButton(c, L, "0 0 0 0", "0 0 0 0", "", 1, "0 1", "0 1", cx, cy_bot, cx + chipW, rowTop, cmd);
                     }
                     else
                     {
-                        UIPanel(c, L,  "", "0.085 0.083 0.100 0.95", "0 1", "0 1", cx, cy_bot, cx + chipW, cy_top);
-                        UILabel(c, L,  C_TXT_DM, label, 7, "0 1", "0 1", cx, cy_bot, cx + chipW, cy_top, TextAnchor.MiddleCenter);
-                        UIButton(c, L, "0 0 0 0", "0 0 0 0", "", 1, "0 1", "0 1", cx, cy_bot, cx + chipW, cy_top, cmd);
+                        UIPanel(c, L,  "", "0.085 0.083 0.100 0.95", "0 1", "0 1", cx, cy_bot, cx + chipW, rowTop);
+                        UILabel(c, L,  C_TXT_DM, tier, 6, "0 1", "0 1", cx, cy_bot, cx + chipW, rowTop, TextAnchor.MiddleCenter);
+                        UIButton(c, L, "0 0 0 0", "0 0 0 0", "", 1, "0 1", "0 1", cx, cy_bot, cx + chipW, rowTop, cmd);
                     }
-                };
-
-                // Row 1
-                float row1Top = zoneTop - 4f;
-                float cx1 = CHIP_MARGIN;
-                for (int i = 0; i < r1Count; i++)
-                {
-                    drawChip(cats[i], cx1, row1Top, r1W);
-                    cx1 += r1W + CHIP_GAP;
-                }
-                // Row 2 (if needed)
-                if (twoRows)
-                {
-                    float row2Top = row1Top - CHIP_H - CHIP_GAP;
-                    float cx2 = CHIP_MARGIN;
-                    for (int i = r1Count; i < catCount; i++)
-                    {
-                        drawChip(cats[i], cx2, row2Top, r2W);
-                        cx2 += r2W + CHIP_GAP;
-                    }
+                    cx += chipW + CHIP_GAP;
                 }
             }
 
@@ -3121,7 +3082,7 @@ namespace Oxide.Plugins
                         bool hasSearch = !string.IsNullOrEmpty(state.Search);
                         string emptyMsg = hasSearch
                             ? $"No results for  \"{state.Search}\""
-                            : $"No contracts in  {state.Cat}";
+                            : $"No contracts for  {state.Tier}";
                         UILabel(c, LL, C_TXT_DM, emptyMsg, 11, "0.05 0.5", "0.95 0.5", 0, 4, 0, 22, TextAnchor.MiddleCenter, true);
                         if (hasSearch)
                         {
@@ -4744,7 +4705,7 @@ namespace Oxide.Plugins
                     if (!_ui.TryGetValue(player.userID, out var fs)) return;
                     string ftype = arg.GetString(1);
                     string fval  = arg.GetString(2, "");
-                    if (ftype == "tier")     { fs.Tier = fval; fs.Page = 0; }
+                    if (ftype == "tier")     { fs.Tier = fval; fs.Cat = ""; fs.Page = 0; }
                     else if (ftype == "cat") { fs.Cat  = fval; fs.Page = 0; }
                     RefreshPanels(player);
                     break;
